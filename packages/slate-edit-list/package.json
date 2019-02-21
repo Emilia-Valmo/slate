@@ -1,0 +1,31 @@
+{
+  "name": "@gitbook/slate-edit-list",
+  "description": "A Slate plugin to handle keyboard events in lists.",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "repository": "git://github.com/GitbookIO/slate.git",
+  "main": "lib/slate-edit-list.js",
+  "module": "lib/slate-edit-list.es.js",
+  "umd": "dist/slate-edit-list.js",
+  "umdMin": "dist/slate-edit-list.min.js",
+  "files": [
+    "dist",
+    "*.md"
+  ],
+  "peerDependencies": {
+    "immutable": ">=4.0.0-rc.12",
+    "@gitbook/slate": "1.0.0"
+  },
+  "devDependencies": {
+    "@gitbook/slate": "1.0.0",
+    "@gitbook/slate-hyperscript": "1.0.0",
+    "@gitbook/slate-react": "1.0.0",
+    "@gitbook/slate-hyperprint": "^2.2.6"
+  },
+  "scripts": {
+    "clean": "rm -rf ./dist ./lib ./node_modules"
+  },
+  "keywords": [
+    "slate"
+  ]
+}

@@ -3,7 +3,7 @@
   "description": "A set of function to detect common keypresses in a platform-agnostic way",
   "version": "1.0.0",
   "license": "MIT",
-  "repository": "git://github.com/ianstormtaylor/slate.git",
+  "repository": "git://github.com/GitbookIO/slate.git",
   "main": "lib/slate-hotkeys.js",
   "module": "lib/slate-hotkeys.es.js",
   "umd": "dist/slate-hotkeys.js",

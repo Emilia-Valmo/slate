@@ -13,10 +13,13 @@ const BROWSERS = [
   'Opera >= 42',
 ]
 
-const COMMON_PRESETS = ['@babel/preset-react']
+const COMMON_PRESETS = ['@babel/preset-react', '@babel/preset-flow']
 
 const COMMON_PLUGINS = [
   '@babel/plugin-proposal-object-rest-spread',
+  // Explicitly run flow-strip-types before class properties
+  // https://github.com/babel/babel/issues/8417#issuecomment-430007587
+  '@babel/plugin-transform-flow-strip-types',
   '@babel/plugin-proposal-class-properties',
   '@babel/plugin-proposal-export-default-from',
   '@babel/plugin-proposal-export-namespace-from',

@@ -3,7 +3,7 @@
   "description": "Detect browser and OS environments in core Slate packages",
   "version": "1.0.0",
   "license": "MIT",
-  "repository": "git://github.com/ianstormtaylor/slate.git",
+  "repository": "git://github.com/GitbookIO/slate.git",
   "main": "lib/slate-dev-environment.js",
   "module": "lib/slate-dev-environment.es.js",
   "umd": "dist/slate-dev-environment.js",

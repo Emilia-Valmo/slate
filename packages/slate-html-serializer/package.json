@@ -3,7 +3,7 @@
   "description": "An HTML serializer for Slate editors.",
   "version": "1.0.0",
   "license": "MIT",
-  "repository": "git://github.com/ianstormtaylor/slate.git",
+  "repository": "git://github.com/GitbookIO/slate.git",
   "main": "lib/slate-html-serializer.js",
   "module": "lib/slate-html-serializer.es.js",
   "umd": "dist/slate-html-serializer.js",
@@ -18,7 +18,7 @@
   },
   "peerDependencies": {
     "@gitbook/slate": ">=0.32.0",
-    "immutable": ">=3.8.1",
+    "immutable": ">=4.0.0-rc.12",
     "react": ">=0.14.0",
     "react-dom": ">=0.14.0"
   },

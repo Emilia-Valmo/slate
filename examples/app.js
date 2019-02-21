@@ -30,6 +30,14 @@ import SearchHighlighting from './search-highlighting'
 import SyncingOperations from './syncing-operations'
 import Tables from './tables'
 
+// Plugins
+import PluginList from './plugin-list'
+import PluginTable from './plugin-table'
+import PluginCode from './plugin-code'
+import PluginBlockquote from './plugin-blockquote'
+import PluginPrism from './plugin-prism'
+import PluginAutoReplace from './plugin-auto-replace'
+
 /**
  * Examples.
  *
@@ -58,6 +66,12 @@ const EXAMPLES = [
   ['Forced Layout', ForcedLayout, '/forced-layout'],
   ['Huge Document', HugeDocument, '/huge-document'],
   ['History', History, '/history'],
+  ['Plugin List', PluginList, '/plugin-list'],
+  ['Plugin Table', PluginTable, '/plugin-table'],
+  ['Plugin Code', PluginCode, '/plugin-code'],
+  ['Plugin Blockquote', PluginBlockquote, '/plugin-blockquote'],
+  ['Plugin Prism', PluginPrism, '/plugin-prism'],
+  ['Plugin AutoReplace', PluginAutoReplace, '/plugin-auto-replace'],
 ]
 
 /**
@@ -102,7 +116,9 @@ const TabList = styled('div')`
   }
 `
 
-const Tab = styled(RouterLink)`
+const MaskedRouterLink = ({ active, ...props }) => <RouterLink {...props} />
+
+const Tab = styled(MaskedRouterLink)`
   display: inline-block;
   margin-bottom: 0.2em;
   padding: 0.2em 0.5em;

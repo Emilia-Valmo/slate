@@ -3,7 +3,7 @@
   "description": "A set of constants for the built-in violations in a Slate schema.",
   "version": "1.0.0",
   "license": "MIT",
-  "repository": "git://github.com/ianstormtaylor/slate.git",
+  "repository": "git://github.com/GitbookIO/slate.git",
   "main": "lib/slate-schema-violations.js",
   "module": "lib/slate-schema-violations.es.js",
   "umd": "dist/slate-schema-violations.js",

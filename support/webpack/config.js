@@ -3,7 +3,6 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackTemplate = require('html-webpack-template')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 
 const HotModuleReplacementPlugin = webpack.HotModuleReplacementPlugin
@@ -78,7 +77,6 @@ const config = {
         'https://fonts.googleapis.com/icon?family=Material+Icons',
       ],
     }),
-    IS_PROD && new CopyWebpackPlugin(['examples/CNAME']),
     IS_DEV && new HotModuleReplacementPlugin(),
   ].filter(Boolean),
 }

@@ -195,8 +195,8 @@ export default class App extends React.Component {
           <Nav>
             <Title>Slate Examples</Title>
             <LinkList>
-              <Link href="https://github.com/ianstormtaylor/slate">GitHub</Link>
-              <Link href="https://docs.slatejs.org/">Docs</Link>
+              <Link href="https://github.com/GitbookIO/slate">GitHub</Link>
+              <Link href="https://gitbook.gitbook.io/slate-fork/">Docs</Link>
             </LinkList>
           </Nav>
           <TabList>

@@ -1,6 +1,10 @@
+> ⚠️ **This is GitBook's fork of [ianstormtaylor/slate](https://github.com/ianstormtaylor/slate), designed for GitBook.
+> GitBook's fork of slate and our plugins are published under the `@gitbook` NPM scope.
+> **Before using this module, read [our manifest](https://github.com/GitbookIO/slate/blob/master/Forked.md) and check out the initial repository.**
+
 # Slate
 
-This is GitBook's fork of [Slate](https://github.com/ianstormtaylor/slate), a _completely_ customizable framework for building rich text editors.
+Slate is a _completely_ customizable framework for building rich text editors.
 
 Slate lets you build rich, intuitive editors like those in [Medium](https://medium.com/), [Dropbox Paper](https://www.dropbox.com/paper) or [Google Docs](https://www.google.com/docs/about/)—which are becoming table stakes for applications on the web—without your codebase getting mired in complexity.
 
@@ -78,8 +82,3 @@ If you're using Slate for the first time, check out the [Getting Started](https:
 
 If even that's not enough, you can always [read the source itself](./src), which is heavily commented.
 
-## Contributing!
-
-All contributions are super welcome! Check out the [Contributing instructions](./Contributing.md) for more info!
-
-Slate is [MIT-licensed](./License.md).

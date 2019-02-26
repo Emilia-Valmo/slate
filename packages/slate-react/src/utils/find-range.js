@@ -52,11 +52,13 @@ function findRange(native, value) {
     const domAnchor = findDOMPoint(anchor.key, anchor.offset)
     const domFocus = findDOMPoint(focus.key, focus.offset)
 
-    native = {
-      anchorNode: domAnchor.node,
-      anchorOffset: domAnchor.offset,
-      focusNode: domFocus.node,
-      focusOffset: domFocus.offset,
+    if (domAnchor && domFocus) {
+      native = {
+        anchorNode: domAnchor.node,
+        anchorOffset: domAnchor.offset,
+        focusNode: domFocus.node,
+        focusOffset: domFocus.offset,
+      }
     }
   }
 

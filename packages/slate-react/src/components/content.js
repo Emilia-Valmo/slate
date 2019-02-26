@@ -8,7 +8,6 @@ import {
   IS_ANDROID,
   SUPPORTED_EVENTS,
 } from '@gitbook/slate-dev-environment'
-import logger from '@gitbook/slate-dev-logger'
 import throttle from 'lodash/throttle'
 
 import EVENT_HANDLERS from '../constants/event-handlers'
@@ -140,7 +139,7 @@ class Content extends React.Component {
    */
 
   updateSelection = () => {
-    const { editor } = this.props
+    const { editor, readOnly } = this.props
     const { value } = editor
     const { selection } = value
     const { isBackward } = selection
@@ -159,7 +158,7 @@ class Content extends React.Component {
     // If the selection has been blurred, but is still inside the editor in the
     // DOM, blur it manually.
     if (selection.isBlurred) {
-      if (!this.isInEditor(anchorNode)) return
+      if (readOnly || !this.isInEditor(anchorNode)) return
       removeAllRanges(native)
       this.element.blur()
       debug('updateSelection', { selection, native })
@@ -174,10 +173,8 @@ class Content extends React.Component {
     const range = findDOMRange(selection, window)
 
     if (!range) {
-      logger.error(
-        'Unable to find a native DOM range from the current selection.',
-        { selection }
-      )
+      // Unable to find a native DOM range for current selection
+      reportRangeError(value)
       return
     }
 
@@ -584,6 +581,33 @@ class Content extends React.Component {
       />
     )
   }
+}
+
+/*
+ * Throw an async error when a native range for
+ * the current slate selection could not be found in the DOM.
+ */
+
+function reportRangeError(value) {
+  const { selection } = value
+
+  setTimeout(() => {
+    function getAncestorsTypes(key) {
+      const ancestors = value.document.getAncestors(key)
+      if (!ancestors) return []
+      return ancestors.toArray().map(node => node.type)
+    }
+
+    // For logging purpose
+    const error = new Error(
+      'Unable to find a native DOM range for current selection.'
+    )
+    error.selection = selection.toJS()
+    error.anchorAncestors = getAncestorsTypes(selection.anchorKey)
+    error.focusAncestors = getAncestorsTypes(selection.focusKey)
+
+    throw error
+  }, 0)
 }
 
 /**

@@ -10,7 +10,7 @@ import Hotkeys from '@gitbook/slate-hotkeys'
 import EVENT_HANDLERS from '../constants/event-handlers'
 import Content from '../components/content'
 import cloneFragment from '../utils/clone-fragment'
-import findDOMNode from '../utils/find-dom-node'
+import findSlateDOMNode from '../utils/find-dom-node'
 import findNode from '../utils/find-node'
 import findPoint from '../utils/find-point'
 import findRange from '../utils/find-range'
@@ -289,7 +289,7 @@ function AfterPlugin() {
     // Until this is fixed in React, we dispatch a mouseup event on that
     // DOM node, since that will make it go back to normal.
     const focusNode = document.getNode(target.focusKey)
-    const el = findDOMNode(focusNode, window)
+    const el = findSlateDOMNode(focusNode, window)
     if (!el) return
 
     el.dispatchEvent(

@@ -3,7 +3,7 @@ import Plain from '@gitbook/slate-plain-serializer'
 import { Value } from '@gitbook/slate'
 import TRANSFER_TYPES from '../constants/transfer-types'
 import getWindow from 'get-window'
-import findDOMNode from './find-dom-node'
+import findSlateDOMNode from './find-dom-node'
 import removeAllRanges from './remove-all-ranges'
 import { IS_IE } from '@gitbook/slate-dev-environment'
 import { ZERO_WIDTH_SELECTOR, ZERO_WIDTH_ATTRIBUTE } from './find-point'
@@ -47,9 +47,12 @@ function cloneFragment(event, value, fragment = value.fragment) {
   // content, since the spacer is before void's content in the DOM.
   if (endVoid) {
     const r = range.cloneRange()
-    const node = findDOMNode(endVoid, window)
-    r.setEndAfter(node)
-    contents = r.cloneContents()
+    const node = findSlateDOMNode(endVoid, window)
+
+    if (node) {
+      r.setEndAfter(node)
+      contents = r.cloneContents()
+    }
   }
 
   // COMPAT: If the start node is a void node, we need to attach the encoded

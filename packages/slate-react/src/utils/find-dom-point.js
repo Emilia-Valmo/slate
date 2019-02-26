@@ -1,4 +1,4 @@
-import findDOMNode from './find-dom-node'
+import findSlateDOMNode from './find-dom-node'
 
 /**
  * Find a native DOM selection point from a Slate `key` and `offset`.
@@ -10,7 +10,12 @@ import findDOMNode from './find-dom-node'
  */
 
 function findDOMPoint(key, offset, win = window) {
-  const el = findDOMNode(key, win)
+  const el = findSlateDOMNode(key, win)
+
+  if (!el) {
+    return null
+  }
+
   let start = 0
   let n
 

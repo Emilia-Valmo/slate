@@ -7,6 +7,8 @@ All packages follow the same versions. Before 1.0.0, each package was progressin
 # 2.0.0
 
 * [BREAKING] Added "normalize" options to Table utils. This has changed the signature of some of them.
+* Fixed invalid selection when pasting fragments that were normalized away
+* Avoid crashes when a native selection cannot be made to match the current selection. Added some error reporting in when it happens.
 
 # 1.0.0
 

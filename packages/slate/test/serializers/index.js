@@ -1,6 +1,7 @@
 import assert from 'assert'
 import fs from 'fs'
-import { Value } from '../..'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { Value } from '@gitbook/slate'
 import { basename, extname, resolve } from 'path'
 
 /**

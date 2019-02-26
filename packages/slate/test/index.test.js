@@ -1,8 +1,8 @@
 /**
  * Dependencies.
  */
-
-import { resetKeyGenerator } from '..'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { resetKeyGenerator } from '@gitbook/slate'
 
 /**
  * Tests.

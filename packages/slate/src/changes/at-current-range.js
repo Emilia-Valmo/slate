@@ -178,6 +178,9 @@ Changes.insertFragment = (change, fragment) => {
       selection.collapseToStartOf(newText).move(lastText.text.length)
     )
   } else {
+    // No new text could be found because:
+    // A. We prolonged the current text sometimes => advance to by the inserted text length
+    // B. Normalization removed the inserted text => try to advance, and select's normalization will avoid off-limit offsets.
     change.select(selection.collapseToStart().move(lastText.text.length))
   }
 }

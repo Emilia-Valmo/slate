@@ -767,6 +767,13 @@ class Range extends Record(DEFAULTS) {
       }
     }
 
+    const anchorText = node.getDescendant(anchorKey)
+    const focusText = node.getDescendant(focusKey)
+
+    // Normalize offsets to be inside their respective text
+    anchorOffset = Math.min(Math.max(0, anchorOffset), anchorText.text.length)
+    focusOffset = Math.min(Math.max(0, focusOffset), focusText.text.length)
+
     // Merge in any updated properties.
     return range.merge({
       anchorKey: anchorNode.key,

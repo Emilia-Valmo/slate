@@ -1,7 +1,7 @@
 {
   "name": "@gitbook/slate",
   "description": "A completely customizable framework for building rich text editors.",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "license": "MIT",
   "repository": "git://github.com/GitbookIO/slate.git",
   "main": "lib/slate.js",
@@ -13,8 +13,8 @@
     "lib/"
   ],
   "dependencies": {
-    "@gitbook/slate-dev-logger": "^1.0.0",
-    "@gitbook/slate-schema-violations": "^1.0.0",
+    "@gitbook/slate-dev-logger": "^2.0.0",
+    "@gitbook/slate-schema-violations": "^2.0.0",
     "debug": "^3.1.0",
     "direction": "^0.1.5",
     "esrever": "^0.2.0",
@@ -29,7 +29,7 @@
     "react": ">=0.14.0"
   },
   "devDependencies": {
-    "@gitbook/slate-hyperscript": "^1.0.0"
+    "@gitbook/slate-hyperscript": "^2.0.0"
   },
   "scripts": {
     "clean": "rm -rf ./dist ./lib ./node_modules"

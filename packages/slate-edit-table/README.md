@@ -142,7 +142,10 @@ Returns a table. The content can be filled with the given `getCellContent` gener
 ```js
 createRow(
     columns: number,
-    getCellContent?: (column: number) => Node[]
+    options: {
+      normalize: boolean,
+      getCellContent?: (column: number) => Node[]
+    }
 ): Block
 ```
 
@@ -151,7 +154,7 @@ Returns a row. The content can be filled with the given `getCellContent` generat
 ### `utils.createCell`
 
 ```js
-createCell(opts: Options, nodes?: Node[]): Block
+createCell(nodes?: Node[]): Block
 ```
 
 Returns a cell. The content defaults to an empty `typeContent` block.
@@ -160,7 +163,17 @@ Returns a cell. The content defaults to an empty `typeContent` block.
 
 ### `changes.insertTable`
 
-`insertTable(change: Change, columns: ?number, rows: ?number) => Change`
+```js
+insertTable(
+  (change: Change),
+  (options: {
+    columns?: number,
+    rows?: number,
+    getCellContent?: (column: number, row: number) => Node[],
+    normalize: boolean,
+  })
+)
+```
 
 Insert a new empty table.
 
@@ -168,10 +181,12 @@ Insert a new empty table.
 
 ```js
 insertRow(
-    opts: Options,
     change: Change,
-    at?: number, // row index
-    getRow?: (columns: number) => Block // Generate the row yourself
+    options: {
+        normalize?: boolean,
+        at?: number, // row index
+        getRow?: (columns: number) => Block // Generate the row yourself
+    }
 ): Change
 ```
 
@@ -181,10 +196,12 @@ Insert a new row after the current one or at the specific index (`at`).
 
 ```js
 insertColumn(
-    opts: Options,
     change: Change,
-    at?: number, // Column index
-    getCell?: (column: number, row: number) => Block // Generate cells
+    options: {
+        normalize?: boolean,
+        at?: number, // Column index
+        getCell?: (column: number, row: number) => Block // Generate cells
+    }
 ): Change
 ```
 
@@ -192,37 +209,84 @@ Insert a new column after the current one or at the specific index (`at`).
 
 ### `changes.removeTable`
 
-`removeTable(change: Change) => Change`
+```js
+removeTable(
+  change: Change,
+  options: {
+    normalize?: boolean,
+  }
+): Change
+```
 
 Remove current table.
 
 ### `changes.removeTableByKey`
 
-`removeTableByKey(change: Change, key: string) => Change`
+```js
+removeTableByKey(
+  change: Change,
+  key: string,
+  options: {
+    normalize?: boolean,
+  }
+): Change
+```
 
 Remove the table containing the given key.
 
 ### `changes.removeRow`
 
-`removeRow(change: Change, at: ?number) => Change`
+```js
+removeRow(
+  change: Change,
+  options: {
+    at?: number,
+    normalize?: boolean,
+  }
+): Change
+```
 
 Remove current row or the one at a specific index (`at`).
 
 ### `changes.removeRowByKey`
 
-`removeRowByKey(change: Change, key: string) => Change`
+```js
+removeRowByKey(
+  change: Change,
+  key: string,
+  options: {
+    normalize?: boolean,
+  }
+): Change
+```
 
 Remove the row containing the given key.
 
 ### `changes.removeColumn`
 
-`removeColumn(change: Change, at: ?number) => Change`
+```js
+removeColumn(
+  change: Change,
+  options: {
+    at?: number,
+    normalize?: boolean,
+  }
+): Change
+```
 
 Remove current column or the one at a specific index (`at`).
 
 ### `changes.removeColumnByKey`
 
-`removeColumnByKey(change: Change, key: string) => Change`
+```js
+removeColumnByKey(
+  change: Change,
+  key: string,
+  options: {
+    normalize?: boolean,
+  }
+): Change
+```
 
 Remove the column containing the given key.
 

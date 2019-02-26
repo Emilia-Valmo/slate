@@ -8,7 +8,14 @@ import type Options from '../options'
  * Delete the whole table at the given node key
  */
 
-function removeTableByKey(opts: Options, change: Change, key: string): Change {
+function removeTableByKey(
+  opts: Options,
+  change: Change,
+  key: string,
+  options: {
+    normalize?: boolean,
+  } = {}
+): Change {
   const { value } = change
 
   const pos = TablePosition.create(opts, value.document, key)
@@ -35,11 +42,17 @@ function removeTableByKey(opts: Options, change: Change, key: string): Change {
 
       const tableParent = document.getParent(table.key)
       const insertionIndex = tableParent.nodes.indexOf(table) + 1
-      change.insertNodeByKey(tableParent.key, insertionIndex, nextFocusBlock)
+
+      change.insertNodeByKey(
+        tableParent.key,
+        insertionIndex,
+        nextFocusBlock,
+        options
+      )
     }
   }
 
-  change.removeNodeByKey(table.key)
+  change.removeNodeByKey(table.key, options)
 
   if (!nextFocusBlock) {
     return change

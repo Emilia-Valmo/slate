@@ -7,7 +7,7 @@ import insertRow from './insertRow'
 import insertColumn from './insertColumn'
 
 /**
- * Used when pasting a fragment of table into another one
+ * Used when pasting a fragment of table **into another one**
  */
 
 function insertTableFragmentAtRange(
@@ -16,8 +16,11 @@ function insertTableFragmentAtRange(
   range: Range,
   // This fragment should contain only one table,
   // with a valid number of cells
-  fragment: Document
+  fragment: Document,
+  options: { normalize?: false } = {}
 ): Change {
+  const normalize = change.getFlag('normalize', options)
+
   const insertedTable = fragment.nodes.first()
 
   if (
@@ -34,7 +37,7 @@ function insertTableFragmentAtRange(
   const targetPosition = TablePosition.create(
     opts,
     value.document,
-    value.selection.startKey
+    range.startKey
   )
 
   const fragmentRows = insertedTable.nodes
@@ -52,7 +55,10 @@ function insertTableFragmentAtRange(
     Array(missingWidth)
       .fill()
       .forEach(() => {
-        insertColumn(opts, change, targetPosition.getWidth())
+        insertColumn(opts, change, {
+          at: targetPosition.getWidth(),
+          normalize: false,
+        })
       })
   }
 
@@ -61,7 +67,10 @@ function insertTableFragmentAtRange(
     Array(missingHeight)
       .fill()
       .forEach(() => {
-        insertRow(opts, change, targetPosition.getHeight())
+        insertRow(opts, change, {
+          at: targetPosition.getHeight(),
+          normalize: false,
+        })
       })
   }
 
@@ -83,7 +92,13 @@ function insertTableFragmentAtRange(
   })
 
   const lastPastedCell = fragmentRows.last().nodes.last()
-  return change.collapseToEndOf(lastPastedCell)
+  change.collapseToEndOf(lastPastedCell)
+
+  if (normalize) {
+    change.normalizeNodeByKey(existingTable.key)
+  }
+
+  return change
 }
 
 export default insertTableFragmentAtRange

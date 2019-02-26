@@ -11,8 +11,11 @@ import type Options from '../options'
 function insertRow(
   opts: Options,
   change: Change,
-  at?: number, // row index
-  getRow?: (columns: number) => Block // Generate the row yourself
+  options: {
+    at?: number, // row index
+    getRow?: (columns: number) => Block, // Generate the row yourself
+    normalize?: boolean,
+  } = {}
 ) {
   const { value } = change
   const { startKey } = value
@@ -20,16 +23,17 @@ function insertRow(
   const pos = TablePosition.create(opts, value.document, startKey)
   const { table } = pos
 
+  const {
+    at = pos.getRowIndex() + 1,
+    getRow = columns => createRow(opts, columns),
+  } = options
+
   // Create a new row with the right count of cells
   const columns = table.nodes.get(0).nodes.size
-  const newRow = getRow ? getRow(columns) : createRow(opts, columns)
-
-  if (typeof at === 'undefined') {
-    at = pos.getRowIndex() + 1
-  }
+  const newRow = getRow(columns)
 
   return change
-    .insertNodeByKey(table.key, at, newRow)
+    .insertNodeByKey(table.key, at, newRow, options)
     .collapseToEndOf(newRow.nodes.get(pos.getColumnIndex()))
 }
 

@@ -7,7 +7,13 @@ import type Options from '../options'
  * Clear the content of the given cell
  */
 
-function clearCell(opts: Options, change: Change, cell: Block): Change {
+function clearCell(
+  opts: Options,
+  change: Change,
+  cell: Block,
+  options: { normalize: boolean } = {}
+): Change {
+  const normalize = change.getFlag('normalize', options)
   const newBlock = Block.create({ type: opts.typeContent })
   const { nodes } = cell
 
@@ -16,10 +22,12 @@ function clearCell(opts: Options, change: Change, cell: Block): Change {
 
   // Remove all previous nodes
   nodes.forEach(node => {
-    change.removeNodeByKey(node.key)
+    change.removeNodeByKey(node.key, { normalize: false })
   })
 
-  change.normalizeNodeByKey(cell.key)
+  if (normalize) {
+    change.normalizeNodeByKey(cell.key)
+  }
 
   return change
 }

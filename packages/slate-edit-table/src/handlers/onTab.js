@@ -36,7 +36,7 @@ function onTab(
   const pos = TablePosition.create(opts, value.document, startKey)
 
   if (pos.isFirstCell() && direction === -1) {
-    insertRow(opts, change, 0)
+    insertRow(opts, change, { at: 0 })
   } else if (pos.isLastCell() && direction === 1) {
     insertRow(opts, change)
   }

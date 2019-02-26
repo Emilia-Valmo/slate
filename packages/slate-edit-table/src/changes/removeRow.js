@@ -9,11 +9,19 @@ import removeRowByKey from './removeRowByKey'
  * Remove current row in a table. Clear it if last remaining row
  */
 
-function removeRow(opts: Options, change: Change, at: number): Change {
+function removeRow(
+  opts: Options,
+  change: Change,
+  options: {
+    at?: number,
+    normalize?: boolean,
+  } = {}
+): Change {
   const { value } = change
   const { startKey } = value
 
   const pos = TablePosition.create(opts, value.document, startKey)
+  const { at } = options
 
   let rowKey
 
@@ -23,7 +31,7 @@ function removeRow(opts: Options, change: Change, at: number): Change {
     rowKey = pos.table.nodes.get(at).key
   }
 
-  return removeRowByKey(opts, change, rowKey)
+  return removeRowByKey(opts, change, rowKey, options)
 }
 
 export default removeRow

@@ -11,10 +11,14 @@ import type Options from '../options'
 function insertTable(
   opts: Options,
   change: Change,
-  columns?: number = 2,
-  rows?: number = 2,
-  getCellContent?: (column: number, row: number) => Node[]
+  options: {
+    columns?: number,
+    rows?: number,
+    getCellContent?: (column: number, row: number) => Node[],
+    normalize: boolean,
+  } = {}
 ): Change {
+  const { columns = 2, rows = 2, getCellContent } = options
   const { value } = change
 
   if (!value.selection.startKey) return change
@@ -22,7 +26,7 @@ function insertTable(
   // Create the table node
   const table = createTable(opts, columns, rows, getCellContent)
 
-  return change.insertBlock(table)
+  return change.insertBlock(table, options)
 }
 
 export default insertTable

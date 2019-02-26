@@ -3,5 +3,5 @@ export default function(plugin, change) {
   const cursorBlock = value.document.getDescendant('anchor')
   change.moveToRangeOf(cursorBlock)
 
-  return plugin.changes.insertColumn(change, 1)
+  return plugin.changes.insertColumn(change, { at: 1 })
 }

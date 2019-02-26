@@ -13,33 +13,41 @@ import type Options from '../options'
 function insertColumn(
   opts: Options,
   change: Change,
-  at?: number, // Column index
-  getCell?: (column: number, row: number) => Block
+  options: {
+    at?: number, // Column index
+    getCell?: (column: number, row: number) => Block,
+    normalize?: boolean,
+  } = {}
 ): Change {
+  const normalize = change.getFlag('normalize', options)
   const { value } = change
   const { startKey } = value
 
   const pos = TablePosition.create(opts, value.document, startKey)
   const { table } = pos
 
-  const columnIndex = typeof at === 'undefined' ? pos.getColumnIndex() + 1 : at
+  const {
+    at = pos.getColumnIndex() + 1,
+    getCell = () => createCell(opts),
+  } = options
 
   // Insert the new cell
   table.nodes.forEach((row, rowIndex) => {
-    const newCell = getCell ? getCell(columnIndex, rowIndex) : createCell(opts)
+    const newCell = getCell(at, rowIndex)
 
-    change.insertNodeByKey(row.key, columnIndex, newCell, {
+    change.insertNodeByKey(row.key, at, newCell, {
       normalize: false,
     })
   })
 
   // Update the selection (not doing can break the undo)
-  return moveSelection(
-    opts,
-    change,
-    pos.getColumnIndex() + 1,
-    pos.getRowIndex()
-  )
+  moveSelection(opts, change, pos.getColumnIndex() + 1, pos.getRowIndex())
+
+  if (normalize) {
+    change.normalizeNodeByKey(table.key)
+  }
+
+  return change
 }
 
 export default insertColumn

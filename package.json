@@ -104,11 +104,12 @@
     "lint": "yarn run eslint && yarn run prettier --list-different",
     "lint:fix": "yarn run eslint --fix && yarn run prettier --write",
     "open": "open http://localhost:8080",
-    "release": "yarn build:production && yarn test && yarn lint && lerna publish && yarn gh-pages",
+    "release": "yarn build:production && yarn test:only && yarn lint && lerna publish && yarn gh-pages",
     "server": "webpack-dev-server --config ./support/webpack/config.js",
     "start": "npm-run-all --parallel --print-label watch server",
     "pretest": "yarn run build",
-    "test": "cross-env BABEL_ENV=test jest",
+    "test": "yarn run test:only",
+    "test:only": "cross-env BABEL_ENV=test jest",
     "watch": "rollup --config ./support/rollup/config.js --watch"
   }
 }

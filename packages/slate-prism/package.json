@@ -1,7 +1,7 @@
 {
   "name": "@gitbook/slate-prism",
   "description": "A Slate plugin to highlight code blocks using PrismJS.",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "license": "Apache-2.0",
   "repository": "git://github.com/GitbookIO/slate.git",
   "main": "lib/slate-prism.js",
@@ -17,10 +17,10 @@
   },
   "devDependencies": {
     "@gitbook/slate": "^2.0.0",
-    "@gitbook/slate-edit-code": "^2.0.0",
+    "@gitbook/slate-edit-code": "^2.0.1",
     "@gitbook/slate-hyperprint": "^2.2.6",
     "@gitbook/slate-hyperscript": "^2.0.0",
-    "@gitbook/slate-react": "^2.0.0",
+    "@gitbook/slate-react": "^2.0.1",
     "prismjs": "^1.15.0"
   },
   "scripts": {

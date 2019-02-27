@@ -36,7 +36,9 @@ function cloneFragment(event, value, fragment = value.fragment) {
   let attach = contents.childNodes[0]
 
   // Make sure attach is a non-empty node, since empty nodes will not get copied
-  contents.childNodes.forEach(node => {
+  // COMPAT: ChildNodes is a NodeList and does not have .forEach on Edge,
+  // so convert to an Array.
+  Array.from(contents.childNodes).forEach(node => {
     if (node.textContent && node.textContent.trim() !== '') {
       attach = node
     }

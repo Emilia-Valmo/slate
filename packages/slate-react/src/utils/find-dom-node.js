@@ -17,7 +17,7 @@ function findSlateDOMNode(key, win = window) {
   const el = win.document.querySelector(`[data-key="${key}"]`)
 
   if (!el) {
-    logger.warning(
+    logger.warn(
       `Unable to find a DOM node for "${key}". This is often because of forgetting to add \`props.attributes\` to a custom component.`
     )
 

@@ -1,8 +1,10 @@
 /* @flow */
 import * as React from 'react'
+import type { List } from 'immutable'
+import type { Block, Inline, Range } from '@gitbook/slate'
 import logger from '@gitbook/slate-dev-logger'
 
-import Void from './void'
+import VoidWrapper from './VoidWrapper'
 import Text from './text'
 import getChildrenDecorations from '../utils/get-children-decorations'
 
@@ -98,12 +100,12 @@ const NodeRenderer = React.memo(function NodeRenderer(props: NodeRendererProps):
 
         return (
             <Component
+                key={child.key}
                 block={node.object == 'block' ? node : block}
                 decorations={childrenDecorations[i]}
                 editor={editor}
                 isSelected={isChildSelected}
                 isFocused={isFocused && isChildSelected}
-                key={child.key}
                 node={child}
                 ancestors={ancestors.concat([node])}
                 readOnly={readOnly}
@@ -138,7 +140,7 @@ const NodeRenderer = React.memo(function NodeRenderer(props: NodeRendererProps):
         children,
     })
 
-    return node.isVoid ? <Void {...props}>{element}</Void> : element
+    return node.isVoid ? <VoidWrapper {...props}>{element}</VoidWrapper> : element
 }, shouldComponentUpdate)
 
 

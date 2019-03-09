@@ -576,7 +576,7 @@ class Content extends React.Component {
         isFocused={isFocused && isSelected}
         key={child.key}
         node={child}
-        parents={[document]}
+        ancestors={[document]}
         readOnly={readOnly}
       />
     )

@@ -33,7 +33,7 @@ class Leaf extends React.Component {
     marks: SlateTypes.marks.isRequired,
     node: SlateTypes.node.isRequired,
     offset: Types.number.isRequired,
-    parent: SlateTypes.node.isRequired,
+    ancestors: Types.list.isRequired,
     text: Types.string.isRequired,
   }
 
@@ -60,8 +60,7 @@ class Leaf extends React.Component {
     if (
       props.index != this.props.index ||
       props.marks != this.props.marks ||
-      props.text != this.props.text ||
-      props.parent != this.props.parent
+      props.text != this.props.text
     ) {
       return true
     }
@@ -125,7 +124,8 @@ class Leaf extends React.Component {
    */
 
   renderText() {
-    const { block, node, parent, text, index, leaves } = this.props
+    const { block, node, ancestors, text, index, leaves } = this.props
+    const parent = ancestors[ancestors.length - 1]
 
     // COMPAT: Render text inside void nodes with a zero-width space.
     // So the node can contain selection but the text is not visible.

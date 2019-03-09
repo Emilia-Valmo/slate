@@ -32,7 +32,7 @@ class Text extends React.Component {
     decorations: ImmutableTypes.list.isRequired,
     editor: Types.object.isRequired,
     node: SlateTypes.node.isRequired,
-    parent: SlateTypes.node.isRequired,
+    ancestors: Types.list.isRequired,
     style: Types.object,
   }
 
@@ -80,9 +80,12 @@ class Text extends React.Component {
 
     // If the node parent is a block node, and it was the last child of the
     // block, re-render to cleanup extra `\n`.
-    if (n.parent.object == 'block') {
-      const pLast = p.parent.nodes.last()
-      const nLast = n.parent.nodes.last()
+    const nParent = n.ancestors[n.ancestors.length - 1];
+    if (nParent.object == 'block') {
+      const pParent = p.ancestors[p.ancestors.length - 1];
+
+      const pLast = pParent.nodes.last()
+      const nLast = nParent.nodes.last()
       if (p.node == pLast && n.node != nLast) return true
     }
 
@@ -145,7 +148,7 @@ class Text extends React.Component {
    */
 
   renderLeaf = (leaves, leaf, index, offset) => {
-    const { block, node, parent, editor } = this.props
+    const { block, node, ancestors, editor } = this.props
     const { text, marks } = leaf
 
     return (
@@ -157,7 +160,7 @@ class Text extends React.Component {
         marks={marks}
         node={node}
         offset={offset}
-        parent={parent}
+        ancestors={ancestors}
         leaves={leaves}
         text={text}
       />

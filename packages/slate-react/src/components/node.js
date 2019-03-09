@@ -137,12 +137,10 @@ class Node extends React.Component {
     const decs = decorations.concat(node.getDecorations(stack))
     const childrenDecorations = getChildrenDecorations(node, decs)
 
-    let children = []
-
-    node.nodes.forEach((child, i) => {
+    const children = node.nodes.map((child, i) => {
       const isChildSelected = !!indexes && indexes.start <= i && i < indexes.end
 
-      children.push(
+      return (
         this.renderNode(child, isChildSelected, childrenDecorations[i])
       )
     })
@@ -166,16 +164,6 @@ class Node extends React.Component {
       node,
       parent,
       readOnly,
-    }
-
-    let placeholder = stack.find('renderPlaceholder', props)
-
-    if (placeholder) {
-      placeholder = React.cloneElement(placeholder, {
-        key: `${node.key}-placeholder`,
-      })
-
-      children = [placeholder, ...children]
     }
 
     const element = stack.find('renderNode', {

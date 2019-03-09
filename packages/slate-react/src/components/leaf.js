@@ -18,7 +18,6 @@ const debug = Debug('slate:leaves')
  *
  * @type {Component}
  */
-
 class Leaf extends React.Component {
   /**
    * Property types.

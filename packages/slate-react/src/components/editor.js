@@ -1,5 +1,4 @@
 import Debug from 'debug'
-import Portal from 'react-portal'
 import React from 'react'
 import SlateTypes from '@gitbook/slate-prop-types'
 import Types from 'prop-types'
@@ -11,6 +10,7 @@ import PLUGINS_PROPS from '../constants/plugin-props'
 import AfterPlugin from '../plugins/after'
 import BeforePlugin from '../plugins/before'
 import noop from '../utils/noop'
+import Content from './Content'
 
 /**
  * Debug.
@@ -279,19 +279,29 @@ class Editor extends React.Component {
    */
 
   render() {
+    const { props } = this;
     debug('render', this)
 
-    const children = this.stack
-      .map('renderPortal', this.value, this)
-      .map((child, i) => (
-        <Portal key={i} isOpened>
-          {child}
-        </Portal>
-      ))
+    const handlers = EVENT_HANDLERS.reduce((obj, handler) => {
+      obj[handler] = editor[handler]
+      return obj
+    }, {})
 
-    const props = { ...this.props, children }
-    const tree = this.stack.render('renderEditor', props, this)
-    return tree
+    return (
+      <Content
+        {...handlers}
+        autoCorrect={props.autoCorrect}
+        className={props.className}
+        children={props.children}
+        editor={editor}
+        readOnly={props.readOnly}
+        role={props.role}
+        spellCheck={props.spellCheck}
+        style={props.style}
+        tabIndex={props.tabIndex}
+        tagName={props.tagName}
+      />
+    )
   }
 
   /**

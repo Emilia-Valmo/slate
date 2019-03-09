@@ -605,37 +605,6 @@ function AfterPlugin() {
   }
 
   /**
-   * Render editor.
-   *
-   * @param {Object} props
-   * @param {Editor} editor
-   * @return {Object}
-   */
-
-  function renderEditor(props, editor) {
-    const handlers = EVENT_HANDLERS.reduce((obj, handler) => {
-      obj[handler] = editor[handler]
-      return obj
-    }, {})
-
-    return (
-      <Content
-        {...handlers}
-        autoCorrect={props.autoCorrect}
-        className={props.className}
-        children={props.children}
-        editor={editor}
-        readOnly={props.readOnly}
-        role={props.role}
-        spellCheck={props.spellCheck}
-        style={props.style}
-        tabIndex={props.tabIndex}
-        tagName={props.tagName}
-      />
-    )
-  }
-
-  /**
    * Render node.
    *
    * @param {Object} props
@@ -651,38 +620,6 @@ function AfterPlugin() {
       <Tag {...attributes} style={style}>
         {children}
       </Tag>
-    )
-  }
-
-  /**
-   * Render placeholder.
-   *
-   * @param {Object} props
-   * @return {Element}
-   */
-
-  function renderPlaceholder(props) {
-    const { editor, node } = props
-    if (!editor.props.placeholder) return
-    if (editor.state.isComposing) return
-    if (node.object != 'block') return
-    if (!Text.isTextList(node.nodes)) return
-    if (node.text != '') return
-    if (editor.value.document.getBlocks().size > 1) return
-
-    const style = {
-      pointerEvents: 'none',
-      display: 'inline-block',
-      width: '0',
-      maxWidth: '100%',
-      whiteSpace: 'nowrap',
-      opacity: '0.333',
-    }
-
-    return (
-      <span contentEditable={false} style={style}>
-        {editor.props.placeholder}
-      </span>
     )
   }
 
@@ -706,9 +643,7 @@ function AfterPlugin() {
     onKeyDown,
     onPaste,
     onSelect,
-    renderEditor,
     renderNode,
-    renderPlaceholder,
   }
 }
 

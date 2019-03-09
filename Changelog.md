@@ -8,6 +8,7 @@ All packages follow the same versions. Before 1.0.0, each package was progressin
 
 * [BREAKING] Remove `renderPortal`, `renderPlaceholder` and `renderEditor` from plugins
 * [BREAKING] Support only `react>=16.8`
+* [BREAKING] Package `@gitbook/slate-prop-types` is no longer published
 * Deprecate prop `parent` passed when rendering nodes, use the new `ancestors: Node[]` instead
 * Debug logs are no longer emitted during rendering (you can use the React dev tools instead)
 * [TODO] Compatibility with react strict and concurrent modes 

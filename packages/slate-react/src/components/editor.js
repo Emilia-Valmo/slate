@@ -1,6 +1,5 @@
 import Debug from 'debug'
 import React from 'react'
-import SlateTypes from '@gitbook/slate-prop-types'
 import Types from 'prop-types'
 import logger from '@gitbook/slate-dev-logger'
 import { Schema, Stack } from '@gitbook/slate'
@@ -279,7 +278,7 @@ class Editor extends React.Component {
    */
 
   render() {
-    const { props } = this;
+    const { props } = this
 
     const handlers = EVENT_HANDLERS.reduce((obj, handler) => {
       obj[handler] = editor[handler]

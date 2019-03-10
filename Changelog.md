@@ -11,6 +11,7 @@ All packages follow the same versions. Before 1.0.0, each package was progressin
 * [BREAKING] Package `@gitbook/slate-prop-types` is no longer published
 * Deprecate prop `parent` passed when rendering nodes, use the new `ancestors: Node[]` instead
 * Debug logs are no longer emitted during rendering (you can use the React dev tools instead)
+* Start switch to Typescript
 * [TODO] Compatibility with react strict and concurrent modes 
 * [TODO]: Move `renderNode` and `renderMark` from plugins to `<Editor />` props
 

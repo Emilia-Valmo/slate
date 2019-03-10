@@ -1,16 +1,16 @@
-/* @flow */
 import * as React from 'react'
-import type { List } from 'immutable'
-import type { Block, Inline, Range } from '@gitbook/slate'
+import { List } from 'immutable'
+import { Block, Inline, Range } from '@gitbook/slate'
 
-import Text from './text'
+import TextRenderer from './TextRenderer'
+import Editor from './Editor'
 
 /*
  * Component to wrap the inner content of a void node.
  */
 function VoidWrapper(props: {
     block: Block,
-    editor: *,
+    editor: React.Ref<Editor>,
     decorations: List<Range>,
     readOnly: boolean,
     node: Block | Inline,
@@ -21,16 +21,15 @@ function VoidWrapper(props: {
     const child = node.getFirstText()
 
     const Tag = node.object == 'block' ? 'div' : 'span'
-    const style = {
-        height: '0',
-        color: 'transparent',
-        outline: 'none',
-        position: 'absolute',
-    }
 
     const spacer = (
-        <Tag data-slate-spacer style={style}>
-            <Text
+        <Tag data-slate-spacer style={{
+            height: 0,
+            color: 'transparent',
+            outline: 'none',
+            position: 'absolute',
+        }}>
+            <TextRenderer
                 block={node.object == 'block' ? node : block}
                 decorations={decorations}
                 editor={editor}

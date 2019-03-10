@@ -280,7 +280,6 @@ class Editor extends React.Component {
 
   render() {
     const { props } = this;
-    debug('render', this)
 
     const handlers = EVENT_HANDLERS.reduce((obj, handler) => {
       obj[handler] = editor[handler]

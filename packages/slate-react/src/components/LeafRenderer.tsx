@@ -1,19 +1,20 @@
-/* @flow */
 import * as React from 'react'
-import type { List, Set } from 'immutable'
-import type { Block, Inline, Text, Leaf, Mark } from '@gitbook/slate'
+import { List, Set } from 'immutable'
+import { Block, Inline, Text, Leaf, Mark } from '@gitbook/slate'
 
 import OffsetKey from '../utils/offset-key'
+import Editor from './Editor';
 
-type LeafRendererProps = {
-    editor: *,
+interface LeafRendererProps {
+    editor: React.Ref<Editor>,
     block: Block,
     node: Block | Inline,
     index: number,
     offset: number,
     text: Text,
     leaves: List<Leaf>,
-    marks: Set<Mark>
+    marks: Set<Mark>,
+    ancestors: Array<Block | Inline>
 };
 
 /*
@@ -33,7 +34,7 @@ const LeafRenderer = React.memo(function LeafRenderer(props: LeafRendererProps):
     })
 
     return <span data-offset-key={offsetKey}>{
-        marks.reduce((children, mark) => {
+        marks.reduce((children: React.Node, mark: Mark) => {
             const props = {
                 editor,
                 mark,
@@ -50,33 +51,33 @@ const LeafRenderer = React.memo(function LeafRenderer(props: LeafRendererProps):
     }</span>
 }, shouldComponentUpdate)
 
-function renderLeafText(props: LeafRendererProps) {
+function renderLeafText(props: LeafRendererProps): React.Node {
     const { block, node, ancestors, text, index, leaves } = props
     const parent = ancestors[ancestors.length - 1]
 
     // COMPAT: Render text inside void nodes with a zero-width space.
     // So the node can contain selection but the text is not visible.
     if (parent.isVoid) {
-      return <span data-slate-zero-width="z">{'\u200B'}</span>
+        return <span data-slate-zero-width="z">{'\u200B'}</span>
     }
 
     // COMPAT: If this is the last text node in an empty block, render a zero-
     // width space that will convert into a line break when copying and pasting
     // to support expected plain text.
     if (
-      text === '' &&
-      parent.object === 'block' &&
-      parent.text === '' &&
-      parent.nodes.size === 1
+        text === '' &&
+        parent.object === 'block' &&
+        parent.text === '' &&
+        parent.nodes.size === 1
     ) {
-      return <span data-slate-zero-width="n">{'\u200B'}</span>
+        return <span data-slate-zero-width="n">{'\u200B'}</span>
     }
 
     // COMPAT: If the text is empty, it's because it's on the edge of an inline
     // void node, so we render a zero-width space so that the selection can be
     // inserted next to it still.
     if (text === '') {
-      return <span data-slate-zero-width="z">{'\u200B'}</span>
+        return <span data-slate-zero-width="z">{'\u200B'}</span>
     }
 
     // COMPAT: Browsers will collapse trailing new lines at the end of blocks,
@@ -89,12 +90,12 @@ function renderLeafText(props: LeafRendererProps) {
 
     // Otherwise, just return the text.
     return text
-  }
+}
 
 /*
  * Should we render the leaf ?
  */
-function shouldComponentUpdate(props: LeafRendererProps, nextProps: LeafRendererProps) {
+function shouldComponentUpdate(props: LeafRendererProps, nextProps: LeafRendererProps): boolean {
     // If any of the regular properties have changed, re-render.
     if (
         nextProps.index != props.index ||

@@ -1,17 +1,17 @@
-/* @flow */
 import * as React from 'react'
-import type { List } from 'immutable'
-import type { Block, Inline, Range } from '@gitbook/slate'
+import  { List } from 'immutable'
+import { Block, Inline, Range } from '@gitbook/slate'
 import logger from '@gitbook/slate-dev-logger'
 
+import Editor from './Editor'
 import VoidWrapper from './VoidWrapper'
-import Text from './text'
+import TextRenderer from './TextRenderer'
 import getChildrenDecorations from '../utils/get-children-decorations'
 
-type NodeRendererProps = {
+interface NodeRendererProps {
     block: Block,
     decorations: List<Range>,
-    editor: *,
+    editor: React.Ref<Editor>,
     isFocused: boolean,
     isSelected: boolean,
     readOnly: boolean,
@@ -96,7 +96,7 @@ const NodeRenderer = React.memo(function NodeRenderer(props: NodeRendererProps):
     const children = node.nodes.map((child, i) => {
         const isChildSelected = !!indexes && indexes.start <= i && i < indexes.end
 
-        const Component = child.object == 'text' ? Text : Node
+        const Component = child.object == 'text' ? TextRenderer : NodeRenderer
 
         return (
             <Component
@@ -123,8 +123,7 @@ const NodeRenderer = React.memo(function NodeRenderer(props: NodeRendererProps):
         if (direction == 'rtl') attributes.dir = 'rtl'
     }
 
-    const props = {
-        key: node.key,
+    const element = stack.find('renderNode', {
         editor,
         isFocused,
         isSelected,
@@ -132,10 +131,6 @@ const NodeRenderer = React.memo(function NodeRenderer(props: NodeRendererProps):
         parent: ancestors[ancestors.length - 1], // deprecated
         ancestors,
         readOnly,
-    }
-
-    const element = stack.find('renderNode', {
-        ...props,
         attributes,
         children,
     })

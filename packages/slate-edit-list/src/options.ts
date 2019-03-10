@@ -1,5 +1,4 @@
-// @flow
-import type { Node } from '@gitbook/slate'
+import { Node } from '@gitbook/slate'
 import { Record } from 'immutable'
 
 export type OptionsFormat = {
@@ -21,9 +20,9 @@ class Options extends Record({
 }) {
   // The possibles types for list containers
   types: string[]
-  // The type of list items
+  // The of list items
   typeItem: string
-  // The type of default block in items
+  // The of default block in items
   typeDefault: string
   // You can control here the automatic merging of adjacent lists
   canMerge: (listA: Node, listB: Node) => boolean

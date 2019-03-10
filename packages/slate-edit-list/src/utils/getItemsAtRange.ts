@@ -1,8 +1,7 @@
-// @flow
-import { type Value, type Block, type Range } from '@gitbook/slate'
+import { Value, Block, Range } from '@gitbook/slate'
 import { List } from 'immutable'
 
-import type Options from '../options'
+import Options from '../options'
 import isList from './isList'
 import getCurrentItem from './getCurrentItem'
 

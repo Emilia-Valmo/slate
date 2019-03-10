@@ -1,7 +1,6 @@
-// @flow
-import { Block, type Change } from '@gitbook/slate'
+import { Block, Change } from '@gitbook/slate'
 
-import type Options from '../options'
+import Options from '../options'
 import { getItemDepth, getCurrentItem } from '../utils'
 
 /**

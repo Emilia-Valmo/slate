@@ -1,5 +1,4 @@
-// @flow
-import Options, { type OptionsFormat } from './options'
+import Options, { OptionsFormat } from './options'
 import { onEnter, onTab, onBackspace } from './handlers'
 import core from './core'
 

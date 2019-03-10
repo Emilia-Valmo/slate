@@ -1,15 +1,13 @@
-// @flow
-import { Data, type Value, type Change, type Block } from '@gitbook/slate'
+import { Data, Value, Change, Block } from '@gitbook/slate'
 import { List } from 'immutable'
 
-import type Options from '../options'
+import Options from '../options'
 import { isList } from '../utils'
 
-/**
+/*
  * Wrap the blocks in the current selection in a new list. Selected
  * lists are merged together.
  */
-
 function wrapInList(
   opts: Options,
   change: Change,

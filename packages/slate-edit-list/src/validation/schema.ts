@@ -1,7 +1,6 @@
-// @flow
-import { type Change, type Node } from '@gitbook/slate'
+import { Change, Node } from '@gitbook/slate'
 
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * Create a schema definition with rules to normalize lists

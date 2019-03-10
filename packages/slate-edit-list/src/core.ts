@@ -1,5 +1,4 @@
-// @flow
-import Options, { type OptionsFormat } from './options'
+import Options, { OptionsFormat } from './options'
 import { schema, validateNode } from './validation'
 import {
   wrapInList,

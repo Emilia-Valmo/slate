@@ -1,16 +1,15 @@
-// @flow
-import { type Change, type Node } from '@gitbook/slate'
+import { Change, Node } from '@gitbook/slate'
 
 import { isList } from '../utils'
-import type Options from '../options'
+import Options from '../options'
 
-type Normalizer = Change => any
+type Normalizer = (change: Change) => any
 
 /**
  * Create a schema definition with rules to normalize lists
  */
 
-function validateNode(opts: Options): Node => void | Normalizer {
+function validateNode(opts: Options): (node: Node) => void | Normalizer {
   return node => joinAdjacentLists(opts, node)
 }
 

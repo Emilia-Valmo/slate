@@ -1,7 +1,6 @@
-// @flow
-import { type Value } from '@gitbook/slate'
+import { Value } from '@gitbook/slate'
 
-import type Options from '../options'
+import Options from '../options'
 import getItemsAtRange from './getItemsAtRange'
 import getListForItem from './getListForItem'
 
@@ -17,7 +16,7 @@ function isSelectionInList(
   const items = getItemsAtRange(opts, value)
   return (
     !items.isEmpty() &&
-    // Check the type of the list if needed
+    // Check the of the list if needed
     (!type || getListForItem(opts, value, items.first()).get('type') === type)
   )
 }

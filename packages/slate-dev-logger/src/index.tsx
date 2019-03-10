@@ -1,21 +1,13 @@
-/* eslint-disable no-console */
+/* tslint-disable no-console */
 
-/**
+/*
  * Is in development?
- *
- * @type {Boolean}
  */
-
-const IS_DEV =
+const IS_DEV: boolean = Boolean(
   typeof process !== 'undefined' &&
   process.env &&
   process.env.NODE_ENV !== 'production'
-
-/**
- * Has console?
- *
- * @type {Boolean}
- */
+)
 
 const HAS_CONSOLE =
   typeof console != 'undefined' &&
@@ -23,15 +15,10 @@ const HAS_CONSOLE =
   typeof console.warn == 'function' &&
   typeof console.error == 'function'
 
-/**
+/*
  * Log a `message` at `level`.
- *
- * @param {String} level
- * @param {String} message
- * @param {Any} ...args
  */
-
-function log(level, message, ...args) {
+function log(level: 'warn' | | 'error' | 'log' | 'debug', message: string, ...args: any[]) {
   if (!IS_DEV) {
     return
   }
@@ -41,48 +28,32 @@ function log(level, message, ...args) {
   }
 }
 
-/**
+/*
  * Log an error `message`.
- *
- * @param {String} message
- * @param {Any} ...args
  */
 
-function error(message, ...args) {
+function error(message: string, ...args: any[]) {
   if (HAS_CONSOLE) {
     console.error(message, ...args)
   }
 }
 
-/**
+/*
  * Log a warning `message` in development only.
- *
- * @param {String} message
- * @param {Any} ...args
  */
 
-function warn(message, ...args) {
+function warn(message: string, ...args: any[]) {
   log('warn', `Warning: ${message}`, ...args)
 }
 
-/**
+/*
  * Log a deprecation warning `message`, with helpful `version` number in
  * development only.
- *
- * @param {String} version
- * @param {String} message
- * @param {Any} ...args
  */
 
-function deprecate(version, message, ...args) {
+function deprecate(version: string, message: string, ...args: any[]) {
   log('warn', `Deprecation (${version}): ${message}`, ...args)
 }
-
-/**
- * Export.
- *
- * @type {Function}
- */
 
 export default {
   deprecate,

@@ -1,7 +1,6 @@
-// @flow
-import { type Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate'
 
-import type Options from '../options'
+import Options from '../options'
 import { TablePosition } from '../utils'
 import { insertRow } from '../changes'
 
@@ -10,9 +9,9 @@ import { insertRow } from '../changes'
  */
 
 function onEnter(
-  event: *,
+  event: any,
   change: Change,
-  editor: *,
+  editor: any,
   opts: Options
 ): void | Change {
   event.preventDefault()

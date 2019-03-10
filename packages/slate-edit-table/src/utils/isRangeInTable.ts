@@ -1,9 +1,8 @@
-// @flow
 
-import type { Node, Range } from '@gitbook/slate'
+import{ Node, Range } from '@gitbook/slate'
 
 import TablePosition from './TablePosition'
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * True if the given range is inside one table

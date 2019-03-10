@@ -1,9 +1,8 @@
-// @flow
-import { type Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate'
 
 import { TablePosition } from '../utils'
 import clearCell from './clearCell'
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * Remove the row associated to a given key in a table.

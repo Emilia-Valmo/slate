@@ -1,7 +1,5 @@
-// @flow
-
 import { Record } from 'immutable'
-import type { Node } from '@gitbook/slate'
+import { Node } from '@gitbook/slate'
 
 export type OptionsFormat = {
   typeTable?: string,

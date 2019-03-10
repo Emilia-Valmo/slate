@@ -1,17 +1,16 @@
-// @flow
-import { Block, Text, type Change } from '@gitbook/slate'
+import { Block, Text, Change } from '@gitbook/slate'
 
 import { TablePosition } from '../utils'
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * Exit the current table, by inserting a default block after the table.
  */
 
 function onModEnter(
-  event: *,
+  event: any,
   change: Change,
-  editor: *,
+  editor: any,
   opts: Options
 ): void | Change {
   const { value } = change

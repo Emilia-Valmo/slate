@@ -1,4 +1,3 @@
-// @flow
 import {
   insertTable,
   insertTableFragmentAtRange,
@@ -29,7 +28,7 @@ import {
 } from './utils'
 import { schema, validateNode } from './validation'
 
-import Options, { type OptionsFormat } from './options'
+import Options, { OptionsFormat } from './options'
 
 /**
  * Returns the core of the plugin, limited to the validation and normalization

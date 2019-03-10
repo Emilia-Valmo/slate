@@ -1,7 +1,6 @@
-// @flow
-import { Block, Text, type Node } from '@gitbook/slate'
+import { Block, Text,Node } from '@gitbook/slate'
 
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * Create a new cell

@@ -1,7 +1,6 @@
-// @flow
-import { type Block } from '@gitbook/slate'
+import {Block } from '@gitbook/slate'
 
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * Run the given function against each cells of the table

@@ -1,9 +1,7 @@
-/* @flow */
+import { cloneFragment } from '@gitbook/slate-react'
+import { Change } from '@gitbook/slate'
 
-import { cloneFragment, type Editor } from '@gitbook/slate-react'
-import { type Change } from '@gitbook/slate'
-
-import type Options from '../options'
+import Options from '../options'
 import { getCopiedFragment } from '../utils'
 
 /**
@@ -12,10 +10,9 @@ import { getCopiedFragment } from '../utils'
 
 function onCopy(
   // The plugin options
-  opts?: Options,
-  event: *,
-  change: Change,
-  editor: Editor
+  opts: Options,
+  event: any,
+  change: Change
 ): Object {
   const copiedFragment = getCopiedFragment(opts, change.value)
 

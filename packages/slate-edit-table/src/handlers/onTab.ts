@@ -1,9 +1,8 @@
-// @flow
-import { type Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate'
 
 import { TablePosition } from '../utils'
 import { moveSelectionBy, insertRow } from '../changes'
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * Select all text of current block.
@@ -22,9 +21,9 @@ function selectAllText(change: Change): Change {
  */
 
 function onTab(
-  event: *,
+  event: any,
   change: Change,
-  editor: *,
+  editor: any,
   opts: Options
 ): void | Change {
   event.preventDefault()

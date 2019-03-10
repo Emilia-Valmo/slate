@@ -1,13 +1,12 @@
-// @flow
 
-import { Block, type Change } from '@gitbook/slate'
+import { Block,Change } from '@gitbook/slate'
 import {
   CHILD_OBJECT_INVALID,
   CHILD_TYPE_INVALID,
   PARENT_TYPE_INVALID,
 } from '@gitbook/slate-schema-violations'
 import { createCell } from '../utils'
-import type Options from '../options'
+import Options from '../options'
 
 /*
  * Returns a schema definition for the plugin
@@ -75,7 +74,7 @@ function rowOnlyInTable(opts: Options, change: Change, context: Object) {
 
 /*
  * A cell's children must be "block"s.
- * If they're not then we wrap them within a block with a type of opts.typeContent
+ * If they're not then we wrap them within a block with aof opts.typeContent
  */
 
 function onlyBlocksInCell(opts: Options, change: Change, context: Object) {

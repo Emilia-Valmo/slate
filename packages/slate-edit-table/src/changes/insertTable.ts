@@ -1,13 +1,11 @@
-// @flow
-import { type Change, type Node } from '@gitbook/slate'
+import { Change, Node } from '@gitbook/slate'
 
 import { createTable } from '../utils'
-import type Options from '../options'
+import Options from '../options'
 
-/**
+/*
  * Insert a new table
  */
-
 function insertTable(
   opts: Options,
   change: Change,

@@ -1,6 +1,5 @@
-// @flow
 
-import type Options from '../options'
+import Options from '../options'
 import { createCell } from '../utils'
 
 /*

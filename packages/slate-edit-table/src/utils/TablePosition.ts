@@ -1,8 +1,7 @@
-// @flow
 import { Record } from 'immutable'
-import { Block, type Node } from '@gitbook/slate'
+import { Block,Node } from '@gitbook/slate'
 
-import type Options from '../options'
+import Options from '../options'
 
 class TablePosition extends Record({
   tableBlock: null,

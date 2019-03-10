@@ -1,9 +1,9 @@
 /* @flow */
 
-import { type Value, type Document } from '@gitbook/slate'
+import {Value,Document } from '@gitbook/slate'
 import { List } from 'immutable'
 
-import type Options from '../options'
+import Options from '../options'
 import isSelectionInTable from './isSelectionInTable'
 import TablePosition from './TablePosition'
 import createCell from './createCell'

@@ -1,8 +1,7 @@
-// @flow
-import { type Block } from '@gitbook/slate'
-import { type List } from 'immutable'
+import {Block } from '@gitbook/slate'
+import {List } from 'immutable'
 
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * Returns the list of cells at the given column index

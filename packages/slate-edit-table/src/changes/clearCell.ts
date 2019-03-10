@@ -1,12 +1,10 @@
-// @flow
-import { Block, type Change } from '@gitbook/slate'
+import { Block, Change } from '@gitbook/slate'
 
-import type Options from '../options'
+import Options from '../options'
 
-/**
+/*
  * Clear the content of the given cell
  */
-
 function clearCell(
   opts: Options,
   change: Change,

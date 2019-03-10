@@ -1,7 +1,6 @@
-/* @flow */
 
-import Options, { type OptionsFormat } from './options'
-import type _TablePosition from './utils/TablePosition'
+import Options, { OptionsFormat } from './options'
+import TablePosition from './utils/TablePosition'
 import core from './core'
 import { onKeyDown, onCopy, onPaste } from './handlers'
 
@@ -25,6 +24,5 @@ function EditTable(
   }
 }
 
-export type TablePosition = _TablePosition
-
 export default EditTable
+export { TablePosition }

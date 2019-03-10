@@ -1,9 +1,8 @@
-// @flow
 
-import type { Value } from '@gitbook/slate'
+import{ Value } from '@gitbook/slate'
 
 import TablePosition from './TablePosition'
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * Are the selection start and end outside a table.

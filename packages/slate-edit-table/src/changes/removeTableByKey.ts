@@ -1,8 +1,7 @@
-// @flow
-import { Block, Text, type Change } from '@gitbook/slate'
+import { Block, Text, Change } from '@gitbook/slate'
 
 import { TablePosition } from '../utils'
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * Delete the whole table at the given node key

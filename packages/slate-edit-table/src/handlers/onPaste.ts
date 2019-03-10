@@ -1,9 +1,7 @@
-/* @flow */
+import { getEventTransfer } from '@gitbook/slate-react'
+import { Range, Change } from '@gitbook/slate'
 
-import { getEventTransfer, type Editor } from '@gitbook/slate-react'
-import { Range, type Change } from '@gitbook/slate'
-
-import type Options from '../options'
+import Options from '../options'
 import { isSelectionInTable, isRangeInTable } from '../utils'
 import { insertTableFragmentAtRange } from '../changes'
 
@@ -12,11 +10,9 @@ import { insertTableFragmentAtRange } from '../changes'
  */
 
 function onPaste(
-  // The plugin options
-  opts?: Options,
-  event: *,
-  change: Change,
-  editor: Editor
+  opts: Options,
+  event: any,
+  change: Change
 ): Object {
   // Outside of tables, do not alter paste behavior
   if (!isSelectionInTable(opts, change.value)) {

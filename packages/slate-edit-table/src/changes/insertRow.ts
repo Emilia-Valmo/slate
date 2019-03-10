@@ -1,13 +1,11 @@
-// @flow
-import { type Change, type Block } from '@gitbook/slate'
+import { Change, Block } from '@gitbook/slate'
 
 import { TablePosition, createRow } from '../utils'
-import type Options from '../options'
+import Options from '../options'
 
-/**
+/*
  * Insert a new row in current table
  */
-
 function insertRow(
   opts: Options,
   change: Change,

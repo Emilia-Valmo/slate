@@ -1,15 +1,13 @@
-// @flow
-import { type Change, type Range, type Document } from '@gitbook/slate'
+import { Change, Range, Document } from '@gitbook/slate'
 
 import { TablePosition } from '../utils'
-import type Options from '../options'
+import Options from '../options'
 import insertRow from './insertRow'
 import insertColumn from './insertColumn'
 
-/**
+/*
  * Used when pasting a fragment of table **into another one**
  */
-
 function insertTableFragmentAtRange(
   opts: Options,
   change: Change,

@@ -1,8 +1,6 @@
-// @flow
+import { Change } from '@gitbook/slate'
 
-import { type Change } from '@gitbook/slate'
-
-import type Options from '../options'
+import Options from '../options'
 import { isSelectionInTable } from '../utils'
 
 import onEnter from './onEnter'
@@ -23,9 +21,9 @@ const KEY_UP = 'ArrowUp'
 
 function onKeyDown(
   opts: Options,
-  event: *,
+  event: any,
   change: Change,
-  editor: *
+  editor: any
 ): void | any {
   // Only handle events in cells
   if (!isSelectionInTable(opts, change.value)) {
@@ -38,17 +36,17 @@ function onKeyDown(
   switch (event.key) {
     case KEY_ENTER:
       if (event.metaKey && opts.exitBlockType) {
-        return onModEnter(...args)
+        return onModEnter(event, change, editor, opts)
       }
-      return onEnter(...args)
+      return onEnter(event, change, editor, opts)
 
     case KEY_TAB:
-      return onTab(...args)
+      return onTab(event, change, editor, opts)
     case KEY_BACKSPACE:
-      return onBackspace(...args)
+      return onBackspace(event, change, editor, opts)
     case KEY_DOWN:
     case KEY_UP:
-      return onUpDown(...args)
+      return onUpDown(event, change, editor, opts)
     default:
       return undefined
   }

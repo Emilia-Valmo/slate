@@ -1,14 +1,13 @@
-// @flow
-import { type Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate'
 
 import { TablePosition } from '../utils'
 import { moveSelectionBy } from '../changes'
-import type Options from '../options'
+import Options from '../options'
 
 function onUpDown(
-  event: *,
+  event: any,
   change: Change,
-  editor: *,
+  editor: any,
   opts: Options
 ): void | Change {
   const { value } = change

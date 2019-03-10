@@ -1,7 +1,6 @@
-// @flow
-import { type Node } from '@gitbook/slate'
+import {Node } from '@gitbook/slate'
 
-import type Options from '../options'
+import Options from '../options'
 
 import TablePosition from './TablePosition'
 

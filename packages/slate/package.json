@@ -26,7 +26,7 @@
   },
   "peerDependencies": {
     "immutable": ">=4.0.0-rc.12",
-    "react": ">=0.14.0"
+    "react": ">=16.8.4"
   },
   "devDependencies": {
     "@gitbook/slate-hyperscript": "^2.0.0"

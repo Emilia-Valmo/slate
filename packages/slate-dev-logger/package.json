@@ -3,22 +3,12 @@
   "description": "A simple, development-only logger for Slate.",
   "version": "2.0.0",
   "license": "MIT",
-  "repository": "git://github.com/GitbookIO/slate.git",
-  "main": "lib/slate-dev-logger.js",
-  "module": "lib/slate-dev-logger.es.js",
-  "umd": "dist/slate-dev-logger.js",
-  "umdMin": "dist/slate-dev-logger.min.js",
+  "repository": "https://github.com/GitbookIO/slate.git",
+  "source": "src/index.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es6/index.js",
+  "types": "dist/es6/index.d.ts",
   "files": [
-    "dist/",
-    "lib/"
-  ],
-  "devDependencies": {
-    "mocha": "^2.5.3"
-  },
-  "scripts": {
-    "clean": "rm -rf ./dist ./lib ./node_modules"
-  },
-  "keywords": [
-    "slate"
+    "dist/"
   ]
 }

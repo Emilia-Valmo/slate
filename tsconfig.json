@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "module": "es6",
+        "target": "esnext",
+        "declaration": true,
+        "allowJs": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "jsx": "react",
+        "sourceMap": true,
+        "lib": [
+            "es6"
+        ]
+    },
+    "include": [
+        "packages/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/dist/**/*",
+        "**/test/**/*"
+    ]
+}

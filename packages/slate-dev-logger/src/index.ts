@@ -18,7 +18,7 @@ const HAS_CONSOLE =
 /*
  * Log a `message` at `level`.
  */
-function log(level: 'warn' | | 'error' | 'log' | 'debug', message: string, ...args: any[]) {
+export function log(level: 'warn' | 'error' | 'log' | 'debug', message: string, ...args: any[]) {
   if (!IS_DEV) {
     return
   }
@@ -55,8 +55,10 @@ function deprecate(version: string, message: string, ...args: any[]) {
   log('warn', `Deprecation (${version}): ${message}`, ...args)
 }
 
-export default {
+const logger = {
   deprecate,
   error,
   warn,
 }
+
+export default logger

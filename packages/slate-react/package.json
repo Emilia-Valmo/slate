@@ -3,14 +3,13 @@
   "description": "A set of React components for building completely customizable rich-text editors.",
   "version": "2.0.1",
   "license": "MIT",
-  "repository": "git://github.com/GitbookIO/slate.git",
-  "main": "lib/slate-react.js",
-  "module": "lib/slate-react.es.js",
-  "umd": "dist/slate-react.js",
-  "umdMin": "dist/slate-react.min.js",
+  "repository": "https://github.com/GitbookIO/slate.git",
+  "source": "src/index.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es6/index.js",
+  "types": "dist/cjs/index.d.ts",
   "files": [
-    "dist/",
-    "lib/"
+    "dist/"
   ],
   "dependencies": {
     "@gitbook/slate-base64-serializer": "^2.0.0",
@@ -22,10 +21,7 @@
     "get-window": "^1.1.1",
     "is-window": "^1.0.2",
     "keycode": "^2.1.2",
-    "lodash": "^4.1.1",
-    "prop-types": "^15.5.8",
     "scheduler": "^0.13.4",
-    "react-immutable-proptypes": "^2.1.0",
     "selection-is-backward": "^1.0.0"
   },
   "peerDependencies": {
@@ -38,38 +34,6 @@
     "@gitbook/slate": "^2.0.0",
     "@gitbook/slate-hyperscript": "^2.0.0",
     "@gitbook/slate-simulator": "^2.0.0",
-    "immutable": ">=4.0.0-rc.12",
-    "mocha": "^2.5.3"
-  },
-  "scripts": {
-    "clean": "rm -rf ./dist ./lib ./node_modules"
-  },
-  "umdGlobals": {
-    "immutable": "Immutable",
-    "react": "React",
-    "react-dom": "ReactDOM",
-    "@gitbook/slate": "Slate"
-  },
-  "keywords": [
-    "canvas",
-    "contenteditable",
-    "doc",
-    "docs",
-    "document",
-    "edit",
-    "editor",
-    "html",
-    "immutable",
-    "markdown",
-    "medium",
-    "paper",
-    "react",
-    "rich",
-    "rich-text",
-    "richtext",
-    "slate",
-    "text",
-    "wysiwyg",
-    "wysiwym"
-  ]
+    "immutable": ">=4.0.0-rc.12"
+  }
 }

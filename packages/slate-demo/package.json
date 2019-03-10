@@ -1,0 +1,5 @@
+{
+    "name": "@gitbook/slate-demo",
+    "private": true,
+    "main": "dist/js/index.js"
+}

@@ -1,8 +1,7 @@
-// @flow
-import { type Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate'
 
 import { getCurrentCode } from '../utils'
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * User is Cmd+A to select all text

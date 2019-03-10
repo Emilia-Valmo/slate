@@ -1,7 +1,6 @@
-// @flow
-import { type Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate'
 
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * Unwrap a code block into a normal block.
@@ -28,7 +27,7 @@ function unwrapCodeBlockByKey(
   // change lines into paragraph
   codeBlock.nodes.forEach(line =>
     change
-      .setNodeByKey(line.key, { type }, { normalize: false })
+      .setNodeByKey(line.key, { }, { normalize: false })
       .unwrapNodeByKey(line.key, { normalize: false })
   )
 

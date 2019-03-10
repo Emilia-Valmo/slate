@@ -1,8 +1,7 @@
-// @flow
-import { type Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate'
 
 import { getIndent } from '../utils'
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * User pressed Enter in an editor:

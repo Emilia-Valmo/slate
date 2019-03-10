@@ -1,5 +1,4 @@
-// @flow
-import Options, { type OptionsFormat } from './options'
+import Options, { OptionsFormat } from './options'
 import { deserializeCode, isInCodeBlock } from './utils'
 import {
   wrapCodeBlockByKey,

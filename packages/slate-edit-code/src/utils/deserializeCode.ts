@@ -1,9 +1,8 @@
-// @flow
 import { Block, Text } from '@gitbook/slate'
 import { List } from 'immutable'
 import detectNewline from 'detect-newline'
 
-import type Options from '../options'
+import Options from '../options'
 
 const DEFAULT_NEWLINE = '\n'
 

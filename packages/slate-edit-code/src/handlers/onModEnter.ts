@@ -1,7 +1,6 @@
-// @flow
-import { type Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate'
 
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * User pressed Mod+Enter in an editor

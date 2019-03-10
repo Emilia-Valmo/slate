@@ -1,10 +1,9 @@
-// @flow
 
-import { type Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate'
 import endsWith from 'ends-with'
 
 import { getCurrentIndent, getCurrentCode } from '../utils'
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * User pressed Delete in an editor:

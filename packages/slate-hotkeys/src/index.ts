@@ -1,18 +1,11 @@
 import { isKeyHotkey } from 'is-hotkey'
 import { IS_IOS, IS_MAC } from '@gitbook/slate-dev-environment'
 
-/**
- * Is Apple?
- *
- * @type {Boolean}
- */
 
 const IS_APPLE = IS_IOS || IS_MAC
 
-/**
+/*
  * Hotkeys.
- *
- * @type {Function}
  */
 
 const isBold = isKeyHotkey('mod+b')
@@ -101,13 +94,7 @@ const isComposing = e =>
   e.key == 'Backspace' ||
   e.key == 'Enter'
 
-/**
- * Export.
- *
- * @type {Object}
- */
-
-export default {
+const HotKeys = {
   isBold,
   isCollapseCharBackward,
   isCollapseCharForward,
@@ -130,3 +117,5 @@ export default {
   isSplitBlock,
   isUndo,
 }
+
+export default HotKeys

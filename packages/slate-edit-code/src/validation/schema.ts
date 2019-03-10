@@ -1,6 +1,5 @@
-// @flow
 
-import { Block, type Change, type Node } from '@gitbook/slate'
+import { Block, Change, Node } from '@gitbook/slate'
 import {
   CHILD_TYPE_INVALID,
   PARENT_TYPE_INVALID,
@@ -8,7 +7,7 @@ import {
 } from '@gitbook/slate-schema-violations'
 import { List } from 'immutable'
 
-import type Options from '../options'
+import Options from '../options'
 import { deserializeCode } from '../utils'
 
 /**

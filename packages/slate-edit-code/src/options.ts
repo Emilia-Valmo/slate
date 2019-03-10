@@ -1,5 +1,4 @@
-// @flow
-import { type Change, type Value, Block, Text } from '@gitbook/slate'
+import { Change, Value, Block, Text } from '@gitbook/slate'
 import { Record } from 'immutable'
 
 const DEFAULTS = {
@@ -12,10 +11,9 @@ const DEFAULTS = {
   onExit: null,
 }
 
-/**
+/*
  * The plugin options container
  */
-
 class Options extends Record(DEFAULTS) {
   containerType: string
   lineType: string

@@ -1,4 +1,3 @@
-// @flow
 import detectIndent from 'detect-indent'
 
 const DEFAULT_INDENTATION = '    '

@@ -1,8 +1,7 @@
-// @flow
 
-import { type Value } from '@gitbook/slate'
+import { Value } from '@gitbook/slate'
 
-import type Options from '../options'
+import Options from '../options'
 import getIndent from './getIndent'
 import getCurrentCode from './getCurrentCode'
 

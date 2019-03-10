@@ -1,8 +1,7 @@
-// @flow
-import { Document, type Change } from '@gitbook/slate'
+import { Document, Change } from '@gitbook/slate'
 import { getEventTransfer } from '@gitbook/slate-react'
 import { getCurrentCode, deserializeCode } from '../utils'
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * User is pasting content, insert it as text

@@ -1,9 +1,8 @@
+/* global window */
 import browser from 'is-in-browser'
 
-/**
+/*
  * Browser matching rules.
- *
- * @type {Array}
  */
 
 const BROWSER_RULES = [
@@ -19,18 +18,14 @@ const BROWSER_RULES = [
   ['safari', /Version\/([0-9\._]+).*Safari/],
 ]
 
-/**
+/*
  * DOM event matching rules.
- *
- * @type {Array}
  */
 
 const EVENT_RULES = [['beforeinput', el => 'onbeforeinput' in el]]
 
-/**
+/*
  * Operating system matching rules.
- *
- * @type {Array}
  */
 
 const OS_RULES = [
@@ -41,7 +36,7 @@ const OS_RULES = [
   ['windows', /windows\s*(?:nt)?\s*([\.\_\d]+)/i],
 ]
 
-/**
+/*
  * Define variables to store the result.
  */
 
@@ -49,7 +44,7 @@ let BROWSER
 const EVENTS = {}
 let OS
 
-/**
+/*
  * Run the matchers when in browser.
  */
 
@@ -77,12 +72,6 @@ if (browser) {
     EVENTS[name] = testFn(testEl)
   }
 }
-
-/**
- * Export.
- *
- * @type {Object}
- */
 
 export const IS_CHROME = BROWSER === 'chrome'
 export const IS_OPERA = BROWSER === 'opera'

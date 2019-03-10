@@ -1,10 +1,9 @@
-// @flow
-import { type Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate'
 
 import { getCurrentIndent } from '../utils'
 import { indentLines } from '../changes'
 
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * User pressed Tab in an editor:

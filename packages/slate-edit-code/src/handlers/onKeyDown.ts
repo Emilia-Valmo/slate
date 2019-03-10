@@ -1,9 +1,8 @@
-// @flow
 import { isKeyHotkey } from 'is-hotkey'
-import { type Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate'
 
 import { getCurrentCode } from '../utils'
-import type Options from '../options'
+import Options from '../options'
 
 import onTab from './onTab'
 import onShiftTab from './onShiftTab'

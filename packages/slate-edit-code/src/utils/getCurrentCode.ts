@@ -1,7 +1,6 @@
-// @flow
-import { type Value, type Block } from '@gitbook/slate'
+import { Value, Block } from '@gitbook/slate'
 
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * Return the current code block, from current selection or from a node key.

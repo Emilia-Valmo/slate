@@ -3,28 +3,15 @@
   "description": "A set of function to detect common keypresses in a platform-agnostic way",
   "version": "2.0.0",
   "license": "MIT",
-  "repository": "git://github.com/GitbookIO/slate.git",
-  "main": "lib/slate-hotkeys.js",
-  "module": "lib/slate-hotkeys.es.js",
-  "umd": "dist/slate-hotkeys.js",
-  "umdMin": "dist/slate-hotkeys.min.js",
+  "repository": "https://github.com/GitbookIO/slate.git",
+  "main": "dist/cjs/slate.js",
+  "module": "dist/es/slate.js",
   "files": [
-    "dist/",
-    "lib/"
+    "*.md",
+    "dist/"
   ],
   "dependencies": {
     "@gitbook/slate-dev-environment": "^2.0.0",
     "is-hotkey": "^0.1.1"
-  },
-  "scripts": {
-    "clean": "rm -rf ./dist ./lib ./node_modules"
-  },
-  "keywords": [
-    "contenteditable",
-    "editor",
-    "keybinding",
-    "keypress",
-    "slate",
-    "text"
-  ]
+  }
 }

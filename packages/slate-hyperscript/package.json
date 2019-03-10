@@ -3,14 +3,12 @@
   "description": "A hyperscript helper for creating Slate documents.",
   "version": "2.0.0",
   "license": "MIT",
-  "repository": "git://github.com/GitbookIO/slate.git",
-  "main": "lib/slate-hyperscript.js",
-  "module": "lib/slate-hyperscript.es.js",
-  "umd": "dist/slate-hyperscript.js",
-  "umdMin": "dist/slate-hyperscript.min.js",
+  "repository": "https://github.com/GitbookIO/slate.git",
+  "main": "dist/cjs/slate.js",
+  "module": "dist/es/slate.js",
   "files": [
-    "dist/",
-    "lib/"
+    "*.md",
+    "dist/"
   ],
   "dependencies": {
     "@gitbook/slate-dev-logger": "^2.0.0",
@@ -21,21 +19,6 @@
     "@gitbook/slate": ">=0.32.0"
   },
   "devDependencies": {
-    "@gitbook/slate": "^2.0.0",
-    "mocha": "^2.5.3"
-  },
-  "scripts": {
-    "clean": "rm -rf ./dist ./lib ./node_modules"
-  },
-  "umdGlobals": {
-    "@gitbook/slate": "Slate"
-  },
-  "keywords": [
-    "hyperscript",
-    "jsx",
-    "html",
-    "slate",
-    "sugar",
-    "xml"
-  ]
+    "@gitbook/slate": "^2.0.0"
+  }
 }

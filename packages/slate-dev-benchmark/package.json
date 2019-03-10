@@ -3,15 +3,10 @@
   "description": "A simple, development-only benchmark for Slate",
   "version": "2.0.0",
   "license": "MIT",
-  "repository": "git://github.com/GitbookIO/slate.git",
-  "main": "src/index.js",
-  "devDependencies": {
-    "mocha": "^2.5.3"
-  },
-  "scripts": {
-    "clean": "rm -rf ./dist ./lib ./node_modules"
-  },
-  "keywords": [
-    "slate"
+  "repository": "https://github.com/GitbookIO/slate.git",
+  "main": "dist/cjs/slate.js",
+  "module": "dist/es/slate.js",
+  "files": [
+    "dist/"
   ]
 }

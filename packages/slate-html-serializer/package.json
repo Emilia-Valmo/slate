@@ -3,14 +3,12 @@
   "description": "An HTML serializer for Slate editors.",
   "version": "2.0.0",
   "license": "MIT",
-  "repository": "git://github.com/GitbookIO/slate.git",
-  "main": "lib/slate-html-serializer.js",
-  "module": "lib/slate-html-serializer.es.js",
-  "umd": "dist/slate-html-serializer.js",
-  "umdMin": "dist/slate-html-serializer.min.js",
+  "repository": "https://github.com/GitbookIO/slate.git",
+  "main": "dist/cjs/slate.js",
+  "module": "dist/es/slate.js",
   "files": [
-    "dist/",
-    "lib/"
+    "*.md",
+    "dist/"
   ],
   "dependencies": {
     "@gitbook/slate-dev-logger": "^2.0.0",
@@ -24,26 +22,6 @@
   },
   "devDependencies": {
     "@gitbook/slate": "^2.0.0",
-    "@gitbook/slate-hyperscript": "^2.0.0",
-    "mocha": "^2.5.3"
-  },
-  "scripts": {
-    "clean": "rm -rf ./dist ./lib ./node_modules"
-  },
-  "umdGlobals": {
-    "immutable": "Immutable",
-    "react": "React",
-    "react-dom": "ReactDOM",
-    "react-dom/server": "ReactDOMServer",
-    "@gitbook/slate": "Slate"
-  },
-  "keywords": [
-    "deserialize",
-    "editor",
-    "html",
-    "serialize",
-    "serializer",
-    "slate",
-    "xml"
-  ]
+    "@gitbook/slate-hyperscript": "^2.0.0"
+  }
 }

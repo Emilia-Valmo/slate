@@ -3,11 +3,12 @@
   "description": "A Slate plugin to automatically transform certain input.",
   "version": "2.0.0",
   "license": "MIT",
-  "repository": "git://github.com/GitbookIO/slate.git",
-  "main": "lib/slate-auto-replace.js",
-  "module": "lib/slate-auto-replace.es.js",
-  "umd": "dist/slate-auto-replace.js",
-  "umdMin": "dist/slate-auto-replace.min.js",
+  "repository": "https://github.com/GitbookIO/slate.git",
+  "main": "dist/cjs/slate.js",
+  "module": "dist/es/slate.js",
+  "files": [
+    "dist/"
+  ],
   "dependencies": {
     "is-hotkey": "^0.1.1",
     "type-of": "^2.0.1"
@@ -17,10 +18,5 @@
   },
   "devDependencies": {
     "@gitbook/slate": "^2.0.0"
-  },
-  "keywords": [
-    "slate",
-    "replace",
-    "markdown"
-  ]
+  }
 }

@@ -3,14 +3,11 @@
   "description": "A completely customizable framework for building rich text editors.",
   "version": "2.0.0",
   "license": "MIT",
-  "repository": "git://github.com/GitbookIO/slate.git",
-  "main": "lib/slate.js",
-  "module": "lib/slate.es.js",
-  "umd": "dist/slate.js",
-  "umdMin": "dist/slate.min.js",
+  "repository": "https://github.com/GitbookIO/slate.git",
+  "main": "dist/cjs/slate.js",
+  "module": "dist/es/slate.js",
   "files": [
-    "dist/",
-    "lib/"
+    "dist/"
   ],
   "dependencies": {
     "@gitbook/slate-dev-logger": "^2.0.0",
@@ -30,33 +27,5 @@
   },
   "devDependencies": {
     "@gitbook/slate-hyperscript": "^2.0.0"
-  },
-  "scripts": {
-    "clean": "rm -rf ./dist ./lib ./node_modules"
-  },
-  "umdGlobals": {
-    "immutable": "Immutable"
-  },
-  "keywords": [
-    "canvas",
-    "contenteditable",
-    "doc",
-    "docs",
-    "document",
-    "edit",
-    "editor",
-    "html",
-    "immutable",
-    "markdown",
-    "medium",
-    "paper",
-    "react",
-    "rich",
-    "rich-text",
-    "richtext",
-    "slate",
-    "text",
-    "wysiwyg",
-    "wysiwym"
-  ]
+  }
 }

@@ -37,7 +37,7 @@ function createConfig(pkg) {
     .concat(pkg.peerDependencies ? Object.keys(pkg.peerDependencies) : [])
 
   const pkgDir = path.resolve(PACKAGES_DIR, pkgShortname)
-  const input = path.resolve(pkgDir, pkg.source || 'src/index.js')
+  const input = path.resolve(pkgDir, 'src/index.ts')
   const srcDir = path.dirname(input)
 
   const plugins = [
@@ -98,7 +98,7 @@ function createConfig(pkg) {
 }
 
 export default packages
-  // .filter(name => name === 'slate-dev-logger' || name === 'slate-react')
+  .filter(name => name === 'slate-dev-logger' || name === 'slate-react')
   .map(name => require(path.join(PACKAGES_DIR, name, 'package.json')))
   .sort(sortByExternal)
   .map(createConfig)

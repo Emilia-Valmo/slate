@@ -2,15 +2,13 @@
   "name": "@gitbook/slate-edit-table",
   "description": "A Slate plugin to handle keyboard events in tables.",
   "version": "2.0.1",
-  "license": "Apache-2.0",
-  "repository": "git://github.com/GitbookIO/slate.git",
-  "main": "lib/slate-edit-table.js",
-  "module": "lib/slate-edit-table.es.js",
-  "umd": "dist/slate-edit-table.js",
-  "umdMin": "dist/slate-edit-table.min.js",
+  "license": "MIT",
+  "repository": "https://github.com/GitbookIO/slate.git",
+  "main": "dist/cjs/slate.js",
+  "module": "dist/es/slate.js",
   "files": [
-    "dist",
-    "*.md"
+    "*.md",
+    "dist/"
   ],
   "peerDependencies": {
     "@gitbook/slate": "1.0.0",
@@ -25,11 +23,5 @@
     "@gitbook/slate-react": "^2.0.1",
     "@gitbook/slate-schema-violations": "^2.0.0",
     "@gitbook/slate-simulator": "^2.0.0"
-  },
-  "scripts": {
-    "clean": "rm -rf ./dist ./lib ./node_modules"
-  },
-  "keywords": [
-    "slate"
-  ]
+  }
 }

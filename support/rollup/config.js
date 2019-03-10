@@ -98,7 +98,7 @@ function createConfig(pkg) {
 }
 
 export default packages
-  .filter(name => name === 'slate-edit-code')
+  // .filter(name => name === 'slate-edit-blockquote')
   .map(name => require(path.join(PACKAGES_DIR, name, 'package.json')))
   .sort(sortByExternal)
   .map(createConfig)

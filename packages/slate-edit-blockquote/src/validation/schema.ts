@@ -1,9 +1,8 @@
-// @flow
 
-import { Block, type Change } from '@gitbook/slate'
+import { Block, Change } from '@gitbook/slate'
 import { CHILD_OBJECT_INVALID } from '@gitbook/slate-schema-violations'
 
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * Create a schema definition with rules to normalize blockquotes

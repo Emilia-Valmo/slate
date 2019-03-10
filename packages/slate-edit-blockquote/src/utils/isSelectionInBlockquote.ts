@@ -1,6 +1,5 @@
-// @flow
-import { type Value } from '@gitbook/slate'
-import type Options from '../options'
+import { Value } from '@gitbook/slate'
+import Options from '../options'
 
 import getCurrentBlockquote from './getCurrentBlockquote'
 

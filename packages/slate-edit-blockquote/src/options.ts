@@ -1,4 +1,3 @@
-// @flow
 import { Record } from 'immutable'
 
 const DEFAULTS = {
@@ -17,10 +16,10 @@ class Options extends Record(DEFAULTS) {
   exitBlockType: string
 }
 
-export type OptionsFormat = {
-  type?: string, // type for blockquotes
-  typeDefault?: string, // type for default block in blockquote.
-  exitBlockType?: string, // type of block inserted when exiting
+export OptionsFormat = {
+  type?: string, // for blockquotes
+  typeDefault?: string, // for default block in blockquote.
+  exitBlockType?: string, // of block inserted when exiting
 }
 
 export default Options

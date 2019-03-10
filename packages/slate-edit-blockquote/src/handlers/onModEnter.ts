@@ -1,8 +1,8 @@
 /* @flow */
 
-import { type Change, Block, Text } from '@gitbook/slate'
+import { Change, Block, Text } from '@gitbook/slate'
 import { getCurrentBlockquote } from '../utils'
-import type Options from '../options'
+import Options from '../options'
 
 /**
  * User pressed Mod+Enter in an editor

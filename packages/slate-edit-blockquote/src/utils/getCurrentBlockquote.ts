@@ -1,6 +1,5 @@
-// @flow
-import { type Block, type Value } from '@gitbook/slate'
-import type Options from '../options'
+import { Block, Value } from '@gitbook/slate'
+import Options from '../options'
 
 /**
  * Return the current blockquote, from current selection or from a node.

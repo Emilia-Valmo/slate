@@ -1,8 +1,7 @@
-// @flow
 import Prism from 'prismjs'
-import { type Node, type Text, type Range } from '@gitbook/slate'
+import {  Node, Text, Range } from '@gitbook/slate'
 
-import Options, { type OptionsFormat } from './options'
+import Options, { OptionsFormat } from './options'
 import TOKEN_MARK from './TOKEN_MARK'
 
 /**
@@ -126,7 +125,7 @@ function createDecoration({
   start: number, // The position in the whole text where the token starts
   end: number, // The position in the whole text where the token ends
   className: string, // The prism token classname
-}): ?Range {
+}): Range | null {
   if (start >= textEnd || end <= textStart) {
     // Ignore, the token is not in the text
     return null

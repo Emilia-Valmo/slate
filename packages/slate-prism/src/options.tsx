@@ -1,17 +1,16 @@
-// @flow
 import * as React from 'react'
-import { type Mark, type Node } from '@gitbook/slate'
+import { Mark, Node } from '@gitbook/slate'
 import { Record } from 'immutable'
 
 import TOKEN_MARK from './TOKEN_MARK'
 
 export type OptionsFormat = {
   // Determine which node should be highlighted
-  onlyIn?: Node => boolean,
+  onlyIn?: (node: Node) => boolean,
   // Returns the syntax for a node that should be highlighted
-  getSyntax?: Node => string,
+  getSyntax?: (node: Node) => string,
   // Render a highlighting mark in a highlighted node
-  renderMark?: ({ mark: Mark, children: React.Node }) => React.Node,
+  renderMark?: (mark: { mark: Mark, children: React.Node }) => React.Node,
 }
 
 /**

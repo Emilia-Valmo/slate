@@ -98,7 +98,7 @@ function createConfig(pkg) {
 }
 
 export default packages
-  .filter(name => name === 'slate-dev-logger' || name === 'slate-react')
+  .filter(name => name === 'slate-prism')
   .map(name => require(path.join(PACKAGES_DIR, name, 'package.json')))
   .sort(sortByExternal)
   .map(createConfig)

@@ -1,4 +1,3 @@
-// @flow
 
 const TOKEN_MARK = 'prism-token'
 

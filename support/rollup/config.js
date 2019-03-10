@@ -11,6 +11,10 @@ const PACKAGES_DIR = path.resolve(ROOT_DIR, 'packages')
 
 const packages = fs.readdirSync(PACKAGES_DIR)
 
+/*
+ * Sort the packages to compile first the ones that do not depend on others.
+ */
+
 function sortByExternal(p1, p2) {
   const deps1 = {
     ...p1.dependencies,
@@ -28,8 +32,11 @@ function sortByExternal(p1, p2) {
   return p1.name > p2.name ? -1 : p1.name < p2.name ? 1 : 0
 }
 
+/*
+ * Create a rollup configuration for a package.
+ */
+
 function createConfig(pkg) {
-  console.log('createConfig', pkg.name)
   // Remove the @gitbook part
   const pkgShortname = pkg.name.replace(/^\@gitbook\//, '')
   const deps = []
@@ -98,7 +105,6 @@ function createConfig(pkg) {
 }
 
 export default packages
-  // .filter(name => name === 'slate-edit-blockquote')
   .map(name => require(path.join(PACKAGES_DIR, name, 'package.json')))
   .sort(sortByExternal)
   .map(createConfig)

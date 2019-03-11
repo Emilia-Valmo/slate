@@ -118,7 +118,7 @@ function onlyTextInCode(
   opts: Options,
   change: Change,
   context: Object
-): ?Change {
+): Change | undefined {
   const { node } = context
 
   if (node.object === 'inline' || node.object === 'block') {
@@ -137,7 +137,7 @@ function onlyTextInCode(
  * of a code block.
  */
 
-function noOrphanLine(opts: Options, change: Change, context: Object): ?Change {
+function noOrphanLine(opts: Options, change: Change, context: Object): void {
   const { parent } = context
 
   const isLine = n => n.type === opts.lineType

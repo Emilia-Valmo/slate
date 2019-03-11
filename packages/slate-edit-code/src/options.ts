@@ -20,10 +20,10 @@ class Options extends Record(DEFAULTS) {
   exitBlockType: string
   selectAll: boolean
   allowMarks: boolean
-  getIndent: ?(Value) => string
-  onExit: ?(Change) => ?Change
+  getIndent: ((Value) => string)  | null
+  onExit: ((Change) => Change | null) | null
 
-  resolvedOnExit(change: Change): ?Change {
+  resolvedOnExit(change: Change): Change | null {
     if (this.onExit) {
       // Custom onExit option
       return this.onExit(change)

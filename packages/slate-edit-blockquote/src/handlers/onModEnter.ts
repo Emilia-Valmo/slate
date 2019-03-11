@@ -9,7 +9,7 @@ import Options from '../options'
  * Exit the current block and inserts a paragraph after it
  */
 
-function onModEnter(opts: Options, event: any, change: Change): ?Change {
+function onModEnter(opts: Options, event: any, change: Change): Change | undefined {
   const { value } = change
 
   const blockquote = getCurrentBlockquote(opts, value)

@@ -7,7 +7,7 @@ import getCurrentItem from './getCurrentItem'
  * Return the previous item, from current selection or from a node.
  */
 
-function getPreviousItem(opts: Options, value: Value, block?: Block): ?Block {
+function getPreviousItem(opts: Options, value: Value, block?: Block): Block | null {
   const { document, startBlock } = value
   block = block || startBlock
 

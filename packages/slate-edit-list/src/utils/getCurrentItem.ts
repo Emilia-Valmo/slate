@@ -5,7 +5,7 @@ import Options from '../options'
  * Return the current list item, from current selection or from a node.
  */
 
-function getCurrentItem(opts: Options, value: Value, block?: Block): ?Block {
+function getCurrentItem(opts: Options, value: Value, block?: Block): Block | null {
   const { document } = value
 
   if (!block) {

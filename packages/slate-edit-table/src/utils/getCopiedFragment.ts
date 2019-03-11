@@ -1,5 +1,3 @@
-/* @flow */
-
 import {Value,Document } from '@gitbook/slate'
 import { List } from 'immutable'
 
@@ -14,7 +12,7 @@ import createCell from './createCell'
  * - Copying multiple cells: normalize the selection to copy a valid table
  */
 
-function getCopiedFragment(opts: Options, value: Value): ?Document {
+function getCopiedFragment(opts: Options, value: Value): Document | null {
   // Outside of tables, do not alter copy behavior
   if (!isSelectionInTable(opts, value)) {
     return undefined

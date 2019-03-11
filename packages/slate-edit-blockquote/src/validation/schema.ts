@@ -38,7 +38,7 @@ function containBlocks(
   opts: Options,
   change: Change,
   context: Object
-): ?Change {
+): Change | null {
   const toWrap = context.node.nodes.filter(n => n.object !== 'block')
 
   if (toWrap.isEmpty()) {

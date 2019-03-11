@@ -8,7 +8,7 @@ import getListForItem from './getListForItem'
  * Return the parent list block, from current selection or from a node (paragraph in a list item).
  */
 
-function getCurrentList(opts: Options, value: Value, block?: Block): ?Block {
+function getCurrentList(opts: Options, value: Value, block?: Block): Block | null {
   const item = getCurrentItem(opts, value, block)
 
   if (!item) {

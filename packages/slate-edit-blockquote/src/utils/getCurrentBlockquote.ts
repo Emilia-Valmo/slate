@@ -9,7 +9,7 @@ function getCurrentBlockquote(
   opts: Options,
   value: Value,
   block?: Block
-): ?Block {
+): Block | null {
   const { document } = value
 
   if (!block) {

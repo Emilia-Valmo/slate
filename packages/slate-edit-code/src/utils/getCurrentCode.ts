@@ -6,7 +6,7 @@ import Options from '../options'
  * Return the current code block, from current selection or from a node key.
  */
 
-function getCurrentCode(opts: Options, value: Value, key?: string): ?Block {
+function getCurrentCode(opts: Options, value: Value, key?: string): Block | null {
   const { document } = value
 
   let currentBlock

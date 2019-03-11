@@ -1,7 +1,7 @@
-import { Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate';
 
-import Options from '../options'
-import { getIndent } from '../utils'
+import Options from '../options';
+import { getIndent } from '../utils';
 
 /*
  * User pressed Enter in an editor:
@@ -9,27 +9,27 @@ import { getIndent } from '../utils'
  */
 
 function onEnter(
-  opts: Options,
-  event: any,
-  change: Change,
-  editor: any
+    opts: Options,
+    event: any,
+    change: Change,
+    editor: any
 ): void | Change {
-  const { value } = change
+    const { value } = change;
 
-  if (!value.isCollapsed) {
-    return undefined
-  }
+    if (!value.isCollapsed) {
+        return undefined;
+    }
 
-  event.preventDefault()
+    event.preventDefault();
 
-  const { startBlock } = value
-  const currentLineText = startBlock.text
-  const indent = getIndent(currentLineText, '')
+    const { startBlock } = value;
+    const currentLineText = startBlock.text;
+    const indent = getIndent(currentLineText, '');
 
-  return change
-    .splitBlock()
-    .insertText(indent)
-    .focus()
+    return change
+        .splitBlock()
+        .insertText(indent)
+        .focus();
 }
 
-export default onEnter
+export default onEnter;

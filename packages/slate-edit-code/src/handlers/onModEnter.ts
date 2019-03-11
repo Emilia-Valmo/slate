@@ -1,6 +1,6 @@
-import { Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate';
 
-import Options from '../options'
+import Options from '../options';
 
 /*
  * User pressed Mod+Enter in an editor
@@ -8,21 +8,21 @@ import Options from '../options'
  */
 
 function onModEnter(
-  opts: Options,
-  event: any,
-  change: Change,
-  editor: any
+    opts: Options,
+    event: any,
+    change: Change,
+    editor: any
 ): void | Change {
-  const { value } = change
+    const { value } = change;
 
-  if (!value.isCollapsed) {
-    return undefined
-  }
+    if (!value.isCollapsed) {
+        return undefined;
+    }
 
-  event.preventDefault()
+    event.preventDefault();
 
-  // Exit the code block
-  return opts.resolvedOnExit(change)
+    // Exit the code block
+    return opts.resolvedOnExit(change);
 }
 
-export default onModEnter
+export default onModEnter;

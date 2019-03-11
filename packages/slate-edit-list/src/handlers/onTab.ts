@@ -1,8 +1,8 @@
-import { Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate';
 
-import { decreaseItemDepth, increaseItemDepth } from '../changes'
-import Options from '../options'
-import { getCurrentItem } from '../utils'
+import { decreaseItemDepth, increaseItemDepth } from '../changes';
+import Options from '../options';
+import { getCurrentItem } from '../utils';
 
 /*
  * User pressed Tab in an editor.
@@ -10,25 +10,30 @@ import { getCurrentItem } from '../utils'
  * Shift+Tab -> Decrease item depth if inside a list item
  */
 
-function onTab(event: any, change: Change, editor: any, opts: Options): void | any {
-  const { value } = change
-  const { isCollapsed } = value
+function onTab(
+    event: any,
+    change: Change,
+    editor: any,
+    opts: Options
+): void | any {
+    const { value } = change;
+    const { isCollapsed } = value;
 
-  if (!isCollapsed || !getCurrentItem(opts, value)) {
-    return undefined
-  }
+    if (!isCollapsed || !getCurrentItem(opts, value)) {
+        return undefined;
+    }
 
-  // Shift+tab reduce depth
-  if (event.shiftKey) {
-    event.preventDefault()
+    // Shift+tab reduce depth
+    if (event.shiftKey) {
+        event.preventDefault();
 
-    return decreaseItemDepth(opts, change)
-  }
+        return decreaseItemDepth(opts, change);
+    }
 
-  // Tab increases depth
-  event.preventDefault()
+    // Tab increases depth
+    event.preventDefault();
 
-  return increaseItemDepth(opts, change)
+    return increaseItemDepth(opts, change);
 }
 
-export default onTab
+export default onTab;

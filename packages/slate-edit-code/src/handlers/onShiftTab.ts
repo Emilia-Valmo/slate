@@ -1,7 +1,7 @@
-import { Change } from '@gitbook/slate'
-import { dedentLines } from '../changes'
-import Options from '../options'
-import { getCurrentIndent } from '../utils'
+import { Change } from '@gitbook/slate';
+import { dedentLines } from '../changes';
+import Options from '../options';
+import { getCurrentIndent } from '../utils';
 
 /*
  * User pressed Shift+Tab in an editor:
@@ -9,19 +9,19 @@ import { getCurrentIndent } from '../utils'
  */
 
 function onShiftTab(
-  opts: Options,
-  event: any,
-  change: Change,
-  editor: any
+    opts: Options,
+    event: any,
+    change: Change,
+    editor: any
 ): void | Change {
-  const { value } = change
-  event.preventDefault()
-  event.stopPropagation()
+    const { value } = change;
+    event.preventDefault();
+    event.stopPropagation();
 
-  const indent = getCurrentIndent(opts, value)
+    const indent = getCurrentIndent(opts, value);
 
-  // We dedent all selected lines
-  return dedentLines(opts, change, indent)
+    // We dedent all selected lines
+    return dedentLines(opts, change, indent);
 }
 
-export default onShiftTab
+export default onShiftTab;

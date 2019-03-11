@@ -1,8 +1,8 @@
-import { Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate';
 
-import { decreaseItemDepth, splitListItem, unwrapList } from '../changes'
-import Options from '../options'
-import { getCurrentItem, getItemDepth } from '../utils'
+import { decreaseItemDepth, splitListItem, unwrapList } from '../changes';
+import Options from '../options';
+import { getCurrentItem, getItemDepth } from '../utils';
 
 /*
  * User pressed Enter in an editor
@@ -13,42 +13,42 @@ import { getCurrentItem, getItemDepth } from '../utils'
  */
 
 function onEnter(
-  event: any,
-  change: Change,
-  editor: any,
-  opts: Options
+    event: any,
+    change: Change,
+    editor: any,
+    opts: Options
 ): void | any {
-  // Pressing Shift+Enter
-  // should split block normally
-  if (event.shiftKey) {
-    return undefined
-  }
-
-  const { value } = change
-  const currentItem = getCurrentItem(opts, value)
-
-  // Not in a list
-  if (!currentItem) {
-    return undefined
-  }
-
-  event.preventDefault()
-
-  // If expanded, delete first.
-  if (value.isExpanded) {
-    change.delete()
-  }
-
-  if (currentItem.isEmpty) {
-    // Block is empty, we exit the list
-    if (getItemDepth(opts, value) > 1) {
-      return decreaseItemDepth(opts, change)
+    // Pressing Shift+Enter
+    // should split block normally
+    if (event.shiftKey) {
+        return undefined;
     }
-    // Exit list
-    return unwrapList(opts, change)
-  }
-  // Split list item
-  return splitListItem(opts, change)
+
+    const { value } = change;
+    const currentItem = getCurrentItem(opts, value);
+
+    // Not in a list
+    if (!currentItem) {
+        return undefined;
+    }
+
+    event.preventDefault();
+
+    // If expanded, delete first.
+    if (value.isExpanded) {
+        change.delete();
+    }
+
+    if (currentItem.isEmpty) {
+        // Block is empty, we exit the list
+        if (getItemDepth(opts, value) > 1) {
+            return decreaseItemDepth(opts, change);
+        }
+        // Exit list
+        return unwrapList(opts, change);
+    }
+    // Split list item
+    return splitListItem(opts, change);
 }
 
-export default onEnter
+export default onEnter;

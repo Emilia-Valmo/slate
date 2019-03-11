@@ -1,4 +1,3 @@
-/* @flow */
 import * as React from 'react'
 import { List, Set } from 'immutable'
 import { Block, Inline, Text, Leaf, Range, Mark } from '@gitbook/slate'

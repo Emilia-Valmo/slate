@@ -1,5 +1,3 @@
-/* @flow */
-
 import { Change, Block, Text } from '@gitbook/slate'
 import { getCurrentBlockquote } from '../utils'
 import Options from '../options'

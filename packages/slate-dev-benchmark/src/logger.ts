@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-/**
+/*
  * IS in test
  */
 
@@ -9,7 +9,7 @@ const IS_TEST =
   process.env &&
   process.env.BABEL_ENV === 'test'
 
-/**
+/*
  * Log a `message`
  *
  * @param {String} message
@@ -31,7 +31,7 @@ function errorLog(message, ...args) {
   console.error(message, ...args)
 }
 
-/**
+/*
  * Logging benchmark result
  */
 

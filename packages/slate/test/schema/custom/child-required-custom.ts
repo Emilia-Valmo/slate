@@ -1,4 +1,4 @@
-/** @jsx h */
+/* @jsx h */
 
 import { CHILD_REQUIRED } from '@gitbook/slate-schema-violations'
 import h from '../../helpers/h'

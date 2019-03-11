@@ -1,59 +1,59 @@
-/**
+/*
  * An auto-incrementing index for generating keys.
  *
  * @type {Number}
  */
 
-let n
+let n;
 
-/**
+/*
  * The global key generating function.
  *
  * @type {Function}
  */
 
-let generate
+let generate;
 
-/**
+/*
  * Generate a key.
  *
  * @return {String}
  */
 
 function generateKey() {
-  return generate()
+    return generate();
 }
 
-/**
+/*
  * Set a different unique ID generating `function`.
  *
  * @param {Function} func
  */
 
 function setKeyGenerator(func) {
-  generate = func
+    generate = func;
 }
 
-/**
+/*
  * Reset the key generating function to its initial state.
  */
 
 function resetKeyGenerator() {
-  n = 0
-  generate = () => `${n++}`
+    n = 0;
+    generate = () => `${n++}`;
 }
 
-/**
+/*
  * Set the initial state.
  */
 
-resetKeyGenerator()
+resetKeyGenerator();
 
-/**
+/*
  * Export.
  *
  * @type {Object}
  */
 
-export default generateKey
-export { setKeyGenerator, resetKeyGenerator }
+export default generateKey;
+export { setKeyGenerator, resetKeyGenerator };

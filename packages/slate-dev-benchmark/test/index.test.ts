@@ -1,8 +1,8 @@
-/**
+/*
  * Dependencies.
  */
 
-/**
+/*
  * Tests.
  */
 

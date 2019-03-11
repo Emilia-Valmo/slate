@@ -1,17 +1,17 @@
-import { Document, Change } from '@gitbook/slate'
+import { Change, Document } from '@gitbook/slate'
 import { getEventTransfer } from '@gitbook/slate-react'
-import { getCurrentCode, deserializeCode } from '../utils'
 import Options from '../options'
+import { deserializeCode, getCurrentCode } from '../utils'
 
-/**
+/*
  * User is pasting content, insert it as text
  */
 
 function onPaste(
   opts: Options,
-  event: *,
+  event: any,
   change: Change,
-  editor: *
+  editor: any
 ): void | Change {
   const { value } = change
   const data = getEventTransfer(event)

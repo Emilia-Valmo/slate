@@ -5,12 +5,12 @@ const { logger } = require('./logger')
 const { compose } = require('./compose')
 const { makeOptions } = require('./makeOptions')
 
-/**
+/*
  * Suite is for holding Benches
  */
 
 class Suite {
-  /**
+  /*
    * Construct a Suite and regiester it to repository
    * @param {string} name
    * @param {Object} options
@@ -37,7 +37,7 @@ class Suite {
     repository.addSuite(this)
   }
 
-  /**
+  /*
    * Whether it is a Suite
    * @param {any} obj
    * @return {boolean}
@@ -47,7 +47,7 @@ class Suite {
     return obj && obj[SuiteType]
   }
 
-  /**
+  /*
    * Register an bench to the repository
    * @param {Bench} bench
    * @return {void}
@@ -58,7 +58,7 @@ class Suite {
     this.benches.push(bench)
   }
 
-  /**
+  /*
    * Run all benches, and generate report for consumed time
    * @return {Promise<Object, *>
    */

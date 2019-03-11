@@ -10,7 +10,7 @@ const String = new Record({
   text: '',
 })
 
-/**
+/*
  * A rule to (de)serialize text nodes. This is automatically added to the HTML
  * serializer so that users don't have to worry about text-level serialization.
  *
@@ -57,7 +57,7 @@ const TEXT_RULE = {
   },
 }
 
-/**
+/*
  * A default `parseHtml` function that returns the `<body>` using `DOMParser`.
  *
  * @param {String} html
@@ -76,14 +76,14 @@ function defaultParseHtml(html) {
   return body
 }
 
-/**
+/*
  * HTML serializer.
  *
  * @type {Html}
  */
 
 class Html {
-  /**
+  /*
    * Create a new serializer with `rules`.
    *
    * @param {Object} options
@@ -106,7 +106,7 @@ class Html {
     this.parseHtml = parseHtml
   }
 
-  /**
+  /*
    * Deserialize pasted HTML.
    *
    * @param {String} html
@@ -184,7 +184,7 @@ class Html {
     return ret
   }
 
-  /**
+  /*
    * Deserialize an array of DOM elements.
    *
    * @param {Array} elements
@@ -210,7 +210,7 @@ class Html {
     return nodes
   }
 
-  /**
+  /*
    * Deserialize a DOM element.
    *
    * @param {Object} element
@@ -276,7 +276,7 @@ class Html {
     return node || next(element.childNodes)
   }
 
-  /**
+  /*
    * Deserialize a `mark` object.
    *
    * @param {Object} mark
@@ -310,7 +310,7 @@ class Html {
     }, [])
   }
 
-  /**
+  /*
    * Serialize a `value` object into an HTML string.
    *
    * @param {Value} value
@@ -329,7 +329,7 @@ class Html {
     return inner
   }
 
-  /**
+  /*
    * Serialize a `node`.
    *
    * @param {Node} node
@@ -354,7 +354,7 @@ class Html {
     throw new Error(`No serializer defined for node of type "${node.type}".`)
   }
 
-  /**
+  /*
    * Serialize a `leaf`.
    *
    * @param {Leaf} leaf
@@ -377,7 +377,7 @@ class Html {
     }, text)
   }
 
-  /**
+  /*
    * Serialize a `string`.
    *
    * @param {String} string
@@ -392,7 +392,7 @@ class Html {
     }
   }
 
-  /**
+  /*
    * Filter out cruft newline nodes inserted by the DOM parser.
    *
    * @param {Object} element

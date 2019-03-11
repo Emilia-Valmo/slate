@@ -1,30 +1,34 @@
-import { Value, Block } from '@gitbook/slate'
+import { Block, Value } from '@gitbook/slate';
 
-import Options from '../options'
-import getCurrentItem from './getCurrentItem'
+import Options from '../options';
+import getCurrentItem from './getCurrentItem';
 
-/**
+/*
  * Return the previous item, from current selection or from a node.
  */
 
-function getPreviousItem(opts: Options, value: Value, block?: Block): Block | null {
-  const { document, startBlock } = value
-  block = block || startBlock
+function getPreviousItem(
+    opts: Options,
+    value: Value,
+    block?: Block
+): Block | null {
+    const { document, startBlock } = value;
+    block = block || startBlock;
 
-  const currentItem = getCurrentItem(opts, value, block)
+    const currentItem = getCurrentItem(opts, value, block);
 
-  if (!currentItem) {
-    return null
-  }
+    if (!currentItem) {
+        return null;
+    }
 
-  const previousSibling = document.getPreviousSibling(currentItem.key)
+    const previousSibling = document.getPreviousSibling(currentItem.key);
 
-  if (!previousSibling) {
-    return null
-  } else if (previousSibling.type === opts.typeItem) {
-    return previousSibling
-  }
-  return null
+    if (!previousSibling) {
+        return null;
+    } else if (previousSibling.type === opts.typeItem) {
+        return previousSibling;
+    }
+    return null;
 }
 
-export default getPreviousItem
+export default getPreviousItem;

@@ -1,18 +1,18 @@
 import { Change } from '@gitbook/slate'
-import { getCurrentIndent } from '../utils'
 import { dedentLines } from '../changes'
 import Options from '../options'
+import { getCurrentIndent } from '../utils'
 
-/**
+/*
  * User pressed Shift+Tab in an editor:
  * Reduce indentation in the selected lines.
  */
 
 function onShiftTab(
   opts: Options,
-  event: *,
+  event: any,
   change: Change,
-  editor: *
+  editor: any
 ): void | Change {
   const { value } = change
   event.preventDefault()

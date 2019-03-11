@@ -6,7 +6,7 @@ const DEFAULTS = {
   exitBlockType: 'paragraph',
 }
 
-/**
+/*
  * The plugin options container
  */
 

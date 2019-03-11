@@ -8,7 +8,7 @@ const defaultOptions = {
   mode: 'adaptive',
 }
 
-/**
+/*
  * Merge two options for configuring a bench run
  * @param {Object} options
  * @returns {Object}

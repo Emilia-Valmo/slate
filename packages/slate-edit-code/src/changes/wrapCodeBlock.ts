@@ -1,26 +1,26 @@
-import { Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate';
 
-import Options from '../options'
+import Options from '../options';
 
-import wrapCodeBlockByKey from './wrapCodeBlockByKey'
+import wrapCodeBlockByKey from './wrapCodeBlockByKey';
 
-/**
+/*
  * Wrap current block into a code block.
  */
 
 function wrapCodeBlock(opts: Options, change: Change): Change {
-  const { value } = change
-  const { startBlock, selection } = value
+    const { value } = change;
+    const { startBlock, selection } = value;
 
-  // Convert to code block
-  wrapCodeBlockByKey(opts, change, startBlock.key)
+    // Convert to code block
+    wrapCodeBlockByKey(opts, change, startBlock.key);
 
-  // Move selection back in the block
-  change
-    .collapseToStartOf(change.value.document.getDescendant(startBlock.key))
-    .moveOffsetsTo(selection.startOffset)
+    // Move selection back in the block
+    change
+        .collapseToStartOf(change.value.document.getDescendant(startBlock.key))
+        .moveOffsetsTo(selection.startOffset);
 
-  return change
+    return change;
 }
 
-export default wrapCodeBlock
+export default wrapCodeBlock;

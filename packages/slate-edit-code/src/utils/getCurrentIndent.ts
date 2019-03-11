@@ -1,30 +1,29 @@
+import { Value } from '@gitbook/slate';
 
-import { Value } from '@gitbook/slate'
+import Options from '../options';
+import getCurrentCode from './getCurrentCode';
+import getIndent from './getIndent';
 
-import Options from '../options'
-import getIndent from './getIndent'
-import getCurrentCode from './getCurrentCode'
-
-/**
+/*
  * Detect indentation in the current code block
  */
 
 function getCurrentIndent(opts: Options, value: Value): string {
-  if (opts.getIndent) {
-    return opts.getIndent(value)
-  }
+    if (opts.getIndent) {
+        return opts.getIndent(value);
+    }
 
-  const currentCode = getCurrentCode(opts, value)
+    const currentCode = getCurrentCode(opts, value);
 
-  if (!currentCode) {
-    return ''
-  }
+    if (!currentCode) {
+        return '';
+    }
 
-  const text = currentCode
-    .getTexts()
-    .map(t => t.text)
-    .join('\n')
-  return getIndent(text)
+    const text = currentCode
+        .getTexts()
+        .map(t => t.text)
+        .join('\n');
+    return getIndent(text);
 }
 
-export default getCurrentIndent
+export default getCurrentIndent;

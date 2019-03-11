@@ -11,12 +11,12 @@ const errorReport = {
   all: NaN,
 }
 
-/**
+/*
  * Run a task and calculate the time consuming of tasks
  */
 
 class Bench {
-  /**
+  /*
    * Construct a bench and register it to a Suite
    * @param {Suite} suite
    * @param {string} name
@@ -33,7 +33,7 @@ class Bench {
     suite.addBench(this)
   }
 
-  /**
+  /*
    * Is a Bench?
    * @param {any} obj
    * @return {boolean}
@@ -43,7 +43,7 @@ class Bench {
     return obj && obj[BenchType]
   }
 
-  /**
+  /*
    * Set the method to generate (different} inputs for each run
    * @param {Array|Function|Scalar} inputer
    * @return {void}
@@ -63,7 +63,7 @@ class Bench {
     this.inputer = () => inputer
   }
 
-  /**
+  /*
    * Set the task runner
    * @param {Function} runner
    * @return {void}
@@ -73,7 +73,7 @@ class Bench {
     this.runner = runner
   }
 
-  /**
+  /*
    * Tries to run tasks in `times`, if the time consuming excedes the max-time, then stop;
    * After run, generate report and return
    * If initial is the initial index to run the task, for continueing a task in adaptive mode
@@ -115,7 +115,7 @@ class Bench {
     }
     return report
 
-    /**
+    /*
      * Run a bundle of tasks;
      * the Bench estimate the time consuming of every `tries` tasks, then explictly run gc, and caculate the time consuming of next bundle tasks
      * @param {number} tries
@@ -135,7 +135,7 @@ class Bench {
         return { ...elapsed, cycles }
       })
 
-      /**
+      /*
        *  Run a single task run; If the task is end, return a Promise with the index when the task ends
        *  @param {number} index
        *  @return {Promise<number, *>}

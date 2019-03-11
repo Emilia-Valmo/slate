@@ -1,4 +1,4 @@
-/**
+/*
  * Check if an `object` is a React component.
  *
  * @param {Object} object
@@ -6,13 +6,13 @@
  */
 
 function isReactComponent(object) {
-  return object && object.prototype && object.prototype.isReactComponent
+    return object && object.prototype && object.prototype.isReactComponent;
 }
 
-/**
+/*
  * Export.
  *
  * @type {Function}
  */
 
-export default isReactComponent
+export default isReactComponent;

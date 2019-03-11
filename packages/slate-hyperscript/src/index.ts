@@ -12,7 +12,7 @@ import {
   Value,
 } from '@gitbook/slate'
 
-/**
+/*
  * Create selection point constants, for comparison by reference.
  *
  * @type {Object}
@@ -22,7 +22,7 @@ const ANCHOR = {}
 const CURSOR = {}
 const FOCUS = {}
 
-/**
+/*
  *  wrappers for decorator points, for comparison by instanceof,
  *  and for composition into ranges (anchor.combine(focus), etc)
  */
@@ -63,7 +63,7 @@ class DecoratorPoint {
   }
 }
 
-/**
+/*
  * The default Slate hyperscript creator functions.
  *
  * @type {Object}
@@ -233,7 +233,7 @@ const CREATORS = {
   },
 }
 
-/**
+/*
  * Create a Slate hyperscript function with `options`.
  *
  * @param {Object} options
@@ -270,7 +270,7 @@ function createHyperscript(options = {}) {
   return create
 }
 
-/**
+/*
  * Create an array of `children`, storing selection anchor and focus.
  *
  * @param {Array} children
@@ -387,7 +387,7 @@ function createChildren(children, options = {}) {
   return array
 }
 
-/**
+/*
  * Resolve a set of hyperscript creators an `options` object.
  *
  * @param {Object} options
@@ -421,7 +421,7 @@ function resolveCreators(options) {
   return creators
 }
 
-/**
+/*
  * Normalize a node creator with `key` and `value`, of `object`.
  *
  * @param {String} key
@@ -461,7 +461,7 @@ function normalizeNode(key, value, object) {
   )
 }
 
-/**
+/*
  * Normalize a mark creator with `key` and `value`.
  *
  * @param {String} key
@@ -497,7 +497,7 @@ function normalizeMark(key, value) {
   )
 }
 
-/**
+/*
  * Export.
  *
  * @type {Function}

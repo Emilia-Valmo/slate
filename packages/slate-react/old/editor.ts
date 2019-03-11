@@ -11,7 +11,7 @@ import BeforePlugin from '../plugins/before'
 import noop from '../utils/noop'
 import Content from './Content'
 
-/**
+/*
  * Debug.
  *
  * @type {Function}
@@ -19,14 +19,14 @@ import Content from './Content'
 
 const debug = Debug('slate:editor')
 
-/**
+/*
  * Editor.
  *
  * @type {Component}
  */
 
 class Editor extends React.Component {
-  /**
+  /*
    * Property types.
    *
    * @type {Object}
@@ -48,7 +48,7 @@ class Editor extends React.Component {
     value: SlateTypes.value.isRequired,
   }
 
-  /**
+  /*
    * Default properties.
    *
    * @type {Object}
@@ -64,7 +64,7 @@ class Editor extends React.Component {
     spellCheck: true,
   }
 
-  /**
+  /*
    * Constructor.
    *
    * @param {Object} props
@@ -99,7 +99,7 @@ class Editor extends React.Component {
     })
   }
 
-  /**
+  /*
    * When the `props` are updated, create a new `Stack` if necessary and run
    * `onChange` to ensure the value is normalized.
    *
@@ -143,7 +143,7 @@ class Editor extends React.Component {
     this.setState({ value: change.value })
   }
 
-  /**
+  /*
    * When the component first mounts, flush any temporary changes,
    * and then, focus the editor if `autoFocus` is set.
    */
@@ -156,7 +156,7 @@ class Editor extends React.Component {
     }
   }
 
-  /**
+  /*
    * When the component updates, flush any temporary change.
    */
 
@@ -164,7 +164,7 @@ class Editor extends React.Component {
     this.flushChange()
   }
 
-  /**
+  /*
    * Queue a `change` object, to be able to flush it later. This is required for
    * when a change needs to be applied to the value, but because of the React
    * lifecycle we can't apply that change immediately. So we cache it here and
@@ -180,7 +180,7 @@ class Editor extends React.Component {
     }
   }
 
-  /**
+  /*
    * Flush a temporarily stored `change` object, for when a change needed to be
    * made but couldn't because of React's lifecycle.
    */
@@ -195,7 +195,7 @@ class Editor extends React.Component {
     }
   }
 
-  /**
+  /*
    * Perform a change on the editor, passing `...args` to `change.call`.
    *
    * @param {Mixed} ...args
@@ -206,7 +206,7 @@ class Editor extends React.Component {
     this.onChange(change)
   }
 
-  /**
+  /*
    * Programmatically blur the editor.
    */
 
@@ -214,7 +214,7 @@ class Editor extends React.Component {
     this.change(c => c.blur())
   }
 
-  /**
+  /*
    * Programmatically focus the editor.
    */
 
@@ -222,7 +222,7 @@ class Editor extends React.Component {
     this.change(c => c.focus())
   }
 
-  /**
+  /*
    * Getters for exposing public properties of the editor's state.
    */
 
@@ -238,7 +238,7 @@ class Editor extends React.Component {
     return this.state.value
   }
 
-  /**
+  /*
    * On event.
    *
    * @param {String} handler
@@ -251,7 +251,7 @@ class Editor extends React.Component {
     })
   }
 
-  /**
+  /*
    * On change.
    *
    * @param {Change} change
@@ -271,7 +271,7 @@ class Editor extends React.Component {
     onChange(change)
   }
 
-  /**
+  /*
    * Render the editor.
    *
    * @return {Element}
@@ -302,7 +302,7 @@ class Editor extends React.Component {
     )
   }
 
-  /**
+  /*
    * Resolve an array of plugins from `plugins` and `schema` props.
    *
    * In addition to the plugins provided in props, this will initialize three
@@ -341,7 +341,7 @@ class Editor extends React.Component {
   }
 }
 
-/**
+/*
  * Mix in the property types for the event handlers.
  */
 
@@ -349,7 +349,7 @@ for (const prop of EVENT_HANDLERS) {
   Editor.propTypes[prop] = Types.func
 }
 
-/**
+/*
  * Export.
  *
  * @type {Component}

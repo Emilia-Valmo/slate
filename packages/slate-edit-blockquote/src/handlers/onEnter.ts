@@ -1,16 +1,16 @@
 import { Change } from '@gitbook/slate'
 
+import { unwrapBlockquote } from '../changes/'
 import Options from '../options'
 import { getCurrentBlockquote } from '../utils'
-import { unwrapBlockquote } from '../changes/'
 
-/**
+/*
  * User pressed Enter in an editor
  *
  * Enter on an empty block inside a blockquote exit the blockquote.
  */
 
-function onEnter(opts: Options, event: *, change: Change, editor: *) {
+function onEnter(opts: Options, event: any, change: Change, editor: any) {
   const { value } = change
   const { startBlock } = value
 

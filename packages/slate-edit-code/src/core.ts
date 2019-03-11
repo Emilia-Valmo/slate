@@ -10,7 +10,7 @@ import {
 
 import { schema } from './validation'
 
-/**
+/*
  * The core of the plugin, which does not relies on `slate-react`, and includes
  * everything but behavior and rendering logic.
  */

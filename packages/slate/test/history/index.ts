@@ -2,7 +2,7 @@ import assert from 'assert'
 import fs from 'fs'
 import { basename, extname, resolve } from 'path'
 
-/**
+/*
  * Tests.
  */
 

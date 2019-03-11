@@ -1,17 +1,17 @@
 import { Change } from '@gitbook/slate'
 
-import { getCurrentCode } from '../utils'
 import Options from '../options'
+import { getCurrentCode } from '../utils'
 
-/**
+/*
  * User is Cmd+A to select all text
  */
 
 function onSelectAll(
   opts: Options,
-  event: *,
+  event: any,
   change: Change,
-  editor: *
+  editor: any
 ): void | Change {
   const { value } = change
   event.preventDefault()

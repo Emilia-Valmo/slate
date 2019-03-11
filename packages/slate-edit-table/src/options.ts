@@ -9,7 +9,7 @@ export type OptionsFormat = {
   exitBlockType?: string,
 }
 
-/**
+/*
  * The plugin options
  */
 

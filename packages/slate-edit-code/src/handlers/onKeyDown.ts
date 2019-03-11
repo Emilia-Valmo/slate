@@ -1,15 +1,15 @@
-import { isKeyHotkey } from 'is-hotkey'
 import { Change } from '@gitbook/slate'
+import { isKeyHotkey } from 'is-hotkey'
 
-import { getCurrentCode } from '../utils'
 import Options from '../options'
+import { getCurrentCode } from '../utils'
 
-import onTab from './onTab'
-import onShiftTab from './onShiftTab'
+import onBackspace from './onBackspace'
 import onEnter from './onEnter'
 import onModEnter from './onModEnter'
-import onBackspace from './onBackspace'
 import onSelectAll from './onSelectAll'
+import onShiftTab from './onShiftTab'
+import onTab from './onTab'
 
 const isModA = isKeyHotkey('mod+a')
 const isShiftTab = isKeyHotkey('shift+tab')
@@ -18,15 +18,15 @@ const isModEnter = isKeyHotkey('mod+enter')
 const isEnter = isKeyHotkey('enter')
 const isBackspace = isKeyHotkey('backspace')
 
-/**
+/*
  * User is pressing a key in the editor
  */
 
 function onKeyDown(
   opts: Options,
-  event: *,
+  event: any,
   change: Change,
-  editor: *
+  editor: any
 ): void | Change {
   const { value } = change
   const currentCode = getCurrentCode(opts, value)

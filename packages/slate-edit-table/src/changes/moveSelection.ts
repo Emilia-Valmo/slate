@@ -1,31 +1,31 @@
-import { Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate';
 
-import { TablePosition } from '../utils'
-import Options from '../options'
+import Options from '../options';
+import { TablePosition } from '../utils';
 
-/**
+/*
  * Move selection to {x,y}
  */
 
 function moveSelection(
-  opts: Options,
-  change: Change,
-  x: number,
-  y: number
+    opts: Options,
+    change: Change,
+    x: number,
+    y: number
 ): Change {
-  const { value } = change
-  const { startKey } = value
-  const pos = TablePosition.create(opts, value.document, startKey)
+    const { value } = change;
+    const { startKey } = value;
+    const pos = TablePosition.create(opts, value.document, startKey);
 
-  if (!pos.isInCell()) {
-    throw new Error('moveSelection can only be applied from within a cell')
-  }
+    if (!pos.isInCell()) {
+        throw new Error('moveSelection can only be applied from within a cell');
+    }
 
-  const { table } = pos
-  const row = table.nodes.get(y)
-  const cell = row.nodes.get(x)
+    const { table } = pos;
+    const row = table.nodes.get(y);
+    const cell = row.nodes.get(x);
 
-  return change.collapseToStartOf(cell)
+    return change.collapseToStartOf(cell);
 }
 
-export default moveSelection
+export default moveSelection;

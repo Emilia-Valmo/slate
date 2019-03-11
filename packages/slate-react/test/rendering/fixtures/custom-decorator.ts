@@ -1,4 +1,4 @@
-/** @jsx h */
+/* @jsx h */
 
 import React from 'react'
 import h from '../../helpers/h'

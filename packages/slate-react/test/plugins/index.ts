@@ -6,7 +6,7 @@ import fs from 'fs'
 import toCamel from 'to-camel-case' // eslint-disable-line import/no-extraneous-dependencies
 import { basename, extname, resolve } from 'path'
 
-/**
+/*
  * Tests.
  */
 

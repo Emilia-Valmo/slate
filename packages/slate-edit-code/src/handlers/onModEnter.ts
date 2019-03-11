@@ -2,16 +2,16 @@ import { Change } from '@gitbook/slate'
 
 import Options from '../options'
 
-/**
+/*
  * User pressed Mod+Enter in an editor
  * Exit the current code block
  */
 
 function onModEnter(
   opts: Options,
-  event: *,
+  event: any,
   change: Change,
-  editor: *
+  editor: any
 ): void | Change {
   const { value } = change
 

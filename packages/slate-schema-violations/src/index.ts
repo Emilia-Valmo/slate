@@ -1,4 +1,4 @@
-/**
+/*
  * Schema violations.
  *
  * @type {String}

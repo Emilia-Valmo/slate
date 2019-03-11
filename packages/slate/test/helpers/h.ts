@@ -1,6 +1,6 @@
 import { createHyperscript } from '@gitbook/slate-hyperscript'
 
-/**
+/*
  * Define a hyperscript.
  *
  * @type {Function}
@@ -39,7 +39,7 @@ const h = createHyperscript({
   },
 })
 
-/**
+/*
  * Export.
  *
  * @type {Function}

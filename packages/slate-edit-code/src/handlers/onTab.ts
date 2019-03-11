@@ -1,20 +1,20 @@
 import { Change } from '@gitbook/slate'
 
-import { getCurrentIndent } from '../utils'
 import { indentLines } from '../changes'
+import { getCurrentIndent } from '../utils'
 
 import Options from '../options'
 
-/**
+/*
  * User pressed Tab in an editor:
  * Insert a tab after detecting it from code block content.
  */
 
 function onTab(
   opts: Options,
-  event: *,
+  event: any,
   change: Change,
-  editor: *
+  editor: any
 ): void | Change {
   const { value } = change
   event.preventDefault()

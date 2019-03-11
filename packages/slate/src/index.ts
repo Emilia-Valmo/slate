@@ -20,7 +20,7 @@ import Text from './models/text'
 import Value from './models/value'
 import { resetKeyGenerator, setKeyGenerator } from './utils/generate-key'
 
-/**
+/*
  * Export.
  *
  * @type {Object}

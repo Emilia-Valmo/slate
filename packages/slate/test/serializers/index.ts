@@ -4,7 +4,7 @@ import fs from 'fs'
 import { Value } from '@gitbook/slate'
 import { basename, extname, resolve } from 'path'
 
-/**
+/*
  * Tests.
  */
 

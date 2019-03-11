@@ -9,7 +9,7 @@ const UNWANTED_TOP_LEVEL_ATTRS = [
   'data-gramm',
 ]
 
-/**
+/*
  * Clean an `element` of unwanted attributes.
  *
  * @param {Element} element
@@ -36,7 +36,7 @@ function stripUnwantedAttrs(element) {
   return element
 }
 
-/**
+/*
  * Clean a renderer `html` string, removing dynamic attributes.
  *
  * @param {String} html

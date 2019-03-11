@@ -1,7 +1,7 @@
 /* global Promise */
 const { errorLog } = require('./logger')
 
-/**
+/*
  * Run all benches/suites with Promise; Ensure an error would not block the whole process
  * @param {Array<Suite>|Array<Bench>}
  * @param {string} name; where to call the run method

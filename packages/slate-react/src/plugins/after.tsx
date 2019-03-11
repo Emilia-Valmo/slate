@@ -18,7 +18,7 @@ import getEventRange from '../utils/get-event-range'
 import getEventTransfer from '../utils/get-event-transfer'
 import setEventTransfer from '../utils/set-event-transfer'
 
-/**
+/*
  * Debug.
  *
  * @type {Function}
@@ -26,7 +26,7 @@ import setEventTransfer from '../utils/set-event-transfer'
 
 const debug = Debug('slate:after')
 
-/**
+/*
  * The after plugin.
  *
  * @return {Object}
@@ -35,7 +35,7 @@ const debug = Debug('slate:after')
 function AfterPlugin() {
   let isDraggingInternally = null
 
-  /**
+  /*
    * On before input, correct any browser inconsistencies.
    *
    * @param {Event} event
@@ -50,7 +50,7 @@ function AfterPlugin() {
     change.insertText(event.data)
   }
 
-  /**
+  /*
    * On blur.
    *
    * @param {Event} event
@@ -64,7 +64,7 @@ function AfterPlugin() {
     change.blur()
   }
 
-  /**
+  /*
    * On click.
    *
    * @param {Event} event
@@ -98,7 +98,7 @@ function AfterPlugin() {
     debug('onClick', { event })
   }
 
-  /**
+  /*
    * On copy.
    *
    * @param {Event} event
@@ -112,7 +112,7 @@ function AfterPlugin() {
     cloneFragment(event, change.value)
   }
 
-  /**
+  /*
    * On cut.
    *
    * @param {Event} event
@@ -152,7 +152,7 @@ function AfterPlugin() {
     })
   }
 
-  /**
+  /*
    * On drag end.
    *
    * @param {Event} event
@@ -166,7 +166,7 @@ function AfterPlugin() {
     isDraggingInternally = null
   }
 
-  /**
+  /*
    * On drag over.
    *
    * @param {Event} event
@@ -178,7 +178,7 @@ function AfterPlugin() {
     debug('onDragOver', { event })
   }
 
-  /**
+  /*
    * On drag start.
    *
    * @param {Event} event
@@ -206,7 +206,7 @@ function AfterPlugin() {
     }
   }
 
-  /**
+  /*
    * On drop.
    *
    * @param {Event} event
@@ -301,7 +301,7 @@ function AfterPlugin() {
     )
   }
 
-  /**
+  /*
    * On input.
    *
    * @param {Event} eventvent
@@ -365,7 +365,7 @@ function AfterPlugin() {
     change.insertTextAtRange(entire, textContent, leaf.marks).select(corrected)
   }
 
-  /**
+  /*
    * On key down.
    *
    * @param {Event} event
@@ -488,7 +488,7 @@ function AfterPlugin() {
     }
   }
 
-  /**
+  /*
    * On paste.
    *
    * @param {Event} event
@@ -520,7 +520,7 @@ function AfterPlugin() {
     }
   }
 
-  /**
+  /*
    * On select.
    *
    * @param {Event} event
@@ -604,7 +604,7 @@ function AfterPlugin() {
     change.select(range)
   }
 
-  /**
+  /*
    * Render node.
    *
    * @param {Object} props
@@ -623,7 +623,7 @@ function AfterPlugin() {
     )
   }
 
-  /**
+  /*
    * Return the plugin.
    *
    * @type {Object}
@@ -647,7 +647,7 @@ function AfterPlugin() {
   }
 }
 
-/**
+/*
  * Export.
  *
  * @type {Object}

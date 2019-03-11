@@ -1,16 +1,16 @@
 import { Change } from '@gitbook/slate'
 
-import Options from '../options'
 import { decreaseItemDepth, increaseItemDepth } from '../changes'
+import Options from '../options'
 import { getCurrentItem } from '../utils'
 
-/**
+/*
  * User pressed Tab in an editor.
  * Tab       -> Increase item depth if inside a list item
  * Shift+Tab -> Decrease item depth if inside a list item
  */
 
-function onTab(event: *, change: Change, editor: *, opts: Options): void | any {
+function onTab(event: any, change: Change, editor: any, opts: Options): void | any {
   const { value } = change
   const { isCollapsed } = value
 

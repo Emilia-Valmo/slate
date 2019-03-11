@@ -8,7 +8,7 @@ class Timer {
     this.elapsed = {}
   }
 
-  /**
+  /*
    * Whether it is a Timer
    * @param {any} obj
    */
@@ -17,7 +17,7 @@ class Timer {
     return obj && obj[TimerType]
   }
 
-  /**
+  /*
    * Start the timer
    * @return {void}
    */
@@ -29,7 +29,7 @@ class Timer {
     this.elapsed = {}
   }
 
-  /**
+  /*
    * Stop the timer and store restore in this.elapsed
    * @return {Object}
    */
@@ -41,7 +41,7 @@ class Timer {
     const { user, system } = cpuElapsed
     const hr = hrElapsed[0] * 1000 + hrElapsed[1] / 1e6
 
-    /**
+    /*
      * user:    cpu time consumed in user space
      * system:  cpu time consumed in system space
      * all:     user+system

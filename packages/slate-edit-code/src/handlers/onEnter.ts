@@ -1,18 +1,18 @@
 import { Change } from '@gitbook/slate'
 
-import { getIndent } from '../utils'
 import Options from '../options'
+import { getIndent } from '../utils'
 
-/**
+/*
  * User pressed Enter in an editor:
  * Insert a new code line and start it with the indentation from previous line
  */
 
 function onEnter(
   opts: Options,
-  event: *,
+  event: any,
   change: Change,
-  editor: *
+  editor: any
 ): void | Change {
   const { value } = change
 

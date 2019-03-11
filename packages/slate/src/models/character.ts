@@ -1,185 +1,188 @@
-import isPlainObject from 'is-plain-object'
-import logger from '@gitbook/slate-dev-logger'
-import { List, Record, Set } from 'immutable'
+import logger from '@gitbook/slate-dev-logger';
+import { List, Record, Set } from 'immutable';
+import isPlainObject from 'is-plain-object';
 
-import MODEL_TYPES, { isType } from '../constants/model-types'
+import MODEL_TYPES, { isType } from '../constants/model-types';
 
-/**
+/*
  * Default properties.
  *
  * @type {Object}
  */
 
 const DEFAULTS = {
-  marks: new Set(),
-  text: '',
-}
+    marks: new Set(),
+    text: ''
+};
 
-/**
+/*
  * Character.
  *
  * @type {Character}
  */
 
 class Character extends Record(DEFAULTS) {
-  /**
-   * Create a `Character` with `attrs`.
-   *
-   * @param {Object|String|Character} attrs
-   * @return {Character}
-   */
+    /*
+     * Object.
+     *
+     * @return {String}
+     */
 
-  static create(attrs = {}) {
-    if (Character.isCharacter(attrs)) {
-      return attrs
+    get object() {
+        return 'character';
     }
 
-    if (typeof attrs == 'string') {
-      attrs = { text: attrs }
+    get kind() {
+        logger.deprecate(
+            'slate@0.32.0',
+            'The `kind` property of Slate objects has been renamed to `object`.'
+        );
+        return this.object;
     }
 
-    if (isPlainObject(attrs)) {
-      return Character.fromJS(attrs)
+    /*
+     * Check if `any` is a `Character`.
+     *
+     * @param {Any} any
+     * @return {Boolean}
+     */
+
+    public static isCharacter = isType.bind(null, 'CHARACTER');
+    /*
+     * Create a `Character` with `attrs`.
+     *
+     * @param {Object|String|Character} attrs
+     * @return {Character}
+     */
+
+    public static create(attrs = {}) {
+        if (Character.isCharacter(attrs)) {
+            return attrs;
+        }
+
+        if (typeof attrs == 'string') {
+            attrs = { text: attrs };
+        }
+
+        if (isPlainObject(attrs)) {
+            return Character.fromJS(attrs);
+        }
+
+        throw new Error(
+            `\`Character.create\` only accepts objects, strings or characters, but you passed it: ${attrs}`
+        );
     }
 
-    throw new Error(
-      `\`Character.create\` only accepts objects, strings or characters, but you passed it: ${attrs}`
-    )
-  }
+    /*
+     * Create a list of `Characters` from `elements`.
+     *
+     * @param {String|Array<Object|Character|String>|List<Object|Character|String>} elements
+     * @return {List<Character>}
+     */
 
-  /**
-   * Create a list of `Characters` from `elements`.
-   *
-   * @param {String|Array<Object|Character|String>|List<Object|Character|String>} elements
-   * @return {List<Character>}
-   */
+    public static createList(elements = []) {
+        if (typeof elements == 'string') {
+            elements = elements.split('');
+        }
 
-  static createList(elements = []) {
-    if (typeof elements == 'string') {
-      elements = elements.split('')
+        if (List.isList(elements) || Array.isArray(elements)) {
+            const list = new List(elements.map(Character.create));
+            return list;
+        }
+
+        throw new Error(
+            `\`Block.createList\` only accepts strings, arrays or lists, but you passed it: ${elements}`
+        );
     }
 
-    if (List.isList(elements) || Array.isArray(elements)) {
-      const list = new List(elements.map(Character.create))
-      return list
+    /*
+     * Create a `Character` from a JSON `object`.
+     *
+     * @param {Object} object
+     * @return {Character}
+     */
+
+    public static fromJS(object) {
+        const { text, marks = [] } = object;
+
+        if (typeof text != 'string') {
+            throw new Error(
+                '`Character.fromJS` requires a block `text` string.'
+            );
+        }
+
+        const character = new Character({
+            text,
+            marks: new Set(marks)
+        });
+
+        return character;
     }
 
-    throw new Error(
-      `\`Block.createList\` only accepts strings, arrays or lists, but you passed it: ${elements}`
-    )
-  }
+    /*
+     * Alias `fromJS`.
+     */
 
-  /**
-   * Create a `Character` from a JSON `object`.
-   *
-   * @param {Object} object
-   * @return {Character}
-   */
-
-  static fromJS(object) {
-    const { text, marks = [] } = object
-
-    if (typeof text != 'string') {
-      throw new Error('`Character.fromJS` requires a block `text` string.')
+    public static fromJSON(object) {
+        logger.deprecate(
+            'slate@0.35.0',
+            'fromJSON methods are deprecated, use fromJS instead'
+        );
+        return Character.fromJS(object);
     }
 
-    const character = new Character({
-      text,
-      marks: new Set(marks),
-    })
+    /*
+     * Check if `any` is a character list.
+     *
+     * @param {Any} any
+     * @return {Boolean}
+     */
 
-    return character
-  }
-
-  /**
-   * Alias `fromJS`.
-   */
-
-  static fromJSON(object) {
-    logger.deprecate(
-      'slate@0.35.0',
-      'fromJSON methods are deprecated, use fromJS instead'
-    )
-    return Character.fromJS(object)
-  }
-
-  /**
-   * Check if `any` is a `Character`.
-   *
-   * @param {Any} any
-   * @return {Boolean}
-   */
-
-  static isCharacter = isType.bind(null, 'CHARACTER')
-
-  /**
-   * Check if `any` is a character list.
-   *
-   * @param {Any} any
-   * @return {Boolean}
-   */
-
-  static isCharacterList(any) {
-    return List.isList(any) && any.every(item => Character.isCharacter(item))
-  }
-
-  /**
-   * Object.
-   *
-   * @return {String}
-   */
-
-  get object() {
-    return 'character'
-  }
-
-  get kind() {
-    logger.deprecate(
-      'slate@0.32.0',
-      'The `kind` property of Slate objects has been renamed to `object`.'
-    )
-    return this.object
-  }
-
-  /**
-   * Return a JSON representation of the character.
-   *
-   * @return {Object}
-   */
-
-  toJS() {
-    const object = {
-      object: this.object,
-      text: this.text,
-      marks: this.marks.toArray().map(m => m.toJS()),
+    public static isCharacterList(any) {
+        return (
+            List.isList(any) && any.every(item => Character.isCharacter(item))
+        );
     }
 
-    return object
-  }
+    /*
+     * Return a JSON representation of the character.
+     *
+     * @return {Object}
+     */
 
-  /**
-   * Alias `toJSON`.
-   */
+    public toJS() {
+        const object = {
+            object: this.object,
+            text: this.text,
+            marks: this.marks.toArray().map(m => m.toJS())
+        };
 
-  toJSON() {
-    logger.deprecate(
-      'slate@0.35.0',
-      'toJSON methods are deprecated, use toJS instead'
-    )
-    return this.toJS()
-  }
+        return object;
+    }
+
+    /*
+     * Alias `toJSON`.
+     */
+
+    public toJSON() {
+        logger.deprecate(
+            'slate@0.35.0',
+            'toJSON methods are deprecated, use toJS instead'
+        );
+        return this.toJS();
+    }
 }
 
-/**
+/*
  * Attach a pseudo-symbol for type checking.
  */
 
-Character.prototype[MODEL_TYPES.CHARACTER] = true
+Character.prototype[MODEL_TYPES.CHARACTER] = true;
 
-/**
+/*
  * Export.
  *
  * @type {Character}
  */
 
-export default Character
+export default Character;

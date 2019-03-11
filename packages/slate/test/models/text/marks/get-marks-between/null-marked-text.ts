@@ -1,4 +1,4 @@
-/** @jsx h */
+/* @jsx h */
 
 import { Set } from 'immutable'
 import h from '../../../../helpers/h'

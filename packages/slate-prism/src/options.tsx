@@ -13,7 +13,7 @@ export type OptionsFormat = {
   renderMark?: (mark: { mark: Mark, children: React.Node }) => React.Node,
 }
 
-/**
+/*
  * Default filter for code blocks
  */
 
@@ -21,7 +21,7 @@ function defaultOnlyIn(node: Node): boolean {
   return node.object === 'block' && node.type === 'code_block'
 }
 
-/**
+/*
  * Default getter for syntax
  */
 
@@ -29,7 +29,7 @@ function defaultGetSyntax(node: Node): string {
   return 'javascript'
 }
 
-/**
+/*
  * Default rendering for marks
  */
 
@@ -47,7 +47,7 @@ function defaultRenderMark(props: {
   return <span className={className}>{props.children}</span>
 }
 
-/**
+/*
  * The plugin options
  */
 

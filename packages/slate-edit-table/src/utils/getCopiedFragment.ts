@@ -1,10 +1,10 @@
-import {Value,Document } from '@gitbook/slate'
-import { List } from 'immutable'
+import { Document, Value } from '@gitbook/slate';
+import { List } from 'immutable';
 
-import Options from '../options'
-import isSelectionInTable from './isSelectionInTable'
-import TablePosition from './TablePosition'
-import createCell from './createCell'
+import Options from '../options';
+import createCell from './createCell';
+import isSelectionInTable from './isSelectionInTable';
+import TablePosition from './TablePosition';
 
 /*
  * Alters what is copied to the clipboard when copying a fragment of a table:
@@ -13,58 +13,64 @@ import createCell from './createCell'
  */
 
 function getCopiedFragment(opts: Options, value: Value): Document | null {
-  // Outside of tables, do not alter copy behavior
-  if (!isSelectionInTable(opts, value)) {
-    return undefined
-  }
-  // else the selection is a fragment of one table
+    // Outside of tables, do not alter copy behavior
+    if (!isSelectionInTable(opts, value)) {
+        return undefined;
+    }
+    // else the selection is a fragment of one table
 
-  const { selection, document } = value
-  const startPosition = TablePosition.create(opts, document, selection.startKey)
-  const endPosition = TablePosition.create(opts, document, selection.endKey)
+    const { selection, document } = value;
+    const startPosition = TablePosition.create(
+        opts,
+        document,
+        selection.startKey
+    );
+    const endPosition = TablePosition.create(opts, document, selection.endKey);
 
-  // Fragment as it would be copied by Slate
-  const baseFragment = value.fragment
+    // Fragment as it would be copied by Slate
+    const baseFragment = value.fragment;
 
-  if (endPosition.cell === startPosition.cell) {
-    // The selection is inside a single cell. Only copy the content of that cell
-    const copiedCell = baseFragment
-      .getAncestors(baseFragment.getFirstText().key)
-      .findLast(n => n.type === opts.typeCell)
+    if (endPosition.cell === startPosition.cell) {
+        // The selection is inside a single cell. Only copy the content of that cell
+        const copiedCell = baseFragment
+            .getAncestors(baseFragment.getFirstText().key)
+            .findLast(n => n.type === opts.typeCell);
 
-    return baseFragment.merge({
-      nodes: copiedCell.nodes,
-    })
-  }
-
-  // We want to pad with empty cells to put a valid table into the clipboard
-  const table = baseFragment.nodes.first()
-  const firstRow = table.nodes.first()
-  const endRow = table.nodes.last()
-
-  const startPadding = List(Array(startPosition.getColumnIndex()).fill()).map(
-    () => createCell(opts)
-  )
-
-  const endPadding = List(
-    Array(endPosition.getWidth() - (endPosition.getColumnIndex() + 1)).fill()
-  ).map(() => createCell(opts))
-
-  return baseFragment.mapDescendants(node => {
-    if (node === firstRow) {
-      return firstRow.merge({
-        nodes: startPadding.concat(firstRow.nodes),
-      })
+        return baseFragment.merge({
+            nodes: copiedCell.nodes
+        });
     }
 
-    if (node === endRow) {
-      return endRow.merge({
-        nodes: endRow.nodes.concat(endPadding),
-      })
-    }
+    // We want to pad with empty cells to put a valid table into the clipboard
+    const table = baseFragment.nodes.first();
+    const firstRow = table.nodes.first();
+    const endRow = table.nodes.last();
 
-    return node
-  })
+    const startPadding = List(Array(startPosition.getColumnIndex()).fill()).map(
+        () => createCell(opts)
+    );
+
+    const endPadding = List(
+        Array(
+            endPosition.getWidth() - (endPosition.getColumnIndex() + 1)
+        ).fill()
+    ).map(() => createCell(opts));
+
+    return baseFragment.mapDescendants(node => {
+        if (node === firstRow) {
+            return firstRow.merge({
+                nodes: startPadding.concat(firstRow.nodes)
+            });
+        }
+
+        if (node === endRow) {
+            return endRow.merge({
+                nodes: endRow.nodes.concat(endPadding)
+            });
+        }
+
+        return node;
+    });
 }
 
-export default getCopiedFragment
+export default getCopiedFragment;

@@ -1,12 +1,12 @@
-import getWindow from 'get-window'
-import isBackward from 'selection-is-backward'
-import { Range } from '@gitbook/slate'
-import { IS_IE, IS_EDGE } from '@gitbook/slate-dev-environment'
+import { Range } from '@gitbook/slate';
+import { IS_EDGE, IS_IE } from '@gitbook/slate-dev-environment';
+import getWindow from 'get-window';
+import isBackward from 'selection-is-backward';
 
-import findPoint from './find-point'
-import findDOMPoint from './find-dom-point'
+import findDOMPoint from './find-dom-point';
+import findPoint from './find-point';
 
-/**
+/*
  * Find a Slate range from a DOM `native` selection.
  *
  * @param {Selection} native
@@ -15,69 +15,75 @@ import findDOMPoint from './find-dom-point'
  */
 
 function findRange(native, value) {
-  const el = native.anchorNode || native.startContainer
-  if (!el) return null
-
-  const window = getWindow(el)
-
-  // If the `native` object is a DOM `Range` or `StaticRange` object, change it
-  // into something that looks like a DOM `Selection` instead.
-  if (
-    native instanceof window.Range ||
-    (window.StaticRange && native instanceof window.StaticRange)
-  ) {
-    native = {
-      anchorNode: native.startContainer,
-      anchorOffset: native.startOffset,
-      focusNode: native.endContainer,
-      focusOffset: native.endOffset,
+    const el = native.anchorNode || native.startContainer;
+    if (!el) {
+        return null;
     }
-  }
 
-  const {
-    anchorNode,
-    anchorOffset,
-    focusNode,
-    focusOffset,
-    isCollapsed,
-  } = native
-  const anchor = findPoint(anchorNode, anchorOffset, value)
-  const focus = isCollapsed ? anchor : findPoint(focusNode, focusOffset, value)
-  if (!anchor || !focus) return null
+    const window = getWindow(el);
 
-  // COMPAT: ??? The Edge browser seems to have a case where if you select the
-  // last word of a span, it sets the endContainer to the containing span.
-  // `selection-is-backward` doesn't handle this case.
-  if (IS_IE || IS_EDGE) {
-    const domAnchor = findDOMPoint(anchor.key, anchor.offset)
-    const domFocus = findDOMPoint(focus.key, focus.offset)
-
-    if (domAnchor && domFocus) {
-      native = {
-        anchorNode: domAnchor.node,
-        anchorOffset: domAnchor.offset,
-        focusNode: domFocus.node,
-        focusOffset: domFocus.offset,
-      }
+    // If the `native` object is a DOM `Range` or `StaticRange` object, change it
+    // into something that looks like a DOM `Selection` instead.
+    if (
+        native instanceof window.Range ||
+        (window.StaticRange && native instanceof window.StaticRange)
+    ) {
+        native = {
+            anchorNode: native.startContainer,
+            anchorOffset: native.startOffset,
+            focusNode: native.endContainer,
+            focusOffset: native.endOffset
+        };
     }
-  }
 
-  const range = Range.create({
-    anchorKey: anchor.key,
-    anchorOffset: anchor.offset,
-    focusKey: focus.key,
-    focusOffset: focus.offset,
-    isBackward: isCollapsed ? false : isBackward(native),
-    isFocused: true,
-  })
+    const {
+        anchorNode,
+        anchorOffset,
+        focusNode,
+        focusOffset,
+        isCollapsed
+    } = native;
+    const anchor = findPoint(anchorNode, anchorOffset, value);
+    const focus = isCollapsed
+        ? anchor
+        : findPoint(focusNode, focusOffset, value);
+    if (!anchor || !focus) {
+        return null;
+    }
 
-  return range
+    // COMPAT: ??? The Edge browser seems to have a case where if you select the
+    // last word of a span, it sets the endContainer to the containing span.
+    // `selection-is-backward` doesn't handle this case.
+    if (IS_IE || IS_EDGE) {
+        const domAnchor = findDOMPoint(anchor.key, anchor.offset);
+        const domFocus = findDOMPoint(focus.key, focus.offset);
+
+        if (domAnchor && domFocus) {
+            native = {
+                anchorNode: domAnchor.node,
+                anchorOffset: domAnchor.offset,
+                focusNode: domFocus.node,
+                focusOffset: domFocus.offset
+            };
+        }
+    }
+
+    const range = Range.create({
+        anchorKey: anchor.key,
+        anchorOffset: anchor.offset,
+        focusKey: focus.key,
+        focusOffset: focus.offset,
+        isBackward: isCollapsed ? false : isBackward(native),
+        isFocused: true
+    });
+
+    return range;
 }
 
-/**
+/*
  * Export.
  *
  * @type {Function}
  */
 
-export default findRange
+export default findRange;

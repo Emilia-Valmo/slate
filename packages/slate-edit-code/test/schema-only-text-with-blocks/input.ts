@@ -1,4 +1,4 @@
-/** @jsx hyperscript */
+/* @jsx hyperscript */
 
 import { Value } from '@gitbook/slate'
 import hyperscript from '../hyperscript'

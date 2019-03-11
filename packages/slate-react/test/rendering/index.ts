@@ -7,7 +7,7 @@ import { JSDOM } from 'jsdom' // eslint-disable-line import/no-extraneous-depend
 import { Editor } from '../..'
 import { basename, extname, resolve } from 'path'
 
-/**
+/*
  * Tests.
  */
 

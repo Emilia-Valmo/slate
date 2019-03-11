@@ -1,17 +1,17 @@
 import { Change } from '@gitbook/slate'
 
-import Options from '../options'
 import { unwrapList } from '../changes'
+import Options from '../options'
 import { getCurrentItem } from '../utils'
 
-/**
+/*
  * User pressed Delete in an editor
  */
 
 function onBackspace(
-  event: *,
+  event: any,
   change: Change,
-  editor: *,
+  editor: any,
   opts: Options
 ): void | any {
   const { value } = change

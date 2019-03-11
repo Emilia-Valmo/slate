@@ -2,7 +2,7 @@ import { Change, Node } from '@gitbook/slate'
 
 import Options from '../options'
 
-/**
+/*
  * Create a schema definition with rules to normalize lists
  */
 
@@ -45,7 +45,7 @@ function schema(opts: Options): Object {
  * Allows to define a normalize function through a keyed collection of functions
  */
 
-function normalize(reasons: { [string]: (Change, context: any) => any }): * {
+function normalize(reasons: { [string]: (Change, context: any) => any }): any {
   return (change, reason, context) => {
     const reasonFn = reasons[reason]
 
@@ -55,7 +55,7 @@ function normalize(reasons: { [string]: (Change, context: any) => any }): * {
   }
 }
 
-/**
+/*
  * Wraps all child of a node in the default block type.
  * Returns a change, for chaining purposes
  */

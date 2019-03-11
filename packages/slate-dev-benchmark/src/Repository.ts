@@ -3,12 +3,12 @@ const { RepositoryType } = require('./types')
 const { logger } = require('./logger')
 const { compose } = require('./compose')
 
-/**
+/*
  * Repository Class for holding Suite
  */
 
 class Repository {
-  /**
+  /*
    * Construct a Repository with a name
    * @param {string} name
    */
@@ -20,7 +20,7 @@ class Repository {
     this.isFinished = false
   }
 
-  /**
+  /*
    * Check whether {obj} is repository
    * @param {any} obj
    * @return {boolean}
@@ -30,7 +30,7 @@ class Repository {
     return obj && obj[RepositoryType]
   }
 
-  /**
+  /*
    * Register a suite to the repository
    * @param {Suite} suite
    * @return {void}
@@ -41,7 +41,7 @@ class Repository {
     this.suites.push(suite)
   }
 
-  /**
+  /*
    * Run all suites (and all benches under suites) and generate a report
    * @return {Promise<Object, *>}
    */
@@ -64,7 +64,7 @@ class Repository {
 }
 Repository.prototype[RepositoryType] = true
 
-/**
+/*
  * By default, all suites are registers to the following {repo}
  */
 

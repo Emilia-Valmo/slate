@@ -1,5 +1,5 @@
-import onEnter from './onEnter'
-import onTab from './onTab'
-import onBackspace from './onBackspace'
+import onBackspace from './onBackspace';
+import onEnter from './onEnter';
+import onTab from './onTab';
 
-export { onEnter, onTab, onBackspace }
+export { onEnter, onTab, onBackspace };

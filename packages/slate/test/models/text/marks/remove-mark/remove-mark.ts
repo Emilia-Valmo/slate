@@ -1,4 +1,4 @@
-/** @jsx h */
+/* @jsx h */
 
 import { Mark } from '../../../../..'
 import h from '../../../../helpers/h'

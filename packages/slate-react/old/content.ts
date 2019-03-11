@@ -20,7 +20,7 @@ import removeAllRanges from '../utils/remove-all-ranges'
 
 const FIREFOX_NODE_TYPE_ACCESS_ERROR = /Permission denied to access property "nodeType"/
 
-/**
+/*
  * Debug.
  *
  * @type {Function}
@@ -28,14 +28,14 @@ const FIREFOX_NODE_TYPE_ACCESS_ERROR = /Permission denied to access property "no
 
 const debug = Debug('slate:content')
 
-/**
+/*
  * Content.
  *
  * @type {Component}
  */
 
 class Content extends React.Component {
-  /**
+  /*
    * Property types.
    *
    * @type {Object}
@@ -54,7 +54,7 @@ class Content extends React.Component {
     tagName: Types.string,
   }
 
-  /**
+  /*
    * Default properties.
    *
    * @type {Object}
@@ -65,7 +65,7 @@ class Content extends React.Component {
     tagName: 'div',
   }
 
-  /**
+  /*
    * Constructor.
    *
    * @param {Object} props
@@ -83,7 +83,7 @@ class Content extends React.Component {
     })
   }
 
-  /**
+  /*
    * When the editor first mounts in the DOM we need to:
    *
    *   - Add native DOM event listeners.
@@ -106,7 +106,7 @@ class Content extends React.Component {
     this.updateSelection()
   }
 
-  /**
+  /*
    * When unmounting, remove DOM event listeners.
    */
 
@@ -126,7 +126,7 @@ class Content extends React.Component {
     }
   }
 
-  /**
+  /*
    * On update, update the selection.
    */
 
@@ -134,7 +134,7 @@ class Content extends React.Component {
     this.updateSelection()
   }
 
-  /**
+  /*
    * Update the native DOM selection to reflect the internal model.
    */
 
@@ -241,7 +241,7 @@ class Content extends React.Component {
     debug('updateSelection', { selection, native })
   }
 
-  /**
+  /*
    * The React ref method to set the root content element locally.
    *
    * @param {Element} element
@@ -251,7 +251,7 @@ class Content extends React.Component {
     this.element = element
   }
 
-  /**
+  /*
    * Check if an event `target` is fired from within the contenteditable
    * element. This should be false for edits happening in non-contenteditable
    * children, such as void nodes and other nested Slate editors.
@@ -287,7 +287,7 @@ class Content extends React.Component {
     )
   }
 
-  /**
+  /*
    * On `event` with `handler`.
    *
    * @param {String} handler
@@ -366,7 +366,7 @@ class Content extends React.Component {
     this.props[handler](event)
   }
 
-  /**
+  /*
    * On a native `beforeinput` event, use the additional range information
    * provided by the event to manipulate text exactly as the browser would.
    *
@@ -443,7 +443,7 @@ class Content extends React.Component {
     }
   }
 
-  /**
+  /*
    * On native `selectionchange` event, trigger the `onSelect` handler. This is
    * needed to account for React's `onSelect` being non-standard and not firing
    * until after a selection has been released. This causes issues in situations
@@ -462,7 +462,7 @@ class Content extends React.Component {
     this.props.onSelect(event)
   }, 100)
 
-  /**
+  /*
    * Render the editor content.
    *
    * @return {Element}
@@ -554,7 +554,7 @@ class Content extends React.Component {
     )
   }
 
-  /**
+  /*
    * Render a `child` node of the document.
    *
    * @param {Node} child
@@ -610,7 +610,7 @@ function reportRangeError(value) {
   }, 0)
 }
 
-/**
+/*
  * Mix in handler prop types.
  */
 
@@ -618,7 +618,7 @@ EVENT_HANDLERS.forEach(handler => {
   Content.propTypes[handler] = Types.func.isRequired
 })
 
-/**
+/*
  * Export.
  *
  * @type {Component}

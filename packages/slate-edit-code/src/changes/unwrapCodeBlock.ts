@@ -1,27 +1,27 @@
-import { Change } from '@gitbook/slate'
+import { Change } from '@gitbook/slate';
 
-import Options from '../options'
-import { getCurrentCode } from '../utils'
+import Options from '../options';
+import { getCurrentCode } from '../utils';
 
-import unwrapCodeBlockByKey from './unwrapCodeBlockByKey'
+import unwrapCodeBlockByKey from './unwrapCodeBlockByKey';
 
-/**
+/*
  * Convert a code block to a normal block.
  */
 
 function unwrapCodeBlock(opts: Options, change: Change, type: string): Change {
-  const { value } = change
+    const { value } = change;
 
-  const codeBlock = getCurrentCode(opts, value)
+    const codeBlock = getCurrentCode(opts, value);
 
-  if (!codeBlock) {
-    return change
-  }
+    if (!codeBlock) {
+        return change;
+    }
 
-  // Convert to paragraph
-  unwrapCodeBlockByKey(opts, change, codeBlock.key, type)
+    // Convert to paragraph
+    unwrapCodeBlockByKey(opts, change, codeBlock.key, type);
 
-  return change
+    return change;
 }
 
-export default unwrapCodeBlock
+export default unwrapCodeBlock;

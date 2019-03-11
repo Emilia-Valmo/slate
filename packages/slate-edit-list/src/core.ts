@@ -17,7 +17,7 @@ import {
   getPreviousItem,
 } from './utils'
 
-/**
+/*
  * Returns the core of the plugin, limited to the validation and normalization
  * part of `slate-edit-list`, and utils.
  *
@@ -55,11 +55,11 @@ function core(
   }
 }
 
-/**
+/*
  * Bind a change to given options, and scope it to act only inside a list
  */
 
-function bindAndScopeChange(opts: Options, fn: *): * {
+function bindAndScopeChange(opts: Options, fn: any): any {
   return (change, ...args) => {
     const { value } = change
 

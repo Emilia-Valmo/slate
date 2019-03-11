@@ -10,7 +10,7 @@ import setEventTransfer from './utils/set-event-transfer'
 import AfterPlugin from './plugins/after'
 import BeforePlugin from './plugins/before'
 
-/**
+/*
  * Export.
  *
  * @type {Object}

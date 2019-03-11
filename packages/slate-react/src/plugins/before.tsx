@@ -13,7 +13,7 @@ import {
 import findNode from '../utils/find-node'
 import findRange from '../utils/find-range'
 
-/**
+/*
  * Debug.
  *
  * @type {Function}
@@ -21,7 +21,7 @@ import findRange from '../utils/find-range'
 
 const debug = Debug('slate:before')
 
-/**
+/*
  * In edit mode, uses the current change selection. In read mode,
  * tries to compute the current Slate range from the native
  * selection, and returns the updated change.
@@ -56,7 +56,7 @@ function ensureSlateSelection(event, change, editor) {
   return true
 }
 
-/**
+/*
  * The core before plugin.
  *
  * @return {Object}
@@ -69,7 +69,7 @@ function BeforePlugin() {
   let isCopying = false
   let isDragging = false
 
-  /**
+  /*
    * On before input.
    *
    * @param {Event} event
@@ -93,7 +93,7 @@ function BeforePlugin() {
     debug('onBeforeInput', { event })
   }
 
-  /**
+  /*
    * On blur.
    *
    * @param {Event} event
@@ -139,7 +139,7 @@ function BeforePlugin() {
     debug('onBlur', { event })
   }
 
-  /**
+  /*
    * On change.
    *
    * @param {Change} change
@@ -159,7 +159,7 @@ function BeforePlugin() {
     debug('onChange')
   }
 
-  /**
+  /*
    * On composition end.
    *
    * @param {Event} event
@@ -189,7 +189,7 @@ function BeforePlugin() {
     debug('onCompositionEnd', { event })
   }
 
-  /**
+  /*
    * On composition start.
    *
    * @param {Event} event
@@ -212,7 +212,7 @@ function BeforePlugin() {
     debug('onCompositionStart', { event })
   }
 
-  /**
+  /*
    * On copy.
    *
    * @param {Event} event
@@ -237,7 +237,7 @@ function BeforePlugin() {
     debug('onCopy', { event })
   }
 
-  /**
+  /*
    * On cut.
    *
    * @param {Event} event
@@ -253,7 +253,7 @@ function BeforePlugin() {
     debug('onCut', { event })
   }
 
-  /**
+  /*
    * On drag end.
    *
    * @param {Event} event
@@ -267,7 +267,7 @@ function BeforePlugin() {
     debug('onDragEnd', { event })
   }
 
-  /**
+  /*
    * On drag enter.
    *
    * @param {Event} event
@@ -279,7 +279,7 @@ function BeforePlugin() {
     debug('onDragEnter', { event })
   }
 
-  /**
+  /*
    * On drag exit.
    *
    * @param {Event} event
@@ -291,7 +291,7 @@ function BeforePlugin() {
     debug('onDragExit', { event })
   }
 
-  /**
+  /*
    * On drag leave.
    *
    * @param {Event} event
@@ -303,7 +303,7 @@ function BeforePlugin() {
     debug('onDragLeave', { event })
   }
 
-  /**
+  /*
    * On drag over.
    *
    * @param {Event} event
@@ -339,7 +339,7 @@ function BeforePlugin() {
     debug('onDragOver', { event })
   }
 
-  /**
+  /*
    * On drag start.
    *
    * @param {Event} event
@@ -353,7 +353,7 @@ function BeforePlugin() {
     debug('onDragStart', { event })
   }
 
-  /**
+  /*
    * On drop.
    *
    * @param {Event} event
@@ -371,7 +371,7 @@ function BeforePlugin() {
     debug('onDrop', { event })
   }
 
-  /**
+  /*
    * On focus.
    *
    * @param {Event} event
@@ -400,7 +400,7 @@ function BeforePlugin() {
     debug('onFocus', { event })
   }
 
-  /**
+  /*
    * On input.
    *
    * @param {Event} event
@@ -415,7 +415,7 @@ function BeforePlugin() {
     debug('onInput', { event })
   }
 
-  /**
+  /*
    * On key down.
    *
    * @param {Event} event
@@ -443,7 +443,7 @@ function BeforePlugin() {
     debug('onKeyDown', { event })
   }
 
-  /**
+  /*
    * On paste.
    *
    * @param {Event} event
@@ -460,7 +460,7 @@ function BeforePlugin() {
     debug('onPaste', { event })
   }
 
-  /**
+  /*
    * On select.
    *
    * @param {Event} event
@@ -480,7 +480,7 @@ function BeforePlugin() {
     debug('onSelect', { event })
   }
 
-  /**
+  /*
    * Return the plugin.
    *
    * @type {Object}
@@ -509,7 +509,7 @@ function BeforePlugin() {
   }
 }
 
-/**
+/*
  * Export.
  *
  * @type {Object}

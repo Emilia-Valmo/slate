@@ -30,7 +30,7 @@ import { schema, validateNode } from './validation'
 
 import Options, { OptionsFormat } from './options'
 
-/**
+/*
  * Returns the core of the plugin, limited to the validation and normalization
  * part of `slate-edit-table`, and utils.
  *
@@ -79,11 +79,11 @@ function core(optionsParam: Options | OptionsFormat): Object {
   }
 }
 
-/**
+/*
  * Bind a change to given options, and scope it to act only inside a table
  */
 
-function bindAndScopeChange(opts: Options, fn: *): * {
+function bindAndScopeChange(opts: Options, fn: any): any {
   return (change, ...args) => {
     const { value } = change
 

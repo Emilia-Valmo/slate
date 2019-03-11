@@ -4,7 +4,7 @@ import {  Node, Text, Range } from '@gitbook/slate'
 import Options, { OptionsFormat } from './options'
 import TOKEN_MARK from './TOKEN_MARK'
 
-/**
+/*
  * A Slate plugin to highlight code syntax.
  */
 
@@ -25,7 +25,7 @@ function PrismPlugin(optsParam: OptionsFormat = {}) {
   }
 }
 
-/**
+/*
  * Returns the decoration for a node
  */
 
@@ -107,7 +107,7 @@ function decorateNode(opts: Options, block: Node) {
   return decorations
 }
 
-/**
+/*
  * Return a decoration range for the given text.
  */
 

@@ -1,6 +1,6 @@
 import { Stack } from '@gitbook/slate'
 
-/**
+/*
  * Event handlers that can be simulated.
  *
  * @type {Array}
@@ -19,14 +19,14 @@ const EVENT_HANDLERS = [
   'onSelect',
 ]
 
-/**
+/*
  * Simulator.
  *
  * @type {Simulator}
  */
 
 class Simulator {
-  /**
+  /*
    * Create a new `Simulator` with `plugins` and an initial `value`.
    *
    * @param {Object} attrs
@@ -41,7 +41,7 @@ class Simulator {
   }
 }
 
-/**
+/*
  * Generate the event simulators.
  */
 
@@ -64,7 +64,7 @@ EVENT_HANDLERS.forEach(handler => {
   }
 })
 
-/**
+/*
  * Get the method name from a `handler` name.
  *
  * @param {String} handler
@@ -75,7 +75,7 @@ function getMethodName(handler) {
   return handler.charAt(2).toLowerCase() + handler.slice(3)
 }
 
-/**
+/*
  * Create a fake editor from a `stack` and `value`.
  *
  * @param {Stack} stack
@@ -99,7 +99,7 @@ function createEditor({ stack, value, props }) {
   return editor
 }
 
-/**
+/*
  * Create a fake event with `attributes`.
  *
  * @param {Object} attributes
@@ -118,7 +118,7 @@ function createEvent(attributes) {
   return event
 }
 
-/**
+/*
  * Export.
  *
  * @type {Object}

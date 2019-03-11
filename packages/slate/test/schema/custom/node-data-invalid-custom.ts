@@ -1,4 +1,4 @@
-/** @jsx h */
+/* @jsx h */
 
 import { NODE_DATA_INVALID } from '@gitbook/slate-schema-violations'
 import h from '../../helpers/h'

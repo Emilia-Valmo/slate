@@ -1,10 +1,10 @@
-/**
+/*
  * Dependencies.
  */
 
 import { resetKeyGenerator } from '@gitbook/slate'
 
-/**
+/*
  * Tests.
  */
 
@@ -14,7 +14,7 @@ describe('slate-react', () => {
   require('./utils')
 })
 
-/**
+/*
  * Reset Slate's internal state before each text.
  */
 

@@ -1,4 +1,4 @@
-/**
+/*
  * Dependencies.
  */
 
@@ -8,7 +8,7 @@ import fs from 'fs'
 import { Value, resetKeyGenerator } from '@gitbook/slate'
 import { basename, extname, resolve } from 'path'
 
-/**
+/*
  * Reset Slate's internal key generator state before each text.
  */
 
@@ -16,7 +16,7 @@ beforeEach(() => {
   resetKeyGenerator()
 })
 
-/**
+/*
  * Tests.
  */
 

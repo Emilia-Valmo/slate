@@ -2,7 +2,7 @@ import Options, { OptionsFormat } from './options'
 import { onKeyDown, onPaste } from './handlers'
 import core from './core'
 
-/**
+/*
  * A Slate plugin to handle keyboard events in code blocks.
  */
 

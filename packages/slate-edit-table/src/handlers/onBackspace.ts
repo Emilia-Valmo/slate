@@ -1,12 +1,12 @@
 import { Change } from '@gitbook/slate'
 
-import Options from '../options'
 import { clearCell } from '../changes'
+import Options from '../options'
 
 function onBackspace(
-  event: *,
+  event: any,
   change: Change,
-  editor: *,
+  editor: any,
   opts: Options
 ): void | Change {
   const { value } = change

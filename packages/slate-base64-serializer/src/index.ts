@@ -1,7 +1,7 @@
 import { Node, Value } from '@gitbook/slate'
 import { atob, btoa } from 'isomorphic-base64'
 
-/**
+/*
  * Encode a JSON `object` as base-64 `string`.
  *
  * @param {Object} object
@@ -14,7 +14,7 @@ function encode(object) {
   return encoded
 }
 
-/**
+/*
  * Decode a base-64 `string` to a JSON `object`.
  *
  * @param {String} string
@@ -27,7 +27,7 @@ function decode(string) {
   return object
 }
 
-/**
+/*
  * Deserialize a Value `string`.
  *
  * @param {String} string
@@ -40,7 +40,7 @@ function deserialize(string, options) {
   return value
 }
 
-/**
+/*
  * Deserialize a Node `string`.
  *
  * @param {String} string
@@ -53,7 +53,7 @@ function deserializeNode(string, options) {
   return node
 }
 
-/**
+/*
  * Serialize a `value`.
  *
  * @param {Value} value
@@ -66,7 +66,7 @@ function serialize(value, options) {
   return encoded
 }
 
-/**
+/*
  * Serialize a `node`.
  *
  * @param {Node} node
@@ -79,7 +79,7 @@ function serializeNode(node, options) {
   return encoded
 }
 
-/**
+/*
  * Export.
  *
  * @type {Object}

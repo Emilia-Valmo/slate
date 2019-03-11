@@ -6,7 +6,7 @@ const KEY_ENTER = 'Enter'
 const KEY_TAB = 'Tab'
 const KEY_BACKSPACE = 'Backspace'
 
-/**
+/*
  * A Slate plugin to handle keyboard events in lists.
  */
 
@@ -25,11 +25,11 @@ function EditList(
   }
 }
 
-/**
+/*
  * User is pressing a key in the editor
  */
 
-function onKeyDown(opts: Options, event, change, editor: *): void | any {
+function onKeyDown(opts: Options, event, change, editor: any): void | any {
   const args = [event, change, editor, opts]
 
   switch (event.key) {

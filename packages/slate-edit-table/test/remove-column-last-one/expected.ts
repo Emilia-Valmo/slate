@@ -1,4 +1,4 @@
-/** @jsx hyperscript */
+/* @jsx hyperscript */
 
 import hyperscript from '../hyperscript'
 

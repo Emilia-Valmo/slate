@@ -4,7 +4,7 @@ import TablePosition from './utils/TablePosition'
 import core from './core'
 import { onKeyDown, onCopy, onPaste } from './handlers'
 
-/**
+/*
  *  Returns the full plugin object (behavior + rendering + schema)
  */
 

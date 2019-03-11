@@ -1,4 +1,4 @@
-/** @jsx h */
+/* @jsx h */
 
 import { PARENT_TYPE_INVALID } from '@gitbook/slate-schema-violations'
 import h from '../../helpers/h'

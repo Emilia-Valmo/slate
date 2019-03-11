@@ -1,14 +1,14 @@
-import Value from '../models/value'
+import Value from '../models/value';
 
-/**
+/*
  * Changes.
  *
  * @type {Object}
  */
 
-const Changes = {}
+const Changes = {};
 
-/**
+/*
  * Set `properties` on the value.
  *
  * @param {Change} change
@@ -17,23 +17,23 @@ const Changes = {}
  */
 
 Changes.setValue = (change, properties, options = {}) => {
-  properties = Value.createProperties(properties)
-  const { value } = change
+    properties = Value.createProperties(properties);
+    const { value } = change;
 
-  change.applyOperation(
-    {
-      type: 'set_value',
-      properties,
-      value,
-    },
-    options
-  )
-}
+    change.applyOperation(
+        {
+            type: 'set_value',
+            properties,
+            value
+        },
+        options
+    );
+};
 
-/**
+/*
  * Export.
  *
  * @type {Object}
  */
 
-export default Changes
+export default Changes;

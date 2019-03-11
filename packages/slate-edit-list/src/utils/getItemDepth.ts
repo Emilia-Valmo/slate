@@ -1,25 +1,25 @@
-import { Value, Block } from '@gitbook/slate'
+import { Block, Value } from '@gitbook/slate';
 
-import Options from '../options'
-import getCurrentItem from './getCurrentItem'
+import Options from '../options';
+import getCurrentItem from './getCurrentItem';
 
-/**
+/*
  * Get depth of current block in a document list
  */
 
 function getItemDepth(opts: Options, value: Value, block?: Block): number {
-  const { document, startBlock } = value
-  block = block || startBlock
+    const { document, startBlock } = value;
+    block = block || startBlock;
 
-  const currentItem = getCurrentItem(opts, value, block)
+    const currentItem = getCurrentItem(opts, value, block);
 
-  if (!currentItem) {
-    return 0
-  }
+    if (!currentItem) {
+        return 0;
+    }
 
-  const list = document.getParent(currentItem.key)
+    const list = document.getParent(currentItem.key);
 
-  return 1 + getItemDepth(opts, value, list)
+    return 1 + getItemDepth(opts, value, list);
 }
 
-export default getItemDepth
+export default getItemDepth;

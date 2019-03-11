@@ -4,7 +4,7 @@ import { wrapInBlockquote, unwrapBlockquote } from './changes'
 
 import { schema } from './validation'
 
-/**
+/*
  * The core of the plugin, which does not relies on `slate-react`, and includes
  * everything but behavior and rendering logic.
  */
@@ -26,11 +26,11 @@ function core(optsParam: OptionsFormat): Object {
   }
 }
 
-/**
+/*
  * Bind a change to given options, and scope it to act only inside a blockquote
  */
 
-function bindAndScopeChange(opts: Options, fn: *): * {
+function bindAndScopeChange(opts: Options, fn: any): any {
   return (change, ...args) => {
     const { value } = change
 

@@ -2,19 +2,19 @@
 import { Change } from '@gitbook/slate'
 import endsWith from 'ends-with'
 
-import { getCurrentIndent, getCurrentCode } from '../utils'
 import Options from '../options'
+import { getCurrentCode, getCurrentIndent } from '../utils'
 
-/**
+/*
  * User pressed Delete in an editor:
  * Remove last idnentation before cursor
  */
 
 function onBackspace(
   opts: Options,
-  event: *,
+  event: any,
   change: Change,
-  editor: *
+  editor: any
 ): void | Change {
   const { value } = change
 

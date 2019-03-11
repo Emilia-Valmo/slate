@@ -1,4 +1,4 @@
-import unwrapBlockquote from './unwrapBlockquote'
-import wrapInBlockquote from './wrapInBlockquote'
+import unwrapBlockquote from './unwrapBlockquote';
+import wrapInBlockquote from './wrapInBlockquote';
 
-export { unwrapBlockquote, wrapInBlockquote }
+export { unwrapBlockquote, wrapInBlockquote };

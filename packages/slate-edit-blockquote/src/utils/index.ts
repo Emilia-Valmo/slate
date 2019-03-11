@@ -1,4 +1,4 @@
-import getCurrentBlockquote from './getCurrentBlockquote'
-import isSelectionInBlockquote from './isSelectionInBlockquote'
+import getCurrentBlockquote from './getCurrentBlockquote';
+import isSelectionInBlockquote from './isSelectionInBlockquote';
 
-export { getCurrentBlockquote, isSelectionInBlockquote }
+export { getCurrentBlockquote, isSelectionInBlockquote };

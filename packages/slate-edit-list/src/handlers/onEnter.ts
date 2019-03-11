@@ -1,10 +1,10 @@
 import { Change } from '@gitbook/slate'
 
+import { decreaseItemDepth, splitListItem, unwrapList } from '../changes'
 import Options from '../options'
-import { unwrapList, splitListItem, decreaseItemDepth } from '../changes'
 import { getCurrentItem, getItemDepth } from '../utils'
 
-/**
+/*
  * User pressed Enter in an editor
  *
  * Enter in a list item should split the list item
@@ -13,9 +13,9 @@ import { getCurrentItem, getItemDepth } from '../utils'
  */
 
 function onEnter(
-  event: *,
+  event: any,
   change: Change,
-  editor: *,
+  editor: any,
   opts: Options
 ): void | any {
   // Pressing Shift+Enter

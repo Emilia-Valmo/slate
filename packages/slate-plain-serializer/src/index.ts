@@ -1,7 +1,7 @@
 import { Block, Mark, Node, Value } from '@gitbook/slate'
 import { Set } from 'immutable'
 
-/**
+/*
  * Deserialize a plain text `string` to a Slate value.
  *
  * @param {String} string
@@ -54,7 +54,7 @@ function deserialize(string, options = {}) {
   return ret
 }
 
-/**
+/*
  * Serialize a Slate `value` to a plain text string.
  *
  * @param {Value} value
@@ -65,7 +65,7 @@ function serialize(value) {
   return serializeNode(value.document)
 }
 
-/**
+/*
  * Serialize a `node` to plain text.
  *
  * @param {Node} node
@@ -83,7 +83,7 @@ function serializeNode(node) {
   }
 }
 
-/**
+/*
  * Export.
  *
  * @type {Object}

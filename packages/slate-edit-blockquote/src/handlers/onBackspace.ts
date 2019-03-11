@@ -1,15 +1,15 @@
 import { Change } from '@gitbook/slate'
 
+import { unwrapBlockquote } from '../changes'
 import Options from '../options'
 import { getCurrentBlockquote } from '../utils'
-import { unwrapBlockquote } from '../changes'
 
-/**
+/*
  * User pressed Delete in an editor:
  * Unwrap the blockquote if at the start of the inner block.
  */
 
-function onBackspace(opts: Options, event: *, change: Change, editor: *) {
+function onBackspace(opts: Options, event: any, change: Change, editor: any) {
   const { value } = change
   const { startOffset, isCollapsed } = value
 

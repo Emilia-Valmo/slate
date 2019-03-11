@@ -1,7 +1,7 @@
 import isHotkey from 'is-hotkey'
 import typeOf from 'type-of'
 
-/**
+/*
  * A Slate plugin to automatically replace a block when a string of matching
  * text is typed.
  *
@@ -21,7 +21,7 @@ function AutoReplace(opts = {}) {
   if (!transform) throw new Error('You must provide a `transform` option.')
   if (!trigger) throw new Error('You must provide a `trigger` option.')
 
-  /**
+  /*
    * On key down.
    *
    * @param {Event} event
@@ -36,7 +36,7 @@ function AutoReplace(opts = {}) {
     }
   }
 
-  /**
+  /*
    * Replace a block's properties.
    *
    * @param {Event} event
@@ -77,7 +77,7 @@ function AutoReplace(opts = {}) {
     return change.call(transform, event, matches, editor)
   }
 
-  /**
+  /*
    * Try to match the current text of a `value` with the `before` and
    * `after` regexes.
    *
@@ -114,7 +114,7 @@ function AutoReplace(opts = {}) {
     return { before, after }
   }
 
-  /**
+  /*
    * Return the offsets for `matches` with `start` offset.
    *
    * @param {Object} matches
@@ -174,7 +174,7 @@ function AutoReplace(opts = {}) {
     return offsets
   }
 
-  /**
+  /*
    * Return the plugin.
    *
    * @type {Object}
@@ -183,7 +183,7 @@ function AutoReplace(opts = {}) {
   return { onKeyDown }
 }
 
-/**
+/*
  * Normalize a `trigger` option to a matching function.
  *
  * @param {Mixed} trigger
@@ -201,7 +201,7 @@ function normalizeTrigger(trigger) {
   }
 }
 
-/**
+/*
  * Normalize a node matching plugin option.
  *
  * @param {Function|Array|String} matchIn
@@ -219,7 +219,7 @@ function normalizeMatcher(matcher) {
   }
 }
 
-/**
+/*
  * Export.
  *
  * @type {Function}

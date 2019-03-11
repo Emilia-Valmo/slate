@@ -1,16 +1,16 @@
 
 import { Block, Change, Node } from '@gitbook/slate'
 import {
+  CHILD_OBJECT_INVALID,
   CHILD_TYPE_INVALID,
   PARENT_TYPE_INVALID,
-  CHILD_OBJECT_INVALID,
 } from '@gitbook/slate-schema-violations'
 import { List } from 'immutable'
 
 import Options from '../options'
 import { deserializeCode } from '../utils'
 
-/**
+/*
  * Create a schema definition with rules to normalize code blocks
  */
 
@@ -56,7 +56,7 @@ function schema(opts: Options): Object {
   return baseSchema
 }
 
-/**
+/*
  * Return a list of group of nodes matching the given filter.
  */
 
@@ -77,7 +77,7 @@ function getSuccessiveNodes(
   return List([firstGroup]).concat(getSuccessiveNodes(restOfNodes, match))
 }
 
-/**
+/*
  * A rule that ensure code blocks only contain lines of code, and no marks
  */
 
@@ -110,7 +110,7 @@ function onlyLine(opts: Options, change: Change, context: Object) {
   return change
 }
 
-/**
+/*
  * A rule that ensure code lines only contain text
  */
 
@@ -132,7 +132,7 @@ function onlyTextInCode(
   return undefined
 }
 
-/**
+/*
  * A rule that ensure code lines are always children
  * of a code block.
  */

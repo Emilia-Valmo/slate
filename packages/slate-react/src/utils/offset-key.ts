@@ -1,12 +1,12 @@
-/**
+/*
  * Offset key parser regex.
  *
  * @type {RegExp}
  */
 
-const PARSER = /^([\w-]+)(?::(\d+))?$/
+const PARSER = /^([\w-]+)(?::(\d+))?$/;
 
-/**
+/*
  * Parse an offset key `string`.
  *
  * @param {String} string
@@ -14,20 +14,20 @@ const PARSER = /^([\w-]+)(?::(\d+))?$/
  */
 
 function parse(string) {
-  const matches = PARSER.exec(string)
+    const matches = PARSER.exec(string);
 
-  if (!matches) {
-    throw new Error(`Invalid offset key string "${string}".`)
-  }
+    if (!matches) {
+        throw new Error(`Invalid offset key string "${string}".`);
+    }
 
-  const [original, key, index] = matches // eslint-disable-line no-unused-vars
-  return {
-    key,
-    index: parseInt(index, 10),
-  }
+    const [original, key, index] = matches; // eslint-disable-line no-unused-vars
+    return {
+        key,
+        index: parseInt(index, 10)
+    };
 }
 
-/**
+/*
  * Stringify an offset key `object`.
  *
  * @param {Object} object
@@ -37,16 +37,16 @@ function parse(string) {
  */
 
 function stringify(object) {
-  return `${object.key}:${object.index}`
+    return `${object.key}:${object.index}`;
 }
 
-/**
+/*
  * Export.
  *
  * @type {Object}
  */
 
 export default {
-  parse,
-  stringify,
-}
+    parse,
+    stringify
+};

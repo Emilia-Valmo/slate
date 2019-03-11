@@ -1,4 +1,4 @@
-/** @jsx h */
+/* @jsx h */
 
 import h from '../../helpers/h'
 

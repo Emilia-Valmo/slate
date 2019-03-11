@@ -8,7 +8,7 @@ export type OptionsFormat = {
   canMerge?: (listA: Node, listB: Node) => boolean,
 }
 
-/**
+/*
  * The plugin options
  */
 

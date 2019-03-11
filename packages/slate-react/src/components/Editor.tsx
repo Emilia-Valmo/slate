@@ -67,7 +67,7 @@ function Editor(props: EditorProps): React.Node {
     )
 }
 
-/**
+/*
    * Resolve an array of plugins from `plugins` and `schema` props.
    *
    * In addition to the plugins provided in props, this will initialize three

@@ -1,20 +1,19 @@
+import { Value } from '@gitbook/slate';
 
-import { Value } from '@gitbook/slate'
+import Options from '../options';
 
-import Options from '../options'
-
-/**
+/*
  * Test if current selection is in a code block.
  */
 
 function isInCodeBlock(opts: Options, value: Value): boolean {
-  const { document, startKey } = value
-  const codeBlock = document.getClosest(
-    startKey,
-    block => block.type === opts.containerType
-  )
+    const { document, startKey } = value;
+    const codeBlock = document.getClosest(
+        startKey,
+        block => block.type === opts.containerType
+    );
 
-  return Boolean(codeBlock)
+    return Boolean(codeBlock);
 }
 
-export default isInCodeBlock
+export default isInCodeBlock;

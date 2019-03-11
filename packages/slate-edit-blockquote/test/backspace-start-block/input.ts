@@ -1,4 +1,4 @@
-/** @jsx h */ import h from '../hyperscript'
+/* @jsx h */ import h from '../hyperscript'
 
 export default (
   <value>

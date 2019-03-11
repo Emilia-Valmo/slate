@@ -1,13 +1,13 @@
-import wrapInList from './wrapInList'
-import unwrapList from './unwrapList'
-import splitListItem from './splitListItem'
-import increaseItemDepth from './increaseItemDepth'
-import decreaseItemDepth from './decreaseItemDepth'
+import decreaseItemDepth from './decreaseItemDepth';
+import increaseItemDepth from './increaseItemDepth';
+import splitListItem from './splitListItem';
+import unwrapList from './unwrapList';
+import wrapInList from './wrapInList';
 
 export {
-  wrapInList,
-  unwrapList,
-  splitListItem,
-  increaseItemDepth,
-  decreaseItemDepth,
-}
+    wrapInList,
+    unwrapList,
+    splitListItem,
+    increaseItemDepth,
+    decreaseItemDepth
+};

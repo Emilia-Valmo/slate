@@ -22,7 +22,8 @@
     "immutable": ">=4.0.0-rc.12",
     "is-hotkey": "^0.1.1",
     "is-url": "^1.2.2",
-    "jest": "^24.0.0-alpha.9",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.5",
     "jsdom": "^11.5.1",
     "lerna": "^2.7.1",
     "lodash": "^4.17.4",
@@ -74,7 +75,25 @@
     "server": "webpack-dev-server --config ./support/webpack/config.js",
     "start": "npm-run-all --parallel --print-label watch server",
     "pretest": "yarn run build",
-    "test": "yarn run test:only",
-    "test:only": "cross-env BABEL_ENV=test jest"
+    "test": "jest"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false
+      }
+    }
   }
 }

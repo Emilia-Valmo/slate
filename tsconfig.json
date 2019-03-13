@@ -11,6 +11,7 @@
         "experimentalDecorators": true,
         "jsx": "react",
         "sourceMap": true,
+        "esModuleInterop": true,
         "lib": [
             "es6",
             "dom"

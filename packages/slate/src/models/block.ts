@@ -36,7 +36,7 @@ class Block extends Record(DEFAULTS) {
      * @return {String}
      */
 
-    get object() {
+    get object(): 'block' {
         return 'block';
     }
 

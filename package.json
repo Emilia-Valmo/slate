@@ -47,6 +47,7 @@
     "style-loader": "^0.23.1",
     "terser-webpack-plugin": "^1.2.1",
     "to-camel-case": "^1.0.0",
+    "ts-loader": "^5.3.3",
     "tslib": "^1.9.3",
     "tslint": "^5.13.1",
     "tslint-config-gitbook": "^1.0.0",

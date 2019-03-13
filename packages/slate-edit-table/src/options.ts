@@ -1,12 +1,12 @@
-import { Record } from 'immutable'
-import { Node } from '@gitbook/slate'
+import { Node } from '@gitbook/slate';
+import { Record } from 'immutable';
 
-export type OptionsFormat = {
-  typeTable?: string,
-  typeRow?: string,
-  typeCell?: string,
-  typeContent?: string,
-  exitBlockType?: string,
+export interface OptionsFormat {
+    typeTable?: string;
+    typeRow?: string;
+    typeCell?: string;
+    typeContent?: string;
+    exitBlockType?: string;
 }
 
 /*
@@ -14,29 +14,29 @@ export type OptionsFormat = {
  */
 
 class Options extends Record({
-  typeTable: 'table',
-  typeRow: 'table_row',
-  typeCell: 'table_cell',
-  typeContent: 'paragraph',
-  exitBlockType: 'paragraph',
+    typeTable: 'table',
+    typeRow: 'table_row',
+    typeCell: 'table_cell',
+    typeContent: 'paragraph',
+    exitBlockType: 'paragraph'
 }) {
-  // The type of table blocks
-  typeTable: string
-  // The type of row blocks
-  typeRow: string
-  // The type of cell blocks
-  typeCell: string
-  // The default type for blocks in cells
-  typeContent: string
-  // The type of block inserted when exiting
-  exitBlockType: string
+    // The type of table blocks
+    public typeTable: string;
+    // The type of row blocks
+    public typeRow: string;
+    // The type of cell blocks
+    public typeCell: string;
+    // The default type for blocks in cells
+    public typeContent: string;
+    // The type of block inserted when exiting
+    public exitBlockType: string;
 
-  /*
+    /*
      * Return a node filter to find a cell.
      */
 
-  isCell = (node: Node): boolean =>
-    node.object == 'block' && node.type == this.typeCell
+    public isCell = (node: Node): boolean =>
+        node.object === 'block' && node.type === this.typeCell;
 }
 
-export default Options
+export default Options;

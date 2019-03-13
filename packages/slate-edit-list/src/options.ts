@@ -1,11 +1,11 @@
-import { Node } from '@gitbook/slate'
-import { Record } from 'immutable'
+import { Node } from '@gitbook/slate';
+import { Record } from 'immutable';
 
-export type OptionsFormat = {
-  types?: string[],
-  typeItem?: string,
-  typeDefault?: string,
-  canMerge?: (listA: Node, listB: Node) => boolean,
+export interface OptionsFormat {
+    types?: string[];
+    typeItem?: string;
+    typeDefault?: string;
+    canMerge?: (listA: Node, listB: Node) => boolean;
 }
 
 /*
@@ -13,19 +13,19 @@ export type OptionsFormat = {
  */
 
 class Options extends Record({
-  types: ['ul_list', 'ol_list'],
-  typeItem: 'list_item',
-  typeDefault: 'paragraph',
-  canMerge: (a: Node, b: Node) => a.type === b.type,
+    types: ['ul_list', 'ol_list'],
+    typeItem: 'list_item',
+    typeDefault: 'paragraph',
+    canMerge: (a: Node, b: Node) => a.type === b.type
 }) {
-  // The possibles types for list containers
-  types: string[]
-  // The of list items
-  typeItem: string
-  // The of default block in items
-  typeDefault: string
-  // You can control here the automatic merging of adjacent lists
-  canMerge: (listA: Node, listB: Node) => boolean
+    // The possibles types for list containers
+    public types: string[];
+    // The of list items
+    public typeItem: string;
+    // The of default block in items
+    public typeDefault: string;
+    // You can control here the automatic merging of adjacent lists
+    public canMerge: (listA: Node, listB: Node) => boolean;
 }
 
-export default Options
+export default Options;

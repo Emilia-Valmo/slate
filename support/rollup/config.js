@@ -44,7 +44,7 @@ function createConfig(pkg) {
     .concat(pkg.peerDependencies ? Object.keys(pkg.peerDependencies) : [])
 
   const pkgDir = path.resolve(PACKAGES_DIR, pkgShortname)
-  const input = path.resolve(pkgDir, 'src/index.ts')
+  const input = path.resolve(pkgDir, pkg.source || 'src/index.ts')
   const srcDir = path.dirname(input)
 
   const plugins = [

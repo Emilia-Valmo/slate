@@ -1,25 +1,25 @@
-import { Record } from 'immutable'
+import { Record } from 'immutable';
 
 const DEFAULTS = {
-  type: 'blockquote',
-  typeDefault: 'paragraph',
-  exitBlockType: 'paragraph',
-}
+    type: 'blockquote',
+    typeDefault: 'paragraph',
+    exitBlockType: 'paragraph'
+};
 
 /*
  * The plugin options container
  */
 
 class Options extends Record(DEFAULTS) {
-  type: string
-  typeDefault: string
-  exitBlockType: string
+    public type: string;
+    public typeDefault: string;
+    public exitBlockType: string;
 }
 
-export OptionsFormat = {
-  type?: string, // for blockquotes
-  typeDefault?: string, // for default block in blockquote.
-  exitBlockType?: string, // of block inserted when exiting
+export interface OptionsFormat {
+    type?: string; // for blockquotes
+    typeDefault?: string; // for default block in blockquote.
+    exitBlockType?: string; // of block inserted when exiting
 }
 
-export default Options
+export default Options;

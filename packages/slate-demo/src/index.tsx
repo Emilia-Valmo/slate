@@ -4,19 +4,17 @@ import { AppContainer } from 'react-hot-loader';
 import App from './app';
 import './index.css';
 
-/**
- * Render the app.
- */
-
 const root = window.document.createElement('div');
 root.id = 'root';
 window.document.body.appendChild(root);
 
 const render = Component => {
     ReactDOM.render(
-        <AppContainer>
-            <Component />
-        </AppContainer>,
+        <React.unstable_ConcurrentMode>
+            <AppContainer>
+                <Component />
+            </AppContainer>
+        </React.unstable_ConcurrentMode>,
         root
     );
 };

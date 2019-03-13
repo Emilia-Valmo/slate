@@ -21,7 +21,7 @@ interface NodeRendererProps {
 /*
  * Should the node update?
  */
-function shouldComponentUpdate(
+function areEqual(
     props: NodeRendererProps,
     nextProps: NodeRendererProps
 ): boolean {
@@ -39,7 +39,7 @@ function shouldComponentUpdate(
     // false, we need to ignore it, because it shouldn't be allowed it.
     if (shouldUpdate != null) {
         if (shouldUpdate) {
-            return true;
+            return false;
         }
 
         if (shouldUpdate === false) {
@@ -52,7 +52,7 @@ function shouldComponentUpdate(
     // If the `readOnly` status has changed, re-render in case there is any
     // user-land logic that depends on it, like nested editable contents.
     if (n.readOnly !== p.readOnly) {
-        return true;
+        return false;
     }
 
     // If the node has changed, update. PERF: There are cases where it will have
@@ -60,7 +60,7 @@ function shouldComponentUpdate(
     // which this won't catch. But that's rare and not a drag on performance, so
     // for simplicity we just let them through.
     if (n.node !== p.node) {
-        return true;
+        return false;
     }
 
     // If the selection value of the node or of some of its children has changed,
@@ -69,19 +69,19 @@ function shouldComponentUpdate(
     // selection value of some of its children could have been changed and they
     // need to be rendered again.
     if (n.isSelected || p.isSelected) {
-        return true;
+        return false;
     }
     if (n.isFocused || p.isFocused) {
-        return true;
+        return false;
     }
 
     // If the decorations have changed, update.
     if (!n.decorations.equals(p.decorations)) {
-        return true;
+        return false;
     }
 
     // Otherwise, don't update.
-    return false;
+    return true;
 }
 
 /*
@@ -159,6 +159,6 @@ const NodeRenderer = React.memo(function NodeRenderer(
         element
     );
 },
-shouldComponentUpdate);
+areEqual);
 
 export default NodeRenderer;

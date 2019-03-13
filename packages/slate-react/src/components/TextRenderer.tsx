@@ -65,18 +65,15 @@ const TextRenderer = React.memo(function TextRenderer(
 
     return <span data-key={key}>{children}</span>;
 },
-shouldComponentUpdate);
+areEqual);
 
-function shouldComponentUpdate(
-    p: TextRendererProps,
-    n: TextRendererProps
-): boolean {
+function areEqual(p: TextRendererProps, n: TextRendererProps): boolean {
     // If the node has changed, update. PERF: There are cases where it will have
     // changed, but it's properties will be exactly the same (eg. copy-paste)
     // which this won't catch. But that's rare and not a drag on performance, so
     // for simplicity we just let them through.
     if (n.node !== p.node) {
-        return true;
+        return false;
     }
 
     // If the node parent is a block node, and it was the last child of the
@@ -88,17 +85,17 @@ function shouldComponentUpdate(
         const pLast = pParent.nodes.last();
         const nLast = nParent.nodes.last();
         if (p.node === pLast && n.node !== nLast) {
-            return true;
+            return false;
         }
     }
 
     // Re-render if the current decorations have changed.
     if (!n.decorations.equals(p.decorations)) {
-        return true;
+        return false;
     }
 
     // Otherwise, don't update.
-    return false;
+    return true;
 }
 
 export default TextRenderer;

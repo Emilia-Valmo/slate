@@ -10,4 +10,5 @@ export interface EditorContainer {
     schema: Schema;
     element: HTMLElement;
     onChange: (change: Change) => void;
+    change: (fn: (change: Change) => Change) => void;
 }

@@ -16,6 +16,7 @@ import {
     SUPPORTED_EVENTS
 } from '@gitbook/slate-dev-environment';
 import getWindow from 'get-window';
+import throttle from 'lodash.throttle';
 import * as React from 'react';
 import {
     unstable_cancelCallback as cancelCallback,
@@ -37,6 +38,8 @@ import NodeRenderer from './NodeRenderer';
 
 const FIREFOX_NODE_TYPE_ACCESS_ERROR = /Permission denied to access property "nodeType"/;
 
+console.log(throttle);
+
 interface EditorProps {
     value: Value;
     readOnly?: boolean;
@@ -46,6 +49,7 @@ interface EditorProps {
     tabIndex?: number;
     role?: string;
     style?: Object;
+    plugins?: Plugin[];
     renderNode: (node: Block | Inline) => React.Node;
     renderMark: (mark: Mark) => React.Node;
     onChange: (change: Change) => void;
@@ -62,20 +66,43 @@ function Editor(props: EditorProps): React.Node {
         spellCheck,
         tabIndex,
         style,
+        renderNode,
+        renderMark,
         plugins: propPlugins,
         schema: propSchema
     } = props;
     const { document, selection, isFocused, decorations } = value;
 
-    // Compute the stack and schema that should be used
+    /*
+     * Compute the stack and schema that should be used
+     *
+     * In addition to the plugins provided in props, this will initialize three
+     * other plugins:
+     *
+     * - The top-level editor plugin, which allows for top-level handlers, etc.
+     * - The two "core" plugins, one before all the other and one after.
+     */
     const { stack, schema } = React.useMemo(() => {
-        const plugins = resolvePlugins(propPlugins, propSchema);
+        const beforePlugin = BeforePlugin();
+        const afterPlugin = AfterPlugin();
+        const editorPlugin = {
+            schema: propSchema || {},
+            renderNode,
+            renderMark
+        };
+
+        const plugins = [
+            beforePlugin,
+            editorPlugin,
+            ...propPlugins,
+            afterPlugin
+        ];
 
         return {
             stack: Stack.create({ plugins }),
             schema: Schema.create({ plugins })
         };
-    }, [propPlugins, propSchema]);
+    }, [propPlugins, propSchema, renderNode, renderMark]);
 
     const domRef = React.useRef();
     const isUpdatingSelectionRef = React.useRef(false);
@@ -194,25 +221,34 @@ function Editor(props: EditorProps): React.Node {
      * until after a selection has been released. This causes issues in situations
      * where another change happens while a selection is being made.
      */
-    const onNativeSelectionChange = (event: Event) => {
-        const element = domRef.current;
+    const onNativeSelectionChange = React.useCallback(
+        // throttle(
+            (event: Event) => {
+            const element = domRef.current;
 
-        if (readOnly || !element) {
-            return;
-        }
+            if (readOnly || !element) {
+                return;
+            }
 
-        runWithPriority(UserBlockingPriority, () => {
+            runWithPriority(UserBlockingPriority, () => {
             scheduleCallback(() => {
-                const window = getWindow(event.target);
-                const { activeElement } = window.document;
-                if (activeElement !== element) {
-                    return;
-                }
+            const window = getWindow(event.target);
+            const { activeElement } = window.document;
+            if (activeElement !== element) {
+                return;
+            }
 
-                onEvent('onSelect', event);
-            });
+            /*dispatchChange(change => {
+                stack.run('onSelect', event, change, editor.current);
+            });*/
+
+            onEvent('onSelect', event);
+               });
         });
-    };
+        }
+        // , 100),
+        [domRef, editor, readOnly]
+    );
 
     /*
      * On a native `beforeinput` event, use the additional range information
@@ -321,12 +357,10 @@ function Editor(props: EditorProps): React.Node {
         }
 
         return () => {
-            if (window) {
-                window.document.removeEventListener(
-                    'selectionchange',
-                    onNativeSelectionChange
-                );
-            }
+            window.document.removeEventListener(
+                'selectionchange',
+                onNativeSelectionChange
+            );
 
             // COMPAT: Restrict scope of `beforeinput` to mobile.
             if ((IS_IOS || IS_ANDROID) && SUPPORTED_EVENTS.beforeinput) {
@@ -340,7 +374,7 @@ function Editor(props: EditorProps): React.Node {
      */
     React.useEffect(() => {
         const element = domRef.current;
-        if (element) {
+        if (!element) {
             return;
         }
 
@@ -352,6 +386,7 @@ function Editor(props: EditorProps): React.Node {
     editor.current.schema = schema;
     editor.current.value = value;
     editor.current.onChange = onChange;
+    editor.current.change = dispatchChange;
 
     /*
      * Create the event handlers to be passed to the DOM element.
@@ -384,8 +419,6 @@ function Editor(props: EditorProps): React.Node {
             />
         );
     });
-
-    console.log(eventHandlers);
 
     return (
         <div
@@ -423,26 +456,6 @@ function Editor(props: EditorProps): React.Node {
             {children}
         </div>
     );
-}
-
-/*
- * Resolve an array of plugins from `plugins` and `schema` props.
- *
- * In addition to the plugins provided in props, this will initialize three
- * other plugins:
- *
- * - The top-level editor plugin, which allows for top-level handlers, etc.
- * - The two "core" plugins, one before all the other and one after.
- */
-
-function resolvePlugins(plugins: Plugin[], schema: Schema): Plugin[] {
-    const beforePlugin = BeforePlugin();
-    const afterPlugin = AfterPlugin();
-    const editorPlugin = {
-        schema: schema || {}
-    };
-
-    return [beforePlugin, editorPlugin, ...(plugins || []), afterPlugin];
 }
 
 /*

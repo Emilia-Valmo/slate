@@ -60,7 +60,7 @@ const LeafRenderer = React.memo(function LeafRenderer(
         </span>
     );
 },
-shouldComponentUpdate);
+areEqual);
 
 function renderLeafText(props: LeafRendererProps): React.Node {
     const { block, node, ancestors, text, index, leaves } = props;
@@ -108,7 +108,7 @@ function renderLeafText(props: LeafRendererProps): React.Node {
 /*
  * Should we render the leaf ?
  */
-function shouldComponentUpdate(
+function areEqual(
     props: LeafRendererProps,
     nextProps: LeafRendererProps
 ): boolean {
@@ -118,11 +118,11 @@ function shouldComponentUpdate(
         nextProps.marks !== props.marks ||
         nextProps.text !== props.text
     ) {
-        return true;
+        return false;
     }
 
     // Otherwise, don't update.
-    return false;
+    return true;
 }
 
 export default LeafRenderer;

@@ -2,6 +2,7 @@ import isEmpty from 'is-empty';
 import pick from 'lodash/pick';
 
 import Range from '../models/range';
+import Operation from '../models/operation';
 
 /*
  * Changes.
@@ -56,12 +57,12 @@ Changes.select = (change, properties, options = {}) => {
 
     // Apply the operation.
     change.applyOperation(
-        {
+        Operation.create({
             type: 'set_selection',
             value,
             properties: props,
             selection: sel
-        },
+        }),
         snapshot ? { skip: false, merge: false } : {}
     );
 };

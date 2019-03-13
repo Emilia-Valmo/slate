@@ -79,17 +79,10 @@ class Change {
      * @return {Change}
      */
 
-    public applyOperation(operation, options = {}) {
+    public applyOperation(operation: Operation, options = {}) {
         const { operations, flags } = this;
         let { value } = this;
         let { history } = value;
-
-        // Add in the current `value` in case the operation was serialized.
-        if (isPlainObject(operation)) {
-            operation = { ...operation, value };
-        }
-
-        operation = Operation.create(operation);
 
         // Default options to the change-level flags, this allows for setting
         // specific options for all of the operations of a given change.
@@ -126,7 +119,7 @@ class Change {
      * @return {Change}
      */
 
-    public applyOperations(operations, options) {
+    public applyOperations(operations: Operation[], options) {
         operations.forEach(op => this.applyOperation(op, options));
         return this;
     }

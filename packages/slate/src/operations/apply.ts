@@ -1,6 +1,7 @@
 import Debug from 'debug';
 
 import Operation from '../models/operation';
+import Value from '../models/value';
 
 /*
  * Debug.
@@ -60,13 +61,13 @@ function clearAtomicRangesIfContains(value, key, offset, offsetEnd = null) {
             }
             const { startKey, startOffset, endKey, endOffset } = range;
             return (
-                (startKey == key &&
+                (startKey === key &&
                     startOffset < offset &&
-                    (endKey != key || endOffset > offset)) ||
+                    (endKey !== key || endOffset > offset)) ||
                 (offsetEnd &&
-                    startKey == key &&
+                    startKey === key &&
                     startOffset < offsetEnd &&
-                    (endKey != key || endOffset > offsetEnd))
+                    (endKey !== key || endOffset > offsetEnd))
             );
         },
         range => range.deselect()
@@ -88,7 +89,7 @@ const APPLIERS = {
      * @return {Value}
      */
 
-    add_mark(value, operation) {
+    add_mark(value: Value, operation: Operation) {
         const { path, offset, length, mark } = operation;
         let { document } = value;
         let node = document.assertPath(path);
@@ -106,7 +107,7 @@ const APPLIERS = {
      * @return {Value}
      */
 
-    insert_node(value, operation) {
+    insert_node(value: Value, operation: Operation) {
         const { path, node } = operation;
         const index = path[path.length - 1];
         const rest = path.slice(0, -1);
@@ -126,7 +127,7 @@ const APPLIERS = {
      * @return {Value}
      */
 
-    insert_text(value, operation) {
+    insert_text(value: Value, operation: Operation) {
         const { path, offset, text, marks } = operation;
         let { document } = value;
         let node = document.assertPath(path);
@@ -144,18 +145,18 @@ const APPLIERS = {
         value = applyRangeAdjustments(
             value,
             ({ anchorKey, anchorOffset, isBackward, isAtomic }) =>
-                anchorKey == node.key &&
+                anchorKey === node.key &&
                 (anchorOffset > offset ||
-                    (anchorOffset == offset && (!isAtomic || !isBackward))),
+                    (anchorOffset === offset && (!isAtomic || !isBackward))),
             range => range.moveAnchor(text.length)
         );
 
         value = applyRangeAdjustments(
             value,
             ({ focusKey, focusOffset, isBackward, isAtomic }) =>
-                focusKey == node.key &&
+                focusKey === node.key &&
                 (focusOffset > offset ||
-                    (focusOffset == offset && (!isAtomic || isBackward))),
+                    (focusOffset === offset && (!isAtomic || isBackward))),
             range => range.moveFocus(text.length)
         );
 
@@ -170,7 +171,7 @@ const APPLIERS = {
      * @return {Value}
      */
 
-    merge_node(value, operation) {
+    merge_node(value: Value, operation: Operation) {
         const { path } = operation;
         const withPath = path
             .slice(0, path.length - 1)
@@ -187,21 +188,21 @@ const APPLIERS = {
         document = document.updateNode(parent);
         value = value.set('document', document);
 
-        if (one.object == 'text') {
+        if (one.object === 'text') {
             value = applyRangeAdjustments(
                 value,
                 // If the nodes are text nodes and the range is inside the second node:
                 ({ anchorKey, focusKey }) =>
-                    anchorKey == two.key || focusKey == two.key,
+                    anchorKey === two.key || focusKey === two.key,
                 // update it to refer to the first node instead:
                 range => {
-                    if (range.anchorKey == two.key) {
+                    if (range.anchorKey === two.key) {
                         range = range.moveAnchorTo(
                             one.key,
                             one.text.length + range.anchorOffset
                         );
                     }
-                    if (range.focusKey == two.key) {
+                    if (range.focusKey === two.key) {
                         range = range.moveFocusTo(
                             one.key,
                             one.text.length + range.focusOffset
@@ -223,7 +224,7 @@ const APPLIERS = {
      * @return {Value}
      */
 
-    move_node(value, operation) {
+    move_node(value: Value, operation: Operation) {
         const { path, newPath } = operation;
         const newIndex = newPath[newPath.length - 1];
         const newParentPath = newPath.slice(0, -1);
@@ -275,7 +276,7 @@ const APPLIERS = {
      * @return {Value}
      */
 
-    remove_mark(value, operation) {
+    remove_mark(value: Value, operation: Operation) {
         const { path, offset, length, mark } = operation;
         let { document } = value;
         let node = document.assertPath(path);
@@ -293,16 +294,16 @@ const APPLIERS = {
      * @return {Value}
      */
 
-    remove_node(value, operation) {
+    remove_node(value: Value, operation: Operation) {
         const { path } = operation;
         let { document, selection } = value;
         const node = document.assertPath(path);
 
         if (selection.isSet || value.decorations !== null) {
             const first =
-                node.object == 'text' ? node : node.getFirstText() || node;
+                node.object === 'text' ? node : node.getFirstText() || node;
             const last =
-                node.object == 'text' ? node : node.getLastText() || node;
+                node.object === 'text' ? node : node.getLastText() || node;
             const prev = document.getPreviousText(first.key);
             const next = document.getNextText(last.key);
 
@@ -359,7 +360,7 @@ const APPLIERS = {
      * @return {Value}
      */
 
-    remove_text(value, operation) {
+    remove_text(value: Value, operation: Operation) {
         const { path, offset, text } = operation;
         const { length } = text;
         const rangeOffset = offset + length;
@@ -378,7 +379,7 @@ const APPLIERS = {
         value = applyRangeAdjustments(
             value,
             // if anchor of range is here
-            ({ anchorKey }) => anchorKey == node.key,
+            ({ anchorKey }) => anchorKey === node.key,
             // adjust if it is in or past the removal range
             range =>
                 range.anchorOffset >= rangeOffset
@@ -391,7 +392,7 @@ const APPLIERS = {
         value = applyRangeAdjustments(
             value,
             // if focus of range is here
-            ({ focusKey }) => focusKey == node.key,
+            ({ focusKey }) => focusKey === node.key,
             // adjust if it is in or past the removal range
             range =>
                 range.focusOffset >= rangeOffset
@@ -415,7 +416,7 @@ const APPLIERS = {
      * @return {Value}
      */
 
-    set_mark(value, operation) {
+    set_mark(value: Value, operation: Operation) {
         const { path, offset, length, mark, properties } = operation;
         let { document } = value;
         let node = document.assertPath(path);
@@ -433,7 +434,7 @@ const APPLIERS = {
      * @return {Value}
      */
 
-    set_node(value, operation) {
+    set_node(value: Value, operation: Operation) {
         const { path, properties } = operation;
         let { document } = value;
         let node = document.assertPath(path);
@@ -451,7 +452,7 @@ const APPLIERS = {
      * @return {Value}
      */
 
-    set_selection(value, operation) {
+    set_selection(value: Value, operation: Operation) {
         const { properties } = operation;
         const { anchorPath, focusPath, ...props } = properties;
         let { document, selection } = value;
@@ -482,7 +483,7 @@ const APPLIERS = {
      * @return {Value}
      */
 
-    set_value(value, operation) {
+    set_value(value: Value, operation: Operation) {
         const { properties } = operation;
         value = value.merge(properties);
         return value;
@@ -496,7 +497,7 @@ const APPLIERS = {
      * @return {Value}
      */
 
-    split_node(value, operation) {
+    split_node(value: Value, operation: Operation) {
         const { path, position, properties } = operation;
         let { document } = value;
 
@@ -523,19 +524,19 @@ const APPLIERS = {
             value,
             // check if range is affected
             ({ startKey, startOffset, endKey, endOffset }) =>
-                (node.key == startKey && position <= startOffset) ||
-                (node.key == endKey && position <= endOffset),
+                (node.key === startKey && position <= startOffset) ||
+                (node.key === endKey && position <= endOffset),
             // update its start / end as needed
             range => {
                 const { startKey, startOffset, endKey, endOffset } = range;
                 let normalize = false;
 
-                if (node.key == startKey && position <= startOffset) {
+                if (node.key === startKey && position <= startOffset) {
                     range = range.moveStartTo(next.key, startOffset - position);
                     normalize = true;
                 }
 
-                if (node.key == endKey && position <= endOffset) {
+                if (node.key === endKey && position <= endOffset) {
                     range = range.moveEndTo(next.key, endOffset - position);
                     normalize = true;
                 }
@@ -562,8 +563,7 @@ const APPLIERS = {
  * @return {Value} value
  */
 
-function applyOperation(value, operation) {
-    operation = Operation.create(operation);
+function applyOperation(value: Value, operation: Operation) {
     const { type } = operation;
     const apply = APPLIERS[type];
 

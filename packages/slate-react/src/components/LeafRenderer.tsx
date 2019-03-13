@@ -1,9 +1,15 @@
-import { Block, Inline, Leaf, Mark, Text } from '@gitbook/slate';
+import {
+    Block,
+    EditorContainer,
+    Inline,
+    Leaf,
+    Mark,
+    Text
+} from '@gitbook/slate';
 import { List, Set } from 'immutable';
 import * as React from 'react';
 
 import OffsetKey from '../utils/offset-key';
-import { EditorContainer } from './Editor';
 
 interface LeafRendererProps {
     editor: EditorContainer;

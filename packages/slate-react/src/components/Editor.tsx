@@ -1,10 +1,10 @@
 import {
     Block,
     Change,
+    EditorContainer,
     Inline,
     Mark,
     Plugin,
-    Range,
     Schema,
     Stack,
     Value
@@ -36,14 +36,6 @@ import scrollToSelection from '../utils/scroll-to-selection';
 import NodeRenderer from './NodeRenderer';
 
 const FIREFOX_NODE_TYPE_ACCESS_ERROR = /Permission denied to access property "nodeType"/;
-
-export interface EditorContainer {
-    readOnly: boolean;
-    value: Value;
-    stack: Stack;
-    element: HTMLElement;
-    onChange: (change: Change) => void;
-}
 
 interface EditorProps {
     value: Value;
@@ -357,6 +349,7 @@ function Editor(props: EditorProps): React.Node {
 
     editor.current.readOnly = readOnly;
     editor.current.stack = stack;
+    editor.current.schema = schema;
     editor.current.value = value;
     editor.current.onChange = onChange;
 
@@ -391,6 +384,8 @@ function Editor(props: EditorProps): React.Node {
             />
         );
     });
+
+    console.log(eventHandlers);
 
     return (
         <div

@@ -4,7 +4,6 @@ import { List } from 'immutable';
 import isPlainObject from 'is-plain-object';
 import pick from 'lodash/pick';
 
-import Changes from '../changes';
 import MODEL_TYPES, { isType } from '../constants/model-types';
 import apply from '../operations/apply';
 import Operation from './operation';
@@ -24,6 +23,8 @@ const debug = Debug('slate:change');
  */
 
 class Change {
+    public static debug = debug;
+
     /*
      * Check if `any` is a `Change`.
      *
@@ -96,7 +97,7 @@ class Change {
 
         // Derive the default option values.
         const {
-            merge = operations.size == 0 ? null : true,
+            merge = operations.size === 0 ? null : true,
             save = true,
             skip = null
         } = options;
@@ -209,23 +210,5 @@ class Change {
  */
 
 Change.prototype[MODEL_TYPES.CHANGE] = true;
-
-/*
- * Add a change method for each of the changes.
- */
-
-Object.keys(Changes).forEach(type => {
-    Change.prototype[type] = function(...args) {
-        debug(type, { args });
-        this.call(Changes[type], ...args);
-        return this;
-    };
-});
-
-/*
- * Export.
- *
- * @type {Change}
- */
 
 export default Change;

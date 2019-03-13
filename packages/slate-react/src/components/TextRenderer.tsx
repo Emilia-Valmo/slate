@@ -1,8 +1,7 @@
-import { Block, Inline, Leaf, Mark, Range, Text } from '@gitbook/slate';
+import { Block, EditorContainer, Inline, Range, Text } from '@gitbook/slate';
 import { List, Set } from 'immutable';
 import * as React from 'react';
 
-import { EditorContainer } from './Editor';
 import LeafRenderer from './LeafRenderer';
 
 interface TextRendererProps {

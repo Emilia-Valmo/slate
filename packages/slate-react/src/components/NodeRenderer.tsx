@@ -1,10 +1,9 @@
-import { Block, Inline, Range } from '@gitbook/slate';
+import { Block, EditorContainer, Inline, Range } from '@gitbook/slate';
 import logger from '@gitbook/slate-dev-logger';
 import { List } from 'immutable';
 import * as React from 'react';
 
 import getChildrenDecorations from '../utils/get-children-decorations';
-import { EditorContainer } from './Editor';
 import TextRenderer from './TextRenderer';
 import VoidWrapper from './VoidWrapper';
 

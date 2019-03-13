@@ -38,7 +38,7 @@ Changes.redo = change => {
 
         // When the operation mutates the selection, omit its `isFocused` value to
         // prevent the editor focus from changing during redoing.
-        if (type == 'set_selection') {
+        if (type === 'set_selection') {
             op = op.set('properties', omit(properties, 'isFocused'));
         }
 
@@ -85,7 +85,7 @@ Changes.undo = change => {
 
             // When the operation mutates the selection, omit its `isFocused` value to
             // prevent the editor focus from changing during undoing.
-            if (type == 'set_selection') {
+            if (type === 'set_selection') {
                 inverse = inverse.set(
                     'properties',
                     omit(properties, 'isFocused')

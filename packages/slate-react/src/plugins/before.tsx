@@ -1,3 +1,4 @@
+import { Change, EditorContainer } from '@gitbook/slate';
 import {
     IS_ANDROID,
     IS_FIREFOX,
@@ -12,12 +13,6 @@ import getWindow from 'get-window';
 import findNode from '../utils/find-node';
 import findRange from '../utils/find-range';
 
-/*
- * Debug.
- *
- * @type {Function}
- */
-
 const debug = Debug('slate:before');
 
 /*
@@ -27,7 +22,7 @@ const debug = Debug('slate:before');
  * Returns null if no selection could be computed.
  */
 
-function ensureSlateSelection(event, change, editor) {
+function ensureSlateSelection(event: Event, change: Change, editor: EditorContainer) {
     const { readOnly } = editor;
     const { value } = change;
 
@@ -52,8 +47,6 @@ function ensureSlateSelection(event, change, editor) {
 
 /*
  * The core before plugin.
- *
- * @return {Object}
  */
 
 function BeforePlugin() {
@@ -65,13 +58,13 @@ function BeforePlugin() {
 
     /*
      * On before input.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onBeforeInput(event, change, editor) {
+    function onBeforeInput(
+        event: Event,
+        change: Change,
+        editor: EditorContainer
+    ): boolean | void {
         if (editor.readOnly) {
             return true;
         }
@@ -93,13 +86,9 @@ function BeforePlugin() {
 
     /*
      * On blur.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onBlur(event, change, editor) {
+    function onBlur(event: Event, change: Change, editor: EditorContainer) {
         if (isCopying) {
             return true;
         }
@@ -151,12 +140,9 @@ function BeforePlugin() {
 
     /*
      * On change.
-     *
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onChange(change, editor) {
+    function onChange(change: Change, editor: EditorContainer) {
         const { value } = change;
 
         // If the value's schema isn't the editor's schema, update it. This can
@@ -173,13 +159,9 @@ function BeforePlugin() {
 
     /*
      * On composition end.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onCompositionEnd(event, change, editor) {
+    function onCompositionEnd(event: Event, change: Change, editor: EditorContainer) {
         const n = compositionCount;
 
         // The `count` check here ensures that if another composition starts
@@ -205,13 +187,9 @@ function BeforePlugin() {
 
     /*
      * On composition start.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onCompositionStart(event, change, editor) {
+    function onCompositionStart(event: Event, change: Change, editor: EditorContainer) {
         isComposing = true;
         compositionCount++;
 
@@ -228,16 +206,12 @@ function BeforePlugin() {
 
     /*
      * On copy.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onCopy(event, change, editor) {
+    function onCopy(event: Event, change: Change, editor: EditorContainer) {
         const window = getWindow(event.target);
 
-        const hasSelection = ensureSlateSelection(event, change, editor);
+        const hasSelection = ensureSlateSelection(event: Event, change: Change, editor: EditorContainer);
 
         if (!hasSelection) {
             // We don't have a selection, so let the browser
@@ -253,13 +227,9 @@ function BeforePlugin() {
 
     /*
      * On cut.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onCut(event, change, editor) {
+    function onCut(event: Event, change: Change, editor: EditorContainer) {
         const window = getWindow(event.target);
         isCopying = true;
         window.requestAnimationFrame(() => (isCopying = false));
@@ -269,13 +239,9 @@ function BeforePlugin() {
 
     /*
      * On drag end.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onDragEnd(event, change, editor) {
+    function onDragEnd(event: Event, change: Change, editor: EditorContainer) {
         isDragging = false;
 
         debug('onDragEnd', { event });
@@ -283,49 +249,33 @@ function BeforePlugin() {
 
     /*
      * On drag enter.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onDragEnter(event, change, editor) {
+    function onDragEnter(event: Event, change: Change, editor: EditorContainer) {
         debug('onDragEnter', { event });
     }
 
     /*
      * On drag exit.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onDragExit(event, change, editor) {
+    function onDragExit(event: Event, change: Change, editor: EditorContainer) {
         debug('onDragExit', { event });
     }
 
     /*
      * On drag leave.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onDragLeave(event, change, editor) {
+    function onDragLeave(event: Event, change: Change, editor: EditorContainer) {
         debug('onDragLeave', { event });
     }
 
     /*
      * On drag over.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onDragOver(event, change, editor) {
+    function onDragOver(event: Event, change: Change, editor: EditorContainer) {
         // If the target is inside a void node, and only in this case,
         // call `preventDefault` to signal that drops are allowed.
         // When the target is editable, dropping is already allowed by
@@ -359,13 +309,9 @@ function BeforePlugin() {
 
     /*
      * On drag start.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onDragStart(event, change, editor) {
+    function onDragStart(event: Event, change: Change, editor: EditorContainer) {
         isDragging = true;
 
         debug('onDragStart', { event });
@@ -373,13 +319,9 @@ function BeforePlugin() {
 
     /*
      * On drop.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onDrop(event, change, editor) {
+    function onDrop(event: Event, change: Change, editor: EditorContainer) {
         // Nothing happens in read-only mode.
         if (editor.readOnly) {
             return true;
@@ -393,13 +335,9 @@ function BeforePlugin() {
 
     /*
      * On focus.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onFocus(event, change, editor) {
+    function onFocus(event: Event, change: Change, editor: EditorContainer) {
         if (isCopying) {
             return true;
         }
@@ -426,13 +364,9 @@ function BeforePlugin() {
 
     /*
      * On input.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onInput(event, change, editor) {
+    function onInput(event: Event, change: Change, editor: EditorContainer) {
         if (isComposing) {
             return true;
         }
@@ -445,13 +379,9 @@ function BeforePlugin() {
 
     /*
      * On key down.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onKeyDown(event, change, editor) {
+    function onKeyDown(event: Event, change: Change, editor: EditorContainer) {
         if (editor.readOnly) {
             return true;
         }
@@ -477,13 +407,9 @@ function BeforePlugin() {
 
     /*
      * On paste.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onPaste(event, change, editor) {
+    function onPaste(event: Event, change: Change, editor: EditorContainer) {
         if (editor.readOnly) {
             return true;
         }
@@ -496,13 +422,9 @@ function BeforePlugin() {
 
     /*
      * On select.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
      */
 
-    function onSelect(event, change, editor) {
+    function onSelect(event: Event, change: Change, editor: EditorContainer) {
         if (isCopying) {
             return true;
         }
@@ -520,11 +442,6 @@ function BeforePlugin() {
         debug('onSelect', { event });
     }
 
-    /*
-     * Return the plugin.
-     *
-     * @type {Object}
-     */
 
     return {
         onBeforeInput,
@@ -549,10 +466,5 @@ function BeforePlugin() {
     };
 }
 
-/*
- * Export.
- *
- * @type {Object}
- */
 
 export default BeforePlugin;

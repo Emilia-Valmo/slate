@@ -1,8 +1,7 @@
-import { Block, Inline, Range } from '@gitbook/slate';
+import { Block, EditorContainer, Inline, Range } from '@gitbook/slate';
 import { List } from 'immutable';
 import * as React from 'react';
 
-import { EditorContainer } from './Editor';
 import TextRenderer from './TextRenderer';
 
 /*

@@ -16,7 +16,6 @@ import {
     SUPPORTED_EVENTS
 } from '@gitbook/slate-dev-environment';
 import getWindow from 'get-window';
-import throttle from 'lodash.throttle';
 import * as React from 'react';
 import {
     unstable_cancelCallback as cancelCallback,
@@ -37,8 +36,6 @@ import scrollToSelection from '../utils/scroll-to-selection';
 import NodeRenderer from './NodeRenderer';
 
 const FIREFOX_NODE_TYPE_ACCESS_ERROR = /Permission denied to access property "nodeType"/;
-
-console.log(throttle);
 
 interface EditorProps {
     value: Value;
@@ -221,34 +218,25 @@ function Editor(props: EditorProps): React.Node {
      * until after a selection has been released. This causes issues in situations
      * where another change happens while a selection is being made.
      */
-    const onNativeSelectionChange = React.useCallback(
-        // throttle(
-            (event: Event) => {
-            const element = domRef.current;
+    const onNativeSelectionChange = (event: Event) => {
+        const element = domRef.current;
 
-            if (readOnly || !element) {
-                return;
-            }
-
-            runWithPriority(UserBlockingPriority, () => {
-            scheduleCallback(() => {
-            const window = getWindow(event.target);
-            const { activeElement } = window.document;
-            if (activeElement !== element) {
-                return;
-            }
-
-            /*dispatchChange(change => {
-                stack.run('onSelect', event, change, editor.current);
-            });*/
-
-            onEvent('onSelect', event);
-               });
-        });
+        if (readOnly || !element) {
+            return;
         }
-        // , 100),
-        [domRef, editor, readOnly]
-    );
+
+        runWithPriority(UserBlockingPriority, () => {
+            scheduleCallback(() => {
+                const window = getWindow(event.target);
+                const { activeElement } = window.document;
+                if (activeElement !== element) {
+                    return;
+                }
+
+                onEvent('onSelect', event);
+            });
+        });
+    };
 
     /*
      * On a native `beforeinput` event, use the additional range information

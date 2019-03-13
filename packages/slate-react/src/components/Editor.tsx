@@ -37,6 +37,14 @@ import NodeRenderer from './NodeRenderer';
 
 const FIREFOX_NODE_TYPE_ACCESS_ERROR = /Permission denied to access property "nodeType"/;
 
+export interface EditorContainer {
+    readOnly: boolean;
+    value: Value;
+    stack: Stack;
+    element: HTMLElement;
+    onChange: (change: Change) => void;
+}
+
 interface EditorProps {
     value: Value;
     readOnly?: boolean;
@@ -84,7 +92,7 @@ function Editor(props: EditorProps): React.Node {
     const editor = React.useRef({});
 
     const dispatchChange = (fn: (change: Change) => Change | null) => {
-        const change = this.value.change().call(fn);
+        const change = value.change().call(fn);
         onChange(change);
     };
 
@@ -184,7 +192,7 @@ function Editor(props: EditorProps): React.Node {
         }
 
         dispatchChange(change => {
-            stack.run(handler, event, change, this);
+            stack.run(handler, event, change, editor.current);
         });
     };
 
@@ -308,6 +316,8 @@ function Editor(props: EditorProps): React.Node {
         const element = domRef.current;
         const window = getWindow(element);
 
+        editor.current.element = element;
+
         window.document.addEventListener(
             'selectionchange',
             onNativeSelectionChange
@@ -345,6 +355,8 @@ function Editor(props: EditorProps): React.Node {
         updateSelection(element, readOnly, value, isUpdatingSelectionRef);
     }, [value, readOnly]);
 
+    editor.current.readOnly = readOnly;
+    editor.current.stack = stack;
     editor.current.value = value;
     editor.current.onChange = onChange;
 
@@ -368,7 +380,7 @@ function Editor(props: EditorProps): React.Node {
         return (
             <NodeRenderer
                 block={null}
-                editor={editor}
+                editor={editor.current}
                 decorations={childrenDecorations[i]}
                 isSelected={isSelected}
                 isFocused={isFocused && isSelected}

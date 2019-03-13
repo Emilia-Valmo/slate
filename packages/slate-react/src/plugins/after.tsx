@@ -73,7 +73,7 @@ function AfterPlugin() {
    */
 
   function onClick(event, change, editor) {
-    if (editor.props.readOnly) {
+    if (editor.readOnly) {
       return true
     }
 
@@ -126,7 +126,7 @@ function AfterPlugin() {
     const { value } = change
     cloneFragment(event, value)
 
-    if (editor.props.readOnly) {
+    if (editor.readOnly) {
       // We can only copy the content, so stop here
       return
     }
@@ -308,7 +308,7 @@ function AfterPlugin() {
    * @param {Change} change
    */
 
-  function onInput(event, change, editor) {
+    function onInput(event, change, editor) {
     debug('onInput', { event })
 
     const window = getWindow(event.target)
@@ -318,7 +318,7 @@ function AfterPlugin() {
     const native = window.getSelection()
     const { anchorNode } = native
     const point = findPoint(anchorNode, 0, value)
-    if (!point) return
+    if (!point) { return }
 
     // Get the text node and leaf in question.
     const { document, selection } = value
@@ -334,7 +334,7 @@ function AfterPlugin() {
       leaves.find(r => {
         start = end
         end += r.text.length
-        if (end > point.offset) return true
+        if (end > point.offset) { return true }
       }) || lastLeaf
 
     // Get the text information.
@@ -352,7 +352,7 @@ function AfterPlugin() {
     }
 
     // If the text is no different, abort.
-    if (textContent == text) return
+    if (textContent == text) { return }
 
     // Determine what the selection should be after changing the text.
     const delta = textContent.length - text.length
@@ -507,10 +507,10 @@ function AfterPlugin() {
     }
 
     if (type == 'text' || type == 'html') {
-      if (!text) return
+      if (!text) { return }
       const { value } = change
       const { document, selection, startBlock } = value
-      if (startBlock.isVoid) return
+      if (startBlock.isVoid) { return }
 
       const defaultBlock = startBlock
       const defaultMarks = document.getInsertMarksAtRange(selection)
@@ -544,7 +544,7 @@ function AfterPlugin() {
 
     // Otherwise, determine the Slate selection from the native one.
     let range = findRange(native, value)
-    if (!range) return
+    if (!range) { return }
 
     const { anchorKey, anchorOffset, focusKey, focusOffset } = range
     const anchorText = document.getNode(anchorKey)
@@ -582,7 +582,7 @@ function AfterPlugin() {
     ) {
       const block = document.getClosestBlock(anchorKey)
       const next = block.getNextText(anchorKey)
-      if (next) range = range.moveAnchorTo(next.key, 0)
+      if (next) { range = range.moveAnchorTo(next.key, 0) }
     }
 
     if (
@@ -592,7 +592,7 @@ function AfterPlugin() {
     ) {
       const block = document.getClosestBlock(focusKey)
       const next = block.getNextText(focusKey)
-      if (next) range = range.moveFocusTo(next.key, 0)
+      if (next) { range = range.moveFocusTo(next.key, 0) }
     }
 
     range = range.normalize(document)
@@ -613,38 +613,38 @@ function AfterPlugin() {
 
   function renderNode(props) {
     const { attributes, children, node } = props
-    if (node.object != 'block' && node.object != 'inline') return
-    const Tag = node.object == 'block' ? 'div' : 'span'
-    const style = { position: 'relative' }
-    return (
-      <Tag {...attributes} style={style}>
-        {children}
-      </Tag>
-    )
-  }
+    if (node.object != 'block' && node.object != 'inline') { return }
+    const Tag = node.object === 'block' ? 'div' : 'span'
+        const style = { position: 'relative' };
+        return (
+            <Tag {...attributes} style={style}>
+                {children}
+            </Tag>
+        );
+    }
 
-  /*
-   * Return the plugin.
-   *
-   * @type {Object}
-   */
+    /*
+     * Return the plugin.
+     *
+     * @type {Object}
+     */
 
-  return {
-    onBeforeInput,
-    onBlur,
-    onClick,
-    onCopy,
-    onCut,
-    onDragEnd,
-    onDragOver,
-    onDragStart,
-    onDrop,
-    onInput,
-    onKeyDown,
-    onPaste,
-    onSelect,
-    renderNode,
-  }
+    return {
+        onBeforeInput,
+        onBlur,
+        onClick,
+        onCopy,
+        onCut,
+        onDragEnd,
+        onDragOver,
+        onDragStart,
+        onDrop,
+        onInput,
+        onKeyDown,
+        onPaste,
+        onSelect,
+        renderNode
+    };
 }
 
 /*
@@ -653,4 +653,4 @@ function AfterPlugin() {
  * @type {Object}
  */
 
-export default AfterPlugin
+export default AfterPlugin;

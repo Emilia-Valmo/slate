@@ -25,7 +25,6 @@ describe('texts', () => {
 
                     for (const test of tests) {
                         const module = require(resolve(testDir, test));
-                        console.log(module);
                         const { input, output, skip } = module;
                         const fn = module.default;
                         const t = skip ? it.skip : it;

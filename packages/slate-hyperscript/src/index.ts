@@ -204,13 +204,13 @@ const CREATORS = {
       )
     }
 
-    if (!props.anchorKey && props.focusKey) {
+        if (!props.anchorKey && props.focusKey) {
       throw new Error(
         `Slate hyperscript must have both \`<anchor/>\` and \`<focus/>\` defined if one is defined, but you only defined \`<focus/>\`. For collapsed selections, use \`<cursor/>\`.`
       )
     }
 
-    if (!isEmpty(props)) {
+        if (!isEmpty(props)) {
       selection = selection.merge(props).normalize(document)
     }
 
@@ -293,8 +293,8 @@ function createChildren(children, options = {}) {
   function setNode(next) {
     const { __anchor, __focus, __decorations } = node
     if (__anchor != null) next.__anchor = __anchor
-    if (__focus != null) next.__focus = __focus
-    if (__decorations != null) next.__decorations = __decorations
+    if (__focus != null) { next.__focus = __focus }
+    if (__decorations != null) { next.__decorations = __decorations }
     node = next
   }
 
@@ -323,7 +323,7 @@ function createChildren(children, options = {}) {
     }
 
     // If the child is a string insert it into the node.
-    if (typeof child == 'string') {
+    if (typeof child === 'string') {
       setNode(node.insertText(node.text.length, child, options.marks))
       length += child.length
     }
@@ -335,19 +335,19 @@ function createChildren(children, options = {}) {
       const { __anchor, __focus, __decorations } = child
       let i = node.text.length
 
-      if (!options.key && node.text.length == 0) {
+      if (!options.key && node.text.length === 0) {
         setNode(node.set('key', child.key))
       }
 
       child.getLeaves().forEach(leaf => {
         let { marks } = leaf
-        if (options.marks) marks = marks.union(options.marks)
+        if (options.marks) { marks = marks.union(options.marks) }
         setNode(node.insertText(i, leaf.text, marks))
         i += leaf.text.length
       })
 
-      if (__anchor != null) node.__anchor = __anchor + length
-      if (__focus != null) node.__focus = __focus + length
+      if (__anchor != null) { node.__anchor = __anchor + length }
+      if (__focus != null) { node.__focus = __focus + length }
 
       if (__decorations != null) {
         node.__decorations = (node.__decorations || []).concat(
@@ -368,23 +368,23 @@ function createChildren(children, options = {}) {
     }
 
     // If the child is a selection object store the current position.
-    if (child == ANCHOR || child == CURSOR) node.__anchor = length
-    if (child == FOCUS || child == CURSOR) node.__focus = length
+    if (child === ANCHOR || child === CURSOR) { node.__anchor = length }
+    if (child === FOCUS || child === CURSOR) { node.__focus = length }
 
-    // if child is a decorator point, store it as partial decorator
-    if (child instanceof DecoratorPoint) {
-      node.__decorations = (node.__decorations || []).concat([
-        child.withPosition(length),
-      ])
+        // if child is a decorator point, store it as partial decorator
+        if (child instanceof DecoratorPoint) {
+            node.__decorations = (node.__decorations || []).concat([
+                child.withPosition(length)
+            ]);
+        }
+    });
+
+    // Make sure the most recent node is added.
+    if (node != null) {
+        array.push(node);
     }
-  })
 
-  // Make sure the most recent node is added.
-  if (node != null) {
-    array.push(node)
-  }
-
-  return array
+    return array;
 }
 
 /*
@@ -395,30 +395,30 @@ function createChildren(children, options = {}) {
  */
 
 function resolveCreators(options) {
-  const { blocks = {}, inlines = {}, marks = {}, decorators = {} } = options
+    const { blocks = {}, inlines = {}, marks = {}, decorators = {} } = options;
 
-  const creators = {
-    ...CREATORS,
-    ...(options.creators || {}),
-  }
+    const creators = {
+        ...CREATORS,
+        ...(options.creators || {})
+    };
 
-  Object.keys(blocks).map(key => {
-    creators[key] = normalizeNode(key, blocks[key], 'block')
-  })
+    Object.keys(blocks).map(key => {
+        creators[key] = normalizeNode(key, blocks[key], 'block');
+    });
 
-  Object.keys(inlines).map(key => {
-    creators[key] = normalizeNode(key, inlines[key], 'inline')
-  })
+    Object.keys(inlines).map(key => {
+        creators[key] = normalizeNode(key, inlines[key], 'inline');
+    });
 
-  Object.keys(marks).map(key => {
-    creators[key] = normalizeMark(key, marks[key])
-  })
+    Object.keys(marks).map(key => {
+        creators[key] = normalizeMark(key, marks[key]);
+    });
 
-  Object.keys(decorators).map(key => {
-    creators[key] = normalizeNode(key, decorators[key], 'decoration')
-  })
+    Object.keys(decorators).map(key => {
+        creators[key] = normalizeNode(key, decorators[key], 'decoration');
+    });
 
-  return creators
+    return creators;
 }
 
 /*
@@ -431,34 +431,34 @@ function resolveCreators(options) {
  */
 
 function normalizeNode(key, value, object) {
-  if (typeof value == 'function') {
-    return value
-  }
-
-  if (typeof value == 'string') {
-    value = { type: value }
-  }
-
-  if (isPlainObject(value)) {
-    return (tagName, attributes, children) => {
-      const { key: attrKey, ...rest } = attributes
-      const attrs = {
-        ...value,
-        object,
-        key: attrKey,
-        data: {
-          ...(value.data || {}),
-          ...rest,
-        },
-      }
-
-      return CREATORS[object](tagName, attrs, children)
+    if (typeof value === 'function') {
+        return value;
     }
-  }
 
-  throw new Error(
-    `Slate hyperscript ${object} creators can be either functions, objects or strings, but you passed: ${value}`
-  )
+    if (typeof value === 'string') {
+        value = { type: value };
+    }
+
+    if (isPlainObject(value)) {
+        return (tagName, attributes, children) => {
+            const { key: attrKey, ...rest } = attributes;
+            const attrs = {
+                ...value,
+                object,
+                key: attrKey,
+                data: {
+                    ...(value.data || {}),
+                    ...rest
+                }
+            };
+
+            return CREATORS[object](tagName, attrs, children);
+        };
+    }
+
+    throw new Error(
+        `Slate hyperscript ${object} creators can be either functions, objects or strings, but you passed: ${value}`
+    );
 }
 
 /*
@@ -470,31 +470,31 @@ function normalizeNode(key, value, object) {
  */
 
 function normalizeMark(key, value) {
-  if (typeof value == 'function') {
-    return value
-  }
-
-  if (typeof value == 'string') {
-    value = { type: value }
-  }
-
-  if (isPlainObject(value)) {
-    return (tagName, attributes, children) => {
-      const attrs = {
-        ...value,
-        data: {
-          ...(value.data || {}),
-          ...attributes,
-        },
-      }
-
-      return CREATORS.mark(tagName, attrs, children)
+    if (typeof value === 'function') {
+        return value;
     }
-  }
 
-  throw new Error(
-    `Slate hyperscript mark creators can be either functions, objects or strings, but you passed: ${value}`
-  )
+    if (typeof value === 'string') {
+        value = { type: value };
+    }
+
+    if (isPlainObject(value)) {
+        return (tagName, attributes, children) => {
+            const attrs = {
+                ...value,
+                data: {
+                    ...(value.data || {}),
+                    ...attributes
+                }
+            };
+
+            return CREATORS.mark(tagName, attrs, children);
+        };
+    }
+
+    throw new Error(
+        `Slate hyperscript mark creators can be either functions, objects or strings, but you passed: ${value}`
+    );
 }
 
 /*
@@ -503,5 +503,5 @@ function normalizeMark(key, value) {
  * @type {Function}
  */
 
-export default createHyperscript()
-export { createHyperscript }
+export default createHyperscript();
+export { createHyperscript };

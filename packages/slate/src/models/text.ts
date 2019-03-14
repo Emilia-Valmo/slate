@@ -50,7 +50,7 @@ class Text extends Record(DEFAULTS) {
      */
 
     get isEmpty() {
-        return this.text == '';
+        return this.text === '';
     }
 
     /*
@@ -93,7 +93,7 @@ class Text extends Record(DEFAULTS) {
             return attrs;
         }
 
-        if (typeof attrs == 'string') {
+        if (typeof attrs === 'string') {
             attrs = { leaves: [{ text: attrs }] };
         }
 
@@ -320,8 +320,8 @@ class Text extends Record(DEFAULTS) {
 
         decorations.forEach(range => {
             const { startKey, endKey, startOffset, endOffset, marks } = range;
-            const hasStart = startKey == key;
-            const hasEnd = endKey == key;
+            const hasStart = startKey === key;
+            const hasEnd = endKey === key;
 
             if (hasStart && hasEnd) {
                 const index = hasStart ? startOffset : 0;
@@ -543,7 +543,7 @@ class Text extends Record(DEFAULTS) {
      */
 
     public getNode(key) {
-        return this.key == key ? this : null;
+        return this.key === key ? this : null;
     }
 
     /*
@@ -793,11 +793,8 @@ class Text extends Record(DEFAULTS) {
 
     /*
      * Split this text and return two different texts
-     * @param {Number} position
-     * @returns {Array<Text>}
      */
-
-    public splitText(offset) {
+    public splitText(offset: number): [Text, Text] {
         const splitted = Leaf.splitLeaves(this.leaves, offset);
         const one = this.set('leaves', splitted[0]);
         const two = this.set('leaves', splitted[1]).regenerateKey();
@@ -806,11 +803,8 @@ class Text extends Record(DEFAULTS) {
 
     /*
      * merge this text and another text at the end
-     * @param {Text} text
-     * @returns {Text}
      */
-
-    public mergeText(text) {
+    public mergeText(text: Text): Text {
         const leaves = this.leaves.concat(text.leaves);
         return this.setLeaves(leaves);
     }

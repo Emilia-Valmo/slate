@@ -9,6 +9,7 @@ import {
 import { List, Set } from 'immutable';
 import * as React from 'react';
 
+import { MarkDOMAttributes, MarkProps } from '../interfaces';
 import OffsetKey from '../utils/offset-key';
 
 interface LeafRendererProps {
@@ -32,7 +33,7 @@ const LeafRenderer = React.memo(function LeafRenderer(
     const { marks, node, index, offset, text, editor } = props;
     const { stack } = editor;
     const leaf = renderLeafText(props);
-    const attributes = {
+    const attributes: MarkDOMAttributes = {
         'data-slate-leaf': true
     };
 
@@ -44,7 +45,7 @@ const LeafRenderer = React.memo(function LeafRenderer(
     return (
         <span data-offset-key={offsetKey}>
             {marks.reduce((children: React.Node, mark: Mark) => {
-                const props = {
+                const markProps: MarkProps = {
                     editor,
                     mark,
                     marks,
@@ -54,7 +55,7 @@ const LeafRenderer = React.memo(function LeafRenderer(
                     children,
                     attributes
                 };
-                const element = stack.find('renderMark', props);
+                const element = stack.find('renderMark', markProps);
                 return element || children;
             }, leaf)}
         </span>

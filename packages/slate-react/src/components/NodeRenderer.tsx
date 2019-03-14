@@ -3,6 +3,7 @@ import logger from '@gitbook/slate-dev-logger';
 import { List } from 'immutable';
 import * as React from 'react';
 
+import { NodeDOMAttributes, NodeProps } from '../interfaces';
 import getChildrenDecorations from '../utils/get-children-decorations';
 import TextRenderer from './TextRenderer';
 import VoidWrapper from './VoidWrapper';
@@ -130,7 +131,7 @@ const NodeRenderer = React.memo(function NodeRenderer(
 
     // Attributes that the developer must mix into the element in their
     // custom node renderer component.
-    const attributes = { 'data-key': node.key };
+    const attributes: NodeDOMAttributes = { 'data-key': node.key };
 
     // If it's a block node with inline children, add the proper `dir` attribute
     // for text direction.
@@ -141,17 +142,19 @@ const NodeRenderer = React.memo(function NodeRenderer(
         }
     }
 
-    const element = stack.find('renderNode', {
+    const nodeProps: NodeProps = {
+        node,
         editor,
         isFocused,
         isSelected,
-        node,
-        parent: ancestors[ancestors.length - 1], // deprecated
+        parent: ancestors[ancestors.length - 1],
         ancestors,
         readOnly,
         attributes,
         children
-    });
+    };
+
+    const element = stack.find('renderNode', nodeProps);
 
     return node.isVoid ? (
         <VoidWrapper {...props}>{element}</VoidWrapper>

@@ -11,7 +11,7 @@ describe('operations', async () => {
   const dir = resolve(__dirname)
   const categories = fs
     .readdirSync(dir)
-    .filter(c => c[0] != '.' && c != 'index.js')
+    .filter(c => c[0] != '.' && c != 'index.tsx')
 
   for (const category of categories) {
     describe(category, () => {
@@ -23,7 +23,7 @@ describe('operations', async () => {
           const testDir = resolve(categoryDir, method)
           const tests = fs
             .readdirSync(testDir)
-            .filter(t => t[0] != '.' && !!~t.indexOf('.js'))
+            .filter(t => t[0] != '.' && !!~t.indexOf('.tsx'))
             .map(t => basename(t, extname(t)))
 
           for (const test of tests) {

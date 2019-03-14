@@ -1,93 +1,63 @@
-import { Node, Value } from '@gitbook/slate'
-import { atob, btoa } from 'isomorphic-base64'
+import { Node, Value } from '@gitbook/slate';
+import { atob, btoa } from 'isomorphic-base64';
 
 /*
  * Encode a JSON `object` as base-64 `string`.
- *
- * @param {Object} object
- * @return {String}
  */
-
-function encode(object) {
-  const string = JSON.stringify(object)
-  const encoded = btoa(encodeURIComponent(string))
-  return encoded
+function encode(object: any): string {
+    const content = JSON.stringify(object);
+    const encoded = btoa(encodeURIComponent(content));
+    return encoded;
 }
 
 /*
  * Decode a base-64 `string` to a JSON `object`.
- *
- * @param {String} string
- * @return {Object}
  */
-
-function decode(string) {
-  const decoded = decodeURIComponent(atob(string))
-  const object = JSON.parse(decoded)
-  return object
+function decode<T>(content: string): T {
+    const decoded = decodeURIComponent(atob(content));
+    const object = JSON.parse(decoded);
+    return object;
 }
 
 /*
  * Deserialize a Value `string`.
- *
- * @param {String} string
- * @return {Value}
  */
-
-function deserialize(string, options) {
-  const raw = decode(string)
-  const value = Value.fromJS(raw, options)
-  return value
+function deserialize(content: string, options: any): Value {
+    const raw = decode(content);
+    const value = Value.fromJS(raw, options);
+    return value;
 }
 
 /*
  * Deserialize a Node `string`.
- *
- * @param {String} string
- * @return {Node}
  */
-
-function deserializeNode(string, options) {
-  const raw = decode(string)
-  const node = Node.fromJS(raw, options)
-  return node
+function deserializeNode(content: string, options: any): Node {
+    const raw = decode(content);
+    const node = Node.fromJS(raw, options);
+    return node;
 }
 
 /*
  * Serialize a `value`.
- *
- * @param {Value} value
- * @return {String}
  */
-
-function serialize(value, options) {
-  const raw = value.toJS(options)
-  const encoded = encode(raw)
-  return encoded
+function serialize(value: Value, options: any): string {
+    const raw = value.toJS(options);
+    const encoded = encode(raw);
+    return encoded;
 }
 
 /*
  * Serialize a `node`.
- *
- * @param {Node} node
- * @return {String}
  */
-
-function serializeNode(node, options) {
-  const raw = node.toJS(options)
-  const encoded = encode(raw)
-  return encoded
+function serializeNode(node: Node, options: any): string {
+    const raw = node.toJS(options);
+    const encoded = encode(raw);
+    return encoded;
 }
-
-/*
- * Export.
- *
- * @type {Object}
- */
 
 export default {
-  deserialize,
-  deserializeNode,
-  serialize,
-  serializeNode,
-}
+    deserialize,
+    deserializeNode,
+    serialize,
+    serializeNode
+};

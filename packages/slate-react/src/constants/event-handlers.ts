@@ -1,7 +1,5 @@
 /*
  * Event handlers used by Slate plugins.
- *
- * @type {Array}
  */
 
 const EVENT_HANDLERS = [
@@ -27,11 +25,5 @@ const EVENT_HANDLERS = [
     'onPaste',
     'onSelect'
 ];
-
-/*
- * Export.
- *
- * @type {Array}
- */
 
 export default EVENT_HANDLERS;

@@ -1,14 +1,10 @@
+import { Range as SlateRange } from '@gitbook/slate';
 import findDOMPoint from './find-dom-point';
 
 /*
  * Find a native DOM range Slate `range`.
- *
- * @param {Range} range
- * @param {Window} win (optional)
- * @return {Object|Null}
  */
-
-function findDOMRange(range, win = window) {
+function findDOMRange(range: SlateRange, win: Window = window): Range | null {
     const {
         anchorKey,
         anchorOffset,
@@ -32,11 +28,5 @@ function findDOMRange(range, win = window) {
     r.setEnd(end.node, end.offset);
     return r;
 }
-
-/*
- * Export.
- *
- * @type {Function}
- */
 
 export default findDOMRange;

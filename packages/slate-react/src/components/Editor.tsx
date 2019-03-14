@@ -105,19 +105,24 @@ function Editor(props: EditorProps): React.Node {
     const isUpdatingSelectionRef = React.useRef(false);
 
     // Create mutable "Editor" reference
-    const editor = React.useRef({});
+    const editorRef = React.useRef({});
 
-    const dispatchChange = (fn: (change: Change) => Change | null) => {
+    editorRef.current.readOnly = readOnly;
+    editorRef.current.stack = stack;
+    editorRef.current.schema = schema;
+    editorRef.current.value = value;
+
+    editorRef.current.change = (fn: (change: Change) => Change | null) => {
         const change = value.change().call(fn);
-        onChange(change);
+        editorRef.current.onChange(change);
     };
 
-    const onChange = (change: Change) => {
+    editorRef.current.onChange = (change: Change) => {
         if (readOnly) {
             return;
         }
 
-        stack.run('onChange', change, editor.current);
+        stack.run('onChange', change, editorRef.current);
         if (change.value === value) {
             return;
         }
@@ -129,6 +134,7 @@ function Editor(props: EditorProps): React.Node {
         event: React.SyntheticEvent<HTMLElement>
     ) => {
         const element = domRef.current;
+        const editor = editorRef.current;
 
         if (!element) {
             return;
@@ -153,15 +159,10 @@ function Editor(props: EditorProps): React.Node {
         if (handler === 'onSelect') {
             const window = getWindow(event.target);
             const native = window.getSelection();
-            const range = findRange(native, value);
+            const range = findRange(native, editor.value);
 
             if (range && range.equals(selection)) {
-                updateSelection(
-                    element,
-                    readOnly,
-                    value,
-                    isUpdatingSelectionRef
-                );
+                updateSelection(element, editor.value, isUpdatingSelectionRef);
                 return;
             }
         }
@@ -207,8 +208,8 @@ function Editor(props: EditorProps): React.Node {
             return;
         }
 
-        dispatchChange(change => {
-            stack.run(handler, event, change, editor.current);
+        editor.change(change => {
+            editor.stack.run(handler, event, change, editor);
         });
     };
 
@@ -227,13 +228,16 @@ function Editor(props: EditorProps): React.Node {
 
         runWithPriority(UserBlockingPriority, () => {
             scheduleCallback(() => {
+                const editor = editorRef.current;
                 const window = getWindow(event.target);
                 const { activeElement } = window.document;
                 if (activeElement !== element) {
                     return;
                 }
 
-                onEvent('onSelect', event);
+                editor.change(change => {
+                    editor.stack.run('onSelect', event, change, editor);
+                });
             });
         });
     };
@@ -246,6 +250,7 @@ function Editor(props: EditorProps): React.Node {
      */
     const onNativeBeforeInput = (event: Event) => {
         const element = domRef.current;
+        const editor = editorRef.current;
 
         if (readOnly || !element) {
             return;
@@ -265,7 +270,7 @@ function Editor(props: EditorProps): React.Node {
                 event.preventDefault();
 
                 const range = findRange(targetRange, editor.value);
-                dispatchChange(change => change.deleteAtRange(range));
+                editor.change(change => change.deleteAtRange(range));
                 break;
             }
 
@@ -274,7 +279,7 @@ function Editor(props: EditorProps): React.Node {
                 event.preventDefault();
                 const range = findRange(targetRange, editor.value);
 
-                dispatchChange(change => {
+                editor.change(change => {
                     if (change.value.isInVoid) {
                         change.collapseToStartOfNextText();
                     } else {
@@ -304,7 +309,7 @@ function Editor(props: EditorProps): React.Node {
 
                 const range = findRange(targetRange, value);
 
-                dispatchChange(change => {
+                editor.change(change => {
                     change.insertTextAtRange(range, text, selection.marks);
 
                     // If the text was successfully inserted, and the selection had marks
@@ -332,7 +337,7 @@ function Editor(props: EditorProps): React.Node {
         const element = domRef.current;
         const window = getWindow(element);
 
-        editor.current.element = element;
+        editorRef.current.element = element;
 
         window.document.addEventListener(
             'selectionchange',
@@ -366,15 +371,8 @@ function Editor(props: EditorProps): React.Node {
             return;
         }
 
-        updateSelection(element, readOnly, value, isUpdatingSelectionRef);
-    }, [value, readOnly]);
-
-    editor.current.readOnly = readOnly;
-    editor.current.stack = stack;
-    editor.current.schema = schema;
-    editor.current.value = value;
-    editor.current.onChange = onChange;
-    editor.current.change = dispatchChange;
+        updateSelection(element, value, isUpdatingSelectionRef);
+    });
 
     /*
      * Create the event handlers to be passed to the DOM element.
@@ -396,7 +394,7 @@ function Editor(props: EditorProps): React.Node {
         return (
             <NodeRenderer
                 block={null}
-                editor={editor.current}
+                editor={editorRef.current}
                 decorations={childrenDecorations[i]}
                 isSelected={isSelected}
                 isFocused={isFocused && isSelected}
@@ -451,7 +449,6 @@ function Editor(props: EditorProps): React.Node {
  */
 function updateSelection(
     element: HTMLElement,
-    readOnly: boolean,
     value: Value,
     isUpdatingSelectionRef: React.Ref<boolean>
 ): void {
@@ -459,108 +456,109 @@ function updateSelection(
     const { isBackward } = selection;
     const window = getWindow(element);
     const native = window.getSelection();
+    const { activeElement } = window.document;
 
-    // .getSelection() can return null in some cases
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=827585
+    // COMPAT: In Firefox, there's a but where `getSelection` can return `null`.
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=827585 (2018/11/07)
     if (!native) {
         return;
     }
 
     const { rangeCount, anchorNode } = native;
 
-    // If both selections are blurred, do nothing.
-    if (!rangeCount && selection.isBlurred) {
-        return;
-    }
-
-    // If the selection has been blurred, but is still inside the editor in the
-    // DOM, blur it manually.
-    if (selection.isBlurred) {
-        if (readOnly || !isInEditor(element, anchorNode)) {
-            return;
-        }
-
-        removeAllRanges(native);
+    // If the Slate selection is blurred, but the DOM's active element is still
+    // the editor, we need to blur it.
+    if (selection.isBlurred && activeElement === element) {
         element.blur();
-        return;
     }
 
-    // If the selection isn't set, do nothing.
-    if (selection.isUnset) {
-        return;
+    // If the Slate selection is unset, but the DOM selection has a range
+    // selected in the editor, we need to remove the range.
+    if (selection.isUnset && rangeCount && isInEditor(element, anchorNode)) {
+        removeAllRanges(native);
+    }
+
+    // If the Slate selection is focused, but the DOM's active element is not
+    // the editor, we need to focus it. We prevent scrolling because we handle
+    // scrolling to the correct selection.
+    if (selection.isFocused && activeElement !== element) {
+        element.focus({ preventScroll: true });
     }
 
     // Otherwise, figure out which DOM nodes should be selected...
-    const current = !!rangeCount && native.getRangeAt(0);
-    const range = findDOMRange(selection, window);
+    if (selection.isFocused && selection.isSet) {
+        const current = rangeCount ? native.getRangeAt(0) : null;
+        const range = findDOMRange(selection, window);
 
-    if (!range) {
-        // Unable to find a native DOM range for current selection
-        reportRangeError(value);
-        return;
-    }
+        if (!range) {
+            reportRangeError(value);
 
-    const { startContainer, startOffset, endContainer, endOffset } = range;
-
-    // If the new range matches the current selection, there is nothing to fix.
-    // COMPAT: The native `Range` object always has it's "start" first and "end"
-    // last in the DOM. It has no concept of "backwards/forwards", so we have
-    // to check both orientations here. (2017/10/31)
-    if (current) {
-        if (
-            (startContainer === current.startContainer &&
-                startOffset === current.startOffset &&
-                endContainer === current.endContainer &&
-                endOffset === current.endOffset) ||
-            (startContainer === current.endContainer &&
-                startOffset === current.endOffset &&
-                endContainer === current.startContainer &&
-                endOffset === current.startOffset)
-        ) {
             return;
         }
-    }
 
-    // Otherwise, set the `isUpdatingSelection` flag and update the selection.
-    isUpdatingSelectionRef.current = true;
-    removeAllRanges(native);
+        const { startContainer, startOffset, endContainer, endOffset } = range;
 
-    // COMPAT: IE 11 does not support Selection.setBaseAndExtent
-    if (native.setBaseAndExtent) {
-        // COMPAT: Since the DOM range has no concept of backwards/forwards
-        // we need to check and do the right thing here.
-        if (isBackward) {
-            native.setBaseAndExtent(
-                range.endContainer,
-                range.endOffset,
-                range.startContainer,
-                range.startOffset
-            );
+        // If the new range matches the current selection, there is nothing to fix.
+        // COMPAT: The native `Range` object always has it's "start" first and "end"
+        // last in the DOM. It has no concept of "backwards/forwards", so we have
+        // to check both orientations here. (2017/10/31)
+        if (current) {
+            if (
+                (startContainer === current.startContainer &&
+                    startOffset === current.startOffset &&
+                    endContainer === current.endContainer &&
+                    endOffset === current.endOffset) ||
+                (startContainer === current.endContainer &&
+                    startOffset === current.endOffset &&
+                    endContainer === current.startContainer &&
+                    endOffset === current.startOffset)
+            ) {
+                return;
+            }
+        }
+
+        // Otherwise, set the `isUpdatingSelection` flag and update the selection.
+        isUpdatingSelectionRef.current = true;
+        removeAllRanges(native);
+
+        // COMPAT: IE 11 does not support `setBaseAndExtent`. (2018/11/07)
+        if (native.setBaseAndExtent) {
+            // COMPAT: Since the DOM range has no concept of backwards/forwards
+            // we need to check and do the right thing here.
+            if (isBackward) {
+                native.setBaseAndExtent(
+                    range.endContainer,
+                    range.endOffset,
+                    range.startContainer,
+                    range.startOffset
+                );
+            } else {
+                native.setBaseAndExtent(
+                    range.startContainer,
+                    range.startOffset,
+                    range.endContainer,
+                    range.endOffset
+                );
+            }
         } else {
-            native.setBaseAndExtent(
-                range.startContainer,
-                range.startOffset,
-                range.endContainer,
-                range.endOffset
-            );
+            native.addRange(range);
         }
-    } else {
-        // COMPAT: IE 11 does not support Selection.extend, fallback to addRange
-        native.addRange(range);
+
+        // Scroll to the selection, in case it's out of view.
+        scrollToSelection(native);
+
+        // Then unset the `isUpdatingSelection` flag after a delay, to ensure that
+        // it is still set when selection-related events from updating it fire.
+        setTimeout(() => {
+            // COMPAT: In Firefox, it's not enough to create a range, you also need
+            // to focus the contenteditable element too. (2016/11/16)
+            if (IS_FIREFOX) {
+                element.focus();
+            }
+
+            isUpdatingSelectionRef.current = false;
+        });
     }
-
-    // Scroll to the selection, in case it's out of view.
-    scrollToSelection(native);
-
-    // Then unset the `isUpdatingSelection` flag after a delay.
-    setTimeout(() => {
-        // COMPAT: In Firefox, it's not enough to create a range, you also need to
-        // focus the contenteditable element too. (2016/11/16)
-        if (IS_FIREFOX && element) {
-            element.focus();
-        }
-        isUpdatingSelectionRef.current = false;
-    });
 }
 
 /*

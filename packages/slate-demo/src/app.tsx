@@ -20,7 +20,6 @@ import Images from './images';
 import Links from './links';
 import MarkdownPreview from './markdown-preview';
 import MarkdownShortcuts from './markdown-shortcuts';
-import PasteHtml from './paste-html';
 import PlainText from './plain-text';
 import ReadOnly from './read-only';
 import RichText from './rich-text';
@@ -54,7 +53,6 @@ const EXAMPLES = [
     ['Check Lists', CheckLists, '/check-lists'],
     ['Code Highlighting', CodeHighlighting, '/code-highlighting'],
     ['Tables', Tables, '/tables'],
-    ['Paste HTML', PasteHtml, '/paste-html'],
     ['Search Highlighting', SearchHighlighting, '/search-highlighting'],
     ['Syncing Operations', SyncingOperations, '/syncing-operations'],
     ['Read-only', ReadOnly, '/read-only'],

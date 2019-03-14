@@ -76,6 +76,10 @@
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.2.tgz#576ff7fb1230185b619a75d258cbc98f0867a8dc"
 
+"@gitbook/slate-dev-benchmark@*":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@gitbook/slate-dev-benchmark/-/slate-dev-benchmark-2.0.0.tgz#ea5f217a2d5e4a8bf529d06e322eb75f932149cb"
+
 "@gitbook/slate-hyperprint@^2.2.6":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@gitbook/slate-hyperprint/-/slate-hyperprint-2.3.0.tgz#8ab71034095460d0e610fbf3b8b3a5ebec2e0f3b"
@@ -90,6 +94,16 @@
 "@types/estree@0.0.39":
   version "0.0.39"
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
+
+"@types/jest-diff@*":
+  version "20.0.1"
+  resolved "https://registry.yarnpkg.com/@types/jest-diff/-/jest-diff-20.0.1.tgz#35cc15b9c4f30a18ef21852e255fdb02f6d59b89"
+
+"@types/jest@^24.0.11":
+  version "24.0.11"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-24.0.11.tgz#1f099bea332c228ea6505a88159bfa86a5858340"
+  dependencies:
+    "@types/jest-diff" "*"
 
 "@types/node@*":
   version "10.12.18"

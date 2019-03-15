@@ -1,8 +1,8 @@
 import { resetKeyGenerator, Value } from '@gitbook/slate';
+import Plain from '@gitbook/slate-plain-serializer';
 import assert from 'assert';
 import fs from 'fs';
 import { basename, extname, resolve } from 'path';
-import Plain from '..';
 
 /*
  * Reset Slate's internal key generator state before each text.

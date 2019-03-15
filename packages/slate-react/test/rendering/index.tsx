@@ -1,10 +1,10 @@
+import { Editor } from '@gitbook/slate-react';
 import assert from 'assert';
 import fs from 'fs-promise';
 import { JSDOM } from 'jsdom';
 import { basename, extname, resolve } from 'path';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
-import { Editor } from '../..';
 import clean from '../helpers/clean';
 
 /*

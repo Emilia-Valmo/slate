@@ -49,7 +49,7 @@ EVENT_HANDLERS.forEach(handler => {
   const method = getMethodName(handler)
 
   Simulator.prototype[method] = function(e) {
-    if (e === null) e = {}
+    if (e  == null) e = {}
 
     const { stack, value } = this
     const editor = createEditor(this)

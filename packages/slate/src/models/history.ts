@@ -145,7 +145,7 @@ class History extends Record(DEFAULTS) {
         const prevBatch = undos.peek();
         const prevOperation = prevBatch && prevBatch.last();
 
-        if (skip === null) {
+        if (skip == null) {
             skip = shouldSkip(operation, prevOperation);
         }
 
@@ -153,7 +153,7 @@ class History extends Record(DEFAULTS) {
             return history;
         }
 
-        if (merge === null) {
+        if (merge == null) {
             merge = shouldMerge(operation, prevOperation);
         }
 

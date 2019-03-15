@@ -1659,32 +1659,32 @@ class Node {
 
         this.nodes.forEach((child, i) => {
             if (child.object === 'text') {
-                if (start === null && child.key === startKey) {
+                if (start == null && child.key === startKey) {
                     start = i;
                 }
-                if (end === null && child.key === endKey) {
+                if (end == null && child.key === endKey) {
                     end = i + 1;
                 }
             } else {
-                if (start === null && child.hasDescendant(startKey)) {
+                if (start == null && child.hasDescendant(startKey)) {
                     start = i;
                 }
-                if (end === null && child.hasDescendant(endKey)) {
+                if (end == null && child.hasDescendant(endKey)) {
                     end = i + 1;
                 }
             }
 
             // PERF: exit early if both start and end have been found.
-            return start === null || end === null;
+            return start == null || end == null;
         });
 
-        if (isSelected && start === null) {
+        if (isSelected && start == null) {
             start = 0;
         }
-        if (isSelected && end === null) {
+        if (isSelected && end == null) {
             end = this.nodes.size;
         }
-        return start === null ? null : { start, end };
+        return start == null ? null : { start, end };
     }
 
     /*

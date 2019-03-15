@@ -14,7 +14,7 @@ function firstDifferentCharacter(a: string, b: string): number {
         .map((v, i) => i);
     const index = indexes.find(i => a[i] !== b[i]);
 
-    return index === null ? a.length : index;
+    return index == null ? a.length : index;
 }
 
 /*

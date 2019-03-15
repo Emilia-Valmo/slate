@@ -1207,19 +1207,19 @@ Changes.unwrapBlockAtRange = (change, range, properties, options = {}) => {
                     return false;
                 }
                 if (
-                    properties.type !== null &&
+                    properties.type != null &&
                     parent.type !== properties.type
                 ) {
                     return false;
                 }
                 if (
-                    properties.isVoid !== null &&
+                    properties.isVoid != null &&
                     parent.isVoid !== properties.isVoid
                 ) {
                     return false;
                 }
                 if (
-                    properties.data !== null &&
+                    properties.data != null &&
                     !parent.data.isSuperset(properties.data)
                 ) {
                     return false;
@@ -1320,19 +1320,19 @@ Changes.unwrapInlineAtRange = (change, range, properties, options = {}) => {
                     return false;
                 }
                 if (
-                    properties.type !== null &&
+                    properties.type != null &&
                     parent.type !== properties.type
                 ) {
                     return false;
                 }
                 if (
-                    properties.isVoid !== null &&
+                    properties.isVoid != null &&
                     parent.isVoid !== properties.isVoid
                 ) {
                     return false;
                 }
                 if (
-                    properties.data !== null &&
+                    properties.data != null &&
                     !parent.data.isSuperset(properties.data)
                 ) {
                     return false;
@@ -1399,13 +1399,13 @@ Changes.wrapBlockAtRange = (change, range, block, options = {}) => {
     }
 
     // If no shared parent could be found then the parent is the document.
-    if (parent === null) {
+    if (parent == null) {
         parent = document;
     }
 
     // Create a list of direct children siblings of parent that fall in the
     // selection.
-    if (siblings === null) {
+    if (siblings == null) {
         const indexes = parent.nodes.reduce((ind, node, i) => {
             if (node === firstblock || node.hasDescendant(firstblock.key)) {
                 ind[0] = i;
@@ -1421,7 +1421,7 @@ Changes.wrapBlockAtRange = (change, range, block, options = {}) => {
     }
 
     // Get the index to place the new wrapped node at.
-    if (index === null) {
+    if (index == null) {
         index = parent.nodes.indexOf(siblings.first());
     }
 

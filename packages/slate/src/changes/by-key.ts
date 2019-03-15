@@ -688,7 +688,7 @@ Changes.splitDescendantsByKey = (
     let index;
 
     nodes.forEach(node => {
-        const prevIndex = index === null ? null : index;
+        const prevIndex = index == null ? null : index;
         index = previous ? node.nodes.indexOf(previous) + 1 : textOffset;
         previous = node;
 

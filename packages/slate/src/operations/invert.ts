@@ -191,14 +191,12 @@ function invertOperation(op) {
 
         if (anchorPath !== undefined) {
             props.anchorKey =
-                anchorPath === null
-                    ? null
-                    : document.assertPath(anchorPath).key;
+                anchorPath == null ? null : document.assertPath(anchorPath).key;
         }
 
         if (focusPath !== undefined) {
             props.focusKey =
-                focusPath === null ? null : document.assertPath(focusPath).key;
+                focusPath == null ? null : document.assertPath(focusPath).key;
         }
 
         const inverseSelection = selection.merge(props);
@@ -206,7 +204,7 @@ function invertOperation(op) {
 
         if (anchorPath !== undefined) {
             inverseProps.anchorPath =
-                inverseProps.anchorKey === null
+                inverseProps.anchorKey == null
                     ? null
                     : document.getPath(inverseProps.anchorKey);
 
@@ -215,7 +213,7 @@ function invertOperation(op) {
 
         if (focusPath !== undefined) {
             inverseProps.focusPath =
-                inverseProps.focusKey === null
+                inverseProps.focusKey == null
                     ? null
                     : document.getPath(inverseProps.focusKey);
 

@@ -117,7 +117,7 @@ class Range extends Record(DEFAULTS) {
             }
             if ('marks' in attrs) {
                 props.marks =
-                    attrs.marks === null ? null : Mark.createSet(attrs.marks);
+                    attrs.marks == null ? null : Mark.createSet(attrs.marks);
             }
             if ('isAtomic' in attrs) {
                 props.isAtomic = attrs.isAtomic;
@@ -156,7 +156,7 @@ class Range extends Record(DEFAULTS) {
             focusOffset,
             isBackward,
             isFocused,
-            marks: marks === null ? null : Mark.createSet(marks),
+            marks: marks == null ? null : Mark.createSet(marks),
             isAtomic
         });
 
@@ -244,7 +244,7 @@ class Range extends Record(DEFAULTS) {
      */
 
     get isForward() {
-        return this.isBackward === null ? null : !this.isBackward;
+        return this.isBackward == null ? null : !this.isBackward;
     }
 
     /*
@@ -254,7 +254,7 @@ class Range extends Record(DEFAULTS) {
      */
 
     get isSet() {
-        return this.anchorKey !== null && this.focusKey !== null;
+        return this.anchorKey != null && this.focusKey != null;
     }
 
     /*
@@ -366,7 +366,7 @@ class Range extends Record(DEFAULTS) {
     public hasAnchorIn(node) {
         return node.object === 'text'
             ? node.key === this.anchorKey
-            : this.anchorKey !== null && node.hasDescendant(this.anchorKey);
+            : this.anchorKey != null && node.hasDescendant(this.anchorKey);
     }
 
     /*
@@ -426,7 +426,7 @@ class Range extends Record(DEFAULTS) {
     public hasFocusIn(node) {
         return node.object === 'text'
             ? node.key === this.focusKey
-            : this.focusKey !== null && node.hasDescendant(this.focusKey);
+            : this.focusKey != null && node.hasDescendant(this.focusKey);
     }
 
     /*
@@ -504,7 +504,7 @@ class Range extends Record(DEFAULTS) {
             anchorOffset: this.focusOffset,
             focusKey: this.anchorKey,
             focusOffset: this.anchorOffset,
-            isBackward: this.isBackward === null ? null : !this.isBackward
+            isBackward: this.isBackward == null ? null : !this.isBackward
         });
     }
 
@@ -734,7 +734,7 @@ class Range extends Record(DEFAULTS) {
         }
 
         // If the range is unset, make sure it is properly zeroed out.
-        if (anchorKey === null || focusKey === null) {
+        if (anchorKey == null || focusKey == null) {
             return range.merge({
                 anchorKey: null,
                 anchorOffset: 0,
@@ -792,7 +792,7 @@ class Range extends Record(DEFAULTS) {
         }
 
         // If `isBackward` is not set, derive it.
-        if (isBackward === null) {
+        if (isBackward == null) {
             if (anchorNode.key === focusNode.key) {
                 isBackward = anchorOffset > focusOffset;
             } else {
@@ -839,7 +839,7 @@ class Range extends Record(DEFAULTS) {
             isBackward: this.isBackward,
             isFocused: this.isFocused,
             marks:
-                this.marks === null
+                this.marks == null
                     ? null
                     : this.marks.toArray().map(m => m.toJS()),
             isAtomic: this.isAtomic

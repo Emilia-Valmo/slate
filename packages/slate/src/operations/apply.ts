@@ -37,7 +37,7 @@ function applyRangeAdjustments(value, checkAffected, adjustRange) {
         .map(decoration =>
             checkAffected(decoration) ? adjustRange(decoration) : decoration
         )
-        .filter(decoration => decoration.anchorKey !== null);
+        .filter(decoration => decoration.anchorKey != null);
     return value.set('decorations', decorations);
 }
 
@@ -300,7 +300,7 @@ const APPLIERS = {
         const { selection } = value;
         const node = document.assertPath(path);
 
-        if (selection.isSet || value.decorations !== null) {
+        if (selection.isSet || value.decorations != null) {
             const first =
                 node.object === 'text' ? node : node.getFirstText() || node;
             const last =
@@ -461,14 +461,12 @@ const APPLIERS = {
 
         if (anchorPath !== undefined) {
             props.anchorKey =
-                anchorPath === null
-                    ? null
-                    : document.assertPath(anchorPath).key;
+                anchorPath == null ? null : document.assertPath(anchorPath).key;
         }
 
         if (focusPath !== undefined) {
             props.focusKey =
-                focusPath === null ? null : document.assertPath(focusPath).key;
+                focusPath == null ? null : document.assertPath(focusPath).key;
         }
 
         selection = selection.merge(props);

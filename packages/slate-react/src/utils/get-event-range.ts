@@ -13,7 +13,7 @@ function getEventRange(event: Event, value: Value): Range {
     }
 
     const { x, y, target } = event;
-    if (x === null || y === null) {
+    if (x == null || y == null) {
         return null;
     }
 

@@ -128,7 +128,7 @@ class Operation extends Record(DEFAULTS) {
                 v = Mark.create(v);
             }
 
-            if (key === 'marks' && v !== null) {
+            if (key === 'marks' && v != null) {
                 v = Mark.createSet(v);
             }
 
@@ -162,14 +162,14 @@ class Operation extends Record(DEFAULTS) {
 
                 if (anchorKey !== undefined) {
                     v.anchorPath =
-                        anchorKey === null
+                        anchorKey == null
                             ? null
                             : value.document.getPath(anchorKey);
                 }
 
                 if (focusKey !== undefined) {
                     v.focusPath =
-                        focusKey === null
+                        focusKey == null
                             ? null
                             : value.document.getPath(focusKey);
                 }
@@ -326,7 +326,7 @@ class Operation extends Record(DEFAULTS) {
                     v.isFocused = value.isFocused;
                 }
                 if ('marks' in value) {
-                    v.marks = value.marks === null ? null : value.marks.toJS();
+                    v.marks = value.marks == null ? null : value.marks.toJS();
                 }
                 value = v;
             }

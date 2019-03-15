@@ -1,7 +1,7 @@
 {
   "name": "@gitbook/slate-simulator",
   "description": "A simulator for testing Slate editors and plugins.",
-  "version": "2.0.0",
+  "version": "3.0.0-alpha.0",
   "license": "MIT",
   "repository": "https://github.com/GitbookIO/slate.git",
   "source": "src/index.ts",
@@ -15,6 +15,6 @@
     "@gitbook/slate": ">=0.32.0"
   },
   "devDependencies": {
-    "@gitbook/slate": "^2.0.0"
+    "@gitbook/slate": "^3.0.0-alpha.0"
   }
 }

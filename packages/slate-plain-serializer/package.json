@@ -1,7 +1,7 @@
 {
   "name": "@gitbook/slate-plain-serializer",
   "description": "A plain text serializer for Slate editors.",
-  "version": "2.0.0",
+  "version": "3.0.0-alpha.0",
   "license": "MIT",
   "repository": "https://github.com/GitbookIO/slate.git",
   "source": "src/index.ts",
@@ -12,14 +12,14 @@
     "dist/"
   ],
   "dependencies": {
-    "@gitbook/slate-dev-logger": "^2.0.0"
+    "@gitbook/slate-dev-logger": "^3.0.0-alpha.0"
   },
   "peerDependencies": {
     "@gitbook/slate": ">=0.32.0",
     "immutable": ">=4.0.0-rc.12"
   },
   "devDependencies": {
-    "@gitbook/slate": "^2.0.0",
-    "@gitbook/slate-hyperscript": "^2.0.0"
+    "@gitbook/slate": "^3.0.0-alpha.0",
+    "@gitbook/slate-hyperscript": "^3.0.0-alpha.0"
   }
 }

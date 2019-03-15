@@ -9,6 +9,7 @@ import TextRenderer from './TextRenderer';
 import VoidWrapper from './VoidWrapper';
 
 interface NodeRendererProps {
+    key?: string;
     block: Block;
     decorations: List<Range>;
     editor: EditorContainer;
@@ -16,7 +17,6 @@ interface NodeRendererProps {
     isSelected: boolean;
     readOnly: boolean;
     node: Block | Inline;
-    ancestors: Block[];
 }
 
 /*
@@ -98,7 +98,6 @@ const NodeRenderer = React.memo(function NodeRenderer(
         block,
         node,
         decorations,
-        ancestors,
         readOnly
     } = props;
     const { value } = editor;
@@ -112,10 +111,17 @@ const NodeRenderer = React.memo(function NodeRenderer(
         const isChildSelected =
             !!indexes && indexes.start <= i && i < indexes.end;
 
-        const Component = child.object === 'text' ? TextRenderer : NodeRenderer;
-
-        return (
-            <Component
+        return child.object === 'text' ? (
+            <TextRenderer
+                key={child.key}
+                block={node.object === 'block' ? node : block}
+                decorations={childrenDecorations[i]}
+                editor={editor}
+                node={child}
+                parent={node}
+            />
+        ): (
+            <NodeRenderer
                 key={child.key}
                 block={node.object === 'block' ? node : block}
                 decorations={childrenDecorations[i]}
@@ -123,7 +129,6 @@ const NodeRenderer = React.memo(function NodeRenderer(
                 isSelected={isChildSelected}
                 isFocused={isFocused && isChildSelected}
                 node={child}
-                ancestors={ancestors.concat([node])}
                 readOnly={readOnly}
             />
         );
@@ -147,9 +152,6 @@ const NodeRenderer = React.memo(function NodeRenderer(
         editor,
         isFocused,
         isSelected,
-        parent: ancestors[ancestors.length - 1],
-        ancestors,
-        readOnly,
         attributes,
         children
     };

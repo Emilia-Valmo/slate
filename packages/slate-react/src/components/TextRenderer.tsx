@@ -9,7 +9,7 @@ interface TextRendererProps {
     decorations: List<Range>;
     editor: EditorContainer;
     node: Text;
-    ancestors: Array<Block | Inline>;
+    parent: Inline | Block;
 }
 
 /*
@@ -18,7 +18,7 @@ interface TextRendererProps {
 const TextRenderer = React.memo(function TextRenderer(
     props: TextRendererProps
 ): React.Node {
-    const { block, decorations, editor, node, ancestors } = props;
+    const { block, decorations, editor, node, parent } = props;
     const { value } = editor;
     const { document } = value;
     const { key } = node;
@@ -53,7 +53,7 @@ const TextRenderer = React.memo(function TextRenderer(
                 marks={leaf.marks}
                 node={node}
                 offset={offset}
-                ancestors={ancestors}
+                parent={parent}
                 leaves={leaves}
                 text={leaf.text}
             />
@@ -78,12 +78,9 @@ function areEqual(p: TextRendererProps, n: TextRendererProps): boolean {
 
     // If the node parent is a block node, and it was the last child of the
     // block, re-render to cleanup extra `\n`.
-    const nParent = n.ancestors[n.ancestors.length - 1];
-    if (nParent.object === 'block') {
-        const pParent = p.ancestors[p.ancestors.length - 1];
-
-        const pLast = pParent.nodes.last();
-        const nLast = nParent.nodes.last();
+    if (n.parent.object === 'block') {
+        const pLast = p.parent.nodes.last();
+        const nLast = n.parent.nodes.last();
         if (p.node === pLast && n.node !== nLast) {
             return false;
         }

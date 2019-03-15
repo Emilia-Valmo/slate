@@ -15,13 +15,13 @@ import OffsetKey from '../utils/offset-key';
 interface LeafRendererProps {
     editor: EditorContainer;
     block: Block;
-    node: Block | Inline;
+    node: Text;
     index: number;
     offset: number;
     text: Text;
     leaves: List<Leaf>;
     marks: Set<Mark>;
-    ancestors: Array<Block | Inline>;
+    parent: Block | Inline;
 }
 
 /*
@@ -64,8 +64,7 @@ const LeafRenderer = React.memo(function LeafRenderer(
 areEqual);
 
 function renderLeafText(props: LeafRendererProps): React.Node {
-    const { block, node, ancestors, text, index, leaves } = props;
-    const parent = ancestors[ancestors.length - 1];
+    const { block, node, text, index, parent, leaves } = props;
 
     // COMPAT: Render text inside void nodes with a zero-width space.
     // So the node can contain selection but the text is not visible.
@@ -117,6 +116,7 @@ function areEqual(
     if (
         nextProps.index !== props.index ||
         nextProps.marks !== props.marks ||
+        nextProps.parent !== props.parent ||
         nextProps.text !== props.text
     ) {
         return false;

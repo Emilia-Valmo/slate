@@ -1,7 +1,6 @@
-import { Block, EditorContainer, Inline, Range } from '@gitbook/slate';
+import { Block, EditorContainer, Inline, Mark } from '@gitbook/slate';
 import { Set } from 'immutable';
 import * as React from 'react';
-import { Inline, Mark } from '../../slate/src/index';
 
 export interface NodeDOMAttributes {
     'data-key': string;
@@ -20,14 +19,6 @@ export interface NodeProps {
     editor: EditorContainer;
     isFocused: boolean;
     isSelected: boolean;
-    ancestors: Array<Block | Inline>;
-
-    // Deprecated, use editor.readOnly instead
-    readOnly: boolean;
-
-    // Deprecated, use ancestors instead
-    parent: Block | Inline;
-
     children: React.Node;
     attributes: NodeDOMAttributes;
 }

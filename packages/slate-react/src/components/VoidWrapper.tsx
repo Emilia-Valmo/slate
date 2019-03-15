@@ -13,18 +13,10 @@ function VoidWrapper(props: {
     decorations: List<Range>;
     readOnly: boolean;
     node: Block | Inline;
-    ancestors: Block[];
+    parent: Block | Inline;
     children: React.Node;
 }): React.Node {
-    const {
-        children,
-        block,
-        node,
-        decorations,
-        editor,
-        readOnly,
-        ancestors
-    } = props;
+    const { children, block, node, decorations, editor, readOnly } = props;
     const child = node.getFirstText();
 
     const Tag = node.object === 'block' ? 'div' : 'span';
@@ -45,7 +37,7 @@ function VoidWrapper(props: {
                 editor={editor}
                 key={child.key}
                 node={child}
-                ancestors={ancestors}
+                parent={node}
                 readOnly={readOnly}
             />
         </Tag>

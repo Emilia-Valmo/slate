@@ -1,16 +1,16 @@
-import * as React from 'react'
-import { Mark, Node } from '@gitbook/slate'
-import { Record } from 'immutable'
+import { Mark, Node } from '@gitbook/slate';
+import { Record } from 'immutable';
+import * as React from 'react';
 
-import TOKEN_MARK from './TOKEN_MARK'
+import TOKEN_MARK from './TOKEN_MARK';
 
-export type OptionsFormat = {
-  // Determine which node should be highlighted
-  onlyIn?: (node: Node) => boolean,
-  // Returns the syntax for a node that should be highlighted
-  getSyntax?: (node: Node) => string,
-  // Render a highlighting mark in a highlighted node
-  renderMark?: (mark: { mark: Mark, children: React.Node }) => React.Node,
+export interface OptionsFormat {
+    // Determine which node should be highlighted
+    onlyIn?: (node: Node) => boolean;
+    // Returns the syntax for a node that should be highlighted
+    getSyntax?: (node: Node) => string;
+    // Render a highlighting mark in a highlighted node
+    renderMark?: (mark: { mark: Mark; children: React.Node }) => React.Node;
 }
 
 /*
@@ -18,7 +18,7 @@ export type OptionsFormat = {
  */
 
 function defaultOnlyIn(node: Node): boolean {
-  return node.object === 'block' && node.type === 'code_block'
+    return node.object === 'block' && node.type === 'code_block';
 }
 
 /*
@@ -26,7 +26,7 @@ function defaultOnlyIn(node: Node): boolean {
  */
 
 function defaultGetSyntax(node: Node): string {
-  return 'javascript'
+    return 'javascript';
 }
 
 /*
@@ -34,17 +34,17 @@ function defaultGetSyntax(node: Node): string {
  */
 
 function defaultRenderMark(props: {
-  children: React.Node,
-  mark: Mark,
+    children: React.Node;
+    mark: Mark;
 }): void | React.Node {
-  const { mark } = props
+    const { mark } = props;
 
-  if (mark.type !== TOKEN_MARK) {
-    return undefined
-  }
+    if (mark.type !== TOKEN_MARK) {
+        return undefined;
+    }
 
-  const className = mark.data.get('className')
-  return <span className={className}>{props.children}</span>
+    const className = mark.data.get('className');
+    return <span className={className}>{props.children}</span>;
 }
 
 /*
@@ -52,13 +52,16 @@ function defaultRenderMark(props: {
  */
 
 class Options extends Record({
-  onlyIn: defaultOnlyIn,
-  getSyntax: defaultGetSyntax,
-  renderMark: defaultRenderMark,
+    onlyIn: defaultOnlyIn,
+    getSyntax: defaultGetSyntax,
+    renderMark: defaultRenderMark
 }) {
-  onlyIn: Node => boolean
-  getSyntax: Node => string
-  renderMark: ({ mark: Mark, children: React.Node }) => React.Node
+    public onlyIn: (node: Node) => boolean;
+    public getSyntax: (node: Node) => string;
+    public renderMark: (props: {
+        mark: Mark;
+        children: React.Node;
+    }) => React.Node;
 }
 
-export default Options
+export default Options;

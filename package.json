@@ -73,9 +73,7 @@
     "gh-pages": "gh-pages --dist ./build",
     "lint": "tslint ./packages/*/src/**/*.ts",
     "release": "yarn build:production && yarn test:only && yarn lint && lerna publish && yarn gh-pages",
-    "server": "webpack-dev-server --config ./support/webpack/config.js",
-    "start": "npm-run-all --parallel --print-label watch server",
-    "pretest": "yarn run build",
+    "start": "lerna exec --scope @gitbook/slate-demo -- yarn start",
     "test": "jest"
   },
   "jest": {

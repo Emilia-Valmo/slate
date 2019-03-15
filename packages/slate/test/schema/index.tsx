@@ -1,6 +1,5 @@
 import assert from 'assert'
 import fs from 'fs'
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Schema } from '@gitbook/slate'
 import { basename, extname, resolve } from 'path'
 

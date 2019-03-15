@@ -557,12 +557,7 @@ const APPLIERS = {
 
 /*
  * Apply an `operation` to a `value`.
- *
- * @param {Value} value
- * @param {Object|Operation} operation
- * @return {Value} value
  */
-
 function applyOperation(value: Value, operation: Operation) {
     const { type } = operation;
     const apply = APPLIERS[type];

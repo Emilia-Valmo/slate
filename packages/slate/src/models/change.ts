@@ -1,20 +1,24 @@
 import logger from '@gitbook/slate-dev-logger';
 import Debug from 'debug';
 import { List } from 'immutable';
-import isPlainObject from 'is-plain-object';
 import pick from 'lodash/pick';
 
 import MODEL_TYPES, { isType } from '../constants/model-types';
 import apply from '../operations/apply';
 import Operation from './operation';
-
-/*
- * Debug.
- *
- * @type {Function}
- */
+import { Value } from '../index';
 
 const debug = Debug('slate:change');
+
+interface ApplyOperationOptions {
+    merge?: boolean | null;
+    save?: boolean;
+    skip?: boolean | null;
+}
+
+interface ChangeFlags {
+    normalize?: boolean, merge?: boolean, save?: boolean, normalize?: boolean
+}
 
 /*
  * Change.
@@ -25,23 +29,22 @@ const debug = Debug('slate:change');
 class Change {
     public static debug = debug;
 
+    public value: Value;
+    public operations: List<Operation>;
+    private flags: ChangeFlags;
+
     /*
      * Check if `any` is a `Change`.
-     *
-     * @param {Any} any
-     * @return {Boolean}
      */
 
     public static isChange = isType.bind(null, 'CHANGE');
 
     /*
      * Create a new `Change` with `attrs`.
-     *
-     * @param {Object} attrs
-     *   @property {Value} value
      */
-
-    constructor(attrs) {
+    constructor(attrs: {
+        value: Value,
+    } & ChangeFlags) {
         const { value } = attrs;
         this.value = value;
         this.operations = new List();
@@ -54,15 +57,12 @@ class Change {
 
     /*
      * Object.
-     *
-     * @return {String}
      */
-
-    get object() {
+    get object(): 'change' {
         return 'change';
     }
 
-    get kind() {
+    get kind(): 'change' {
         logger.deprecate(
             'slate@0.32.0',
             'The `kind` property of Slate objects has been renamed to `object`.'
@@ -73,13 +73,8 @@ class Change {
     /*
      * Apply an `operation` to the current value, saving the operation to the
      * history if needed.
-     *
-     * @param {Operation|Object} operation
-     * @param {Object} options
-     * @return {Change}
      */
-
-    public applyOperation(operation: Operation, options = {}) {
+    public applyOperation(operation: Operation, options: ApplyOperationOptions = {}): Change {
         const { operations, flags } = this;
         let { value } = this;
         let { history } = value;
@@ -113,38 +108,24 @@ class Change {
 
     /*
      * Apply a series of `operations` to the current value.
-     *
-     * @param {Array|List} operations
-     * @param {Object} options
-     * @return {Change}
      */
-
-    public applyOperations(operations: Operation[], options) {
+    public applyOperations(operations: Operation[], options?: ApplyOperationOptions): Change {
         operations.forEach(op => this.applyOperation(op, options));
         return this;
     }
 
     /*
      * Call a change `fn` with arguments.
-     *
-     * @param {Function} fn
-     * @param {Mixed} ...args
-     * @return {Change}
      */
-
-    public call(fn, ...args) {
+    public call<U extends any[]>(fn: (c: Change, ...args: U) => void, ...args: U): Change {
         fn(this, ...args);
         return this;
     }
 
     /*
      * Applies a series of change mutations and defers normalization until the end.
-     *
-     * @param {Function} customChange - function that accepts a change object and executes change operations
-     * @return {Change}
      */
-
-    public withoutNormalization(customChange) {
+    public withoutNormalization(customChange: (c: Change) => void): Change {
         const original = this.flags.normalize;
         this.setOperationFlag('normalize', false);
 
@@ -161,13 +142,8 @@ class Change {
 
     /*
      * Set an operation flag by `key` to `value`.
-     *
-     * @param {String} key
-     * @param {Any} value
-     * @return {Change}
      */
-
-    public setOperationFlag(key, value) {
+    public setOperationFlag(key: string, value: any): Change {
         this.flags[key] = value;
         return this;
     }
@@ -175,24 +151,15 @@ class Change {
     /*
      * Get the `value` of the specified flag by its `key`. Optionally accepts an `options`
      * object with override flags.
-     *
-     * @param {String} key
-     * @param {Object} options
-     * @return {Change}
      */
-
-    public getFlag(key, options = {}) {
+    public getFlag<T>(key: string, options = {}): T | undefined {
         return options[key] !== undefined ? options[key] : this.flags[key];
     }
 
     /*
      * Unset an operation flag by `key`.
-     *
-     * @param {String} key
-     * @return {Change}
      */
-
-    public unsetOperationFlag(key) {
+    public unsetOperationFlag(key: string): Change {
         delete this.flags[key];
         return this;
     }

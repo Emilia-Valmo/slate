@@ -9,7 +9,7 @@ export const schema = {
     quote: {
       nodes: [{ types: ['paragraph'], min: 2 }],
       normalize: (change, reason, { node, index }) => {
-        if (reason == CHILD_REQUIRED) {
+        if (reason === CHILD_REQUIRED) {
           change.insertNodeByKey(node.key, index, {
             object: 'block',
             type: 'paragraph',

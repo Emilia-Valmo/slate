@@ -3,6 +3,7 @@ import Inline from '../models/inline';
 import Mark from '../models/mark';
 import Node from '../models/node';
 import Range from '../models/range';
+import Operation from '../models/operation';
 
 /*
  * Changes.
@@ -58,14 +59,14 @@ Changes.addMarkByKey = (change, key, offset, length, mark, options = {}) => {
         const start = Math.max(ax, bx);
         const end = Math.min(ay, by);
 
-        operations.push({
+        operations.push(Operation.create({
             type: 'add_mark',
             value,
             path,
             offset: start,
             length: end - start,
             mark
-        });
+        }));
     });
 
     change.applyOperations(operations);
@@ -116,12 +117,12 @@ Changes.insertNodeByKey = (change, key, index, node, options = {}) => {
     const { document } = value;
     const path = document.getPath(key);
 
-    change.applyOperation({
+    change.applyOperation(Operation.create({
         type: 'insert_node',
         value,
         path: [...path, index],
         node
-    });
+    }));
 
     if (normalize) {
         change.normalizeNodeByKey(key);
@@ -149,14 +150,14 @@ Changes.insertTextByKey = (change, key, offset, text, marks, options = {}) => {
     const node = document.getNode(key);
     marks = marks || node.getMarksAtIndex(offset);
 
-    change.applyOperation({
+    change.applyOperation(Operation.create({
         type: 'insert_text',
         value,
         path,
         offset,
         text,
         marks
-    });
+    }));
 
     if (normalize) {
         const parent = document.getParent(key);
@@ -190,7 +191,7 @@ Changes.mergeNodeByKey = (change, key, options = {}) => {
     const position =
         previous.object == 'text' ? previous.text.length : previous.nodes.size;
 
-    change.applyOperation({
+    change.applyOperation(Operation.create({
         type: 'merge_node',
         value,
         path,
@@ -202,7 +203,7 @@ Changes.mergeNodeByKey = (change, key, options = {}) => {
             data: original.data
         },
         target: null
-    });
+    }));
 
     if (normalize) {
         const parent = document.getParent(key);
@@ -229,12 +230,12 @@ Changes.moveNodeByKey = (change, key, newKey, newIndex, options = {}) => {
     const path = document.getPath(key);
     const newPath = document.getPath(newKey);
 
-    change.applyOperation({
+    change.applyOperation(Operation.create({
         type: 'move_node',
         value,
         path,
         newPath: [...newPath, newIndex]
-    });
+    }));
 
     if (normalize) {
         const parent = document.getCommonAncestor(key, newKey);
@@ -288,14 +289,14 @@ Changes.removeMarkByKey = (change, key, offset, length, mark, options = {}) => {
         const start = Math.max(ax, bx);
         const end = Math.min(ay, by);
 
-        operations.push({
+        operations.push(Operation.create({
             type: 'remove_mark',
             value,
             path,
             offset: start,
             length: end - start,
             mark
-        });
+        }));
     });
 
     change.applyOperations(operations);
@@ -350,12 +351,12 @@ Changes.removeNodeByKey = (change, key, options = {}) => {
     const path = document.getPath(key);
     const node = document.getNode(key);
 
-    change.applyOperation({
+    change.applyOperation(Operation.create({
         type: 'remove_node',
         value,
         path,
         node
-    });
+    }));
 
     if (normalize) {
         const parent = document.getParent(key);
@@ -474,14 +475,14 @@ Changes.removeTextByKey = (change, key, offset, length, options = {}) => {
         const end = Math.min(ay, by);
         const string = text.slice(start, end);
 
-        removals.push({
+        removals.push(Operation.create({
             type: 'remove_text',
             value,
             path,
             offset: start,
             text: string,
             marks: leaf.marks
-        });
+        }));
     });
 
     // Apply in reverse order, so subsequent removals don't impact previous ones.
@@ -547,7 +548,7 @@ Changes.setMarkByKey = (
     const { document } = value;
     const path = document.getPath(key);
 
-    change.applyOperation({
+    change.applyOperation(Operation.create({
         type: 'set_mark',
         value,
         path,
@@ -555,7 +556,7 @@ Changes.setMarkByKey = (
         length,
         mark,
         properties
-    });
+    }));
 
     if (normalize) {
         const parent = document.getParent(key);
@@ -581,13 +582,13 @@ Changes.setNodeByKey = (change, key, properties, options = {}) => {
     const path = document.getPath(key);
     const node = document.getNode(key);
 
-    change.applyOperation({
+    change.applyOperation(Operation.create({
         type: 'set_node',
         value,
         path,
         node,
         properties
-    });
+    }));
 
     if (normalize) {
         change.normalizeNodeByKey(node.key);
@@ -611,7 +612,7 @@ Changes.splitNodeByKey = (change, key, position, options = {}) => {
     const path = document.getPath(key);
     const node = document.getDescendantAtPath(path);
 
-    change.applyOperation({
+    change.applyOperation(Operation.create({
         type: 'split_node',
         value,
         path,
@@ -621,7 +622,7 @@ Changes.splitNodeByKey = (change, key, position, options = {}) => {
             data: node.data
         },
         target
-    });
+    }));
 
     if (normalize) {
         const parent = document.getParent(key);

@@ -40,7 +40,7 @@ import Options, { OptionsFormat } from './options'
  * That way you do not depend on `slate-react`.
  */
 
-function core(optionsParam: Options | OptionsFormat): Object {
+function core(optionsParam: Options | OptionsFormat): object {
   const opts = new Options(optionsParam)
 
   return {

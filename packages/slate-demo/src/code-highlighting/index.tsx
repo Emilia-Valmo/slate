@@ -53,9 +53,9 @@ function CodeBlockLine(props) {
  */
 
 function getContent(token) {
-  if (typeof token == 'string') {
+  if (typeof token === 'string') {
     return token
-  } else if (typeof token.content == 'string') {
+  } else if (typeof token.content === 'string') {
     return token.content
   } else {
     return token.content.map(getContent).join('')
@@ -174,8 +174,8 @@ class CodeHighlighting extends React.Component {
   onKeyDown = (event, change) => {
     const { value } = change
     const { startBlock } = value
-    if (event.key != 'Enter') return
-    if (startBlock.type != 'code') return
+    if (event.key !== 'Enter') return
+    if (startBlock.type !== 'code') return
     if (value.isExpanded) change.delete()
     change.insertText('\n')
     return true
@@ -189,7 +189,7 @@ class CodeHighlighting extends React.Component {
    */
 
   decorateNode = node => {
-    if (node.type != 'code') return
+    if (node.type !== 'code') return
 
     const language = node.data.get('language')
     const texts = node.getTexts().toArray()
@@ -224,7 +224,7 @@ class CodeHighlighting extends React.Component {
         endOffset = remaining
       }
 
-      if (typeof token != 'string') {
+      if (typeof token !== 'string') {
         const range = {
           anchorKey: startText.key,
           anchorOffset: startOffset,

@@ -16,7 +16,7 @@ function onBackspace(
     const endCell = document.getClosest(endBlock.key, opts.isCell);
 
     const startBlockIndex = startCell.nodes.findIndex(
-        block => block.key == startBlock.key
+        block => block.key === startBlock.key
     );
 
     // If a cursor is collapsed at the start of the first block, do nothing

@@ -36,11 +36,11 @@ class Inline extends Record(DEFAULTS) {
      * @return {String}
      */
 
-    get object() {
+    get object(): 'inline' {
         return 'inline';
     }
 
-    get kind() {
+    get kind(): 'inline' {
         logger.deprecate(
             'slate@0.32.0',
             'The `kind` property of Slate objects has been renamed to `object`.'
@@ -52,21 +52,17 @@ class Inline extends Record(DEFAULTS) {
      * Check if the inline is empty.
      * Returns true if inline is not void and all it's children nodes are empty.
      * Void node is never empty, regardless of it's content.
-     *
-     * @return {Boolean}
      */
 
-    get isEmpty() {
+    get isEmpty(): boolean {
         return !this.isVoid && !this.nodes.some(child => !child.isEmpty);
     }
 
     /*
      * Get the concatenated text of all the inline's children.
-     *
-     * @return {String}
      */
 
-    get text() {
+    get text(): string {
         return this.getText();
     }
 
@@ -90,7 +86,7 @@ class Inline extends Record(DEFAULTS) {
             return attrs;
         }
 
-        if (typeof attrs == 'string') {
+        if (typeof attrs === 'string') {
             attrs = { type: attrs };
         }
 
@@ -141,7 +137,7 @@ class Inline extends Record(DEFAULTS) {
             type
         } = object;
 
-        if (typeof type != 'string') {
+        if (typeof type !== 'string') {
             throw new Error('`Inline.fromJS` requires a `type` string.');
         }
 
@@ -170,13 +166,10 @@ class Inline extends Record(DEFAULTS) {
 
     /*
      * Check if `any` is a list of inlines.
-     *
-     * @param {Any} any
-     * @return {Boolean}
      */
 
-    public static isInlineList(any) {
-        return List.isList(any) && any.every(item => Inline.isInline(item));
+    public static isInlineList(input: any): boolean {
+        return List.isList(input) && input.every(item => Inline.isInline(item));
     }
 
     /*

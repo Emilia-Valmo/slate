@@ -12,7 +12,7 @@ describe('schema', () => {
     const testsDir = resolve(__dirname, 'core')
     const tests = fs
       .readdirSync(testsDir)
-      .filter(t => t[0] != '.')
+      .filter(t => t[0] !== '.')
       .map(t => basename(t, extname(t)))
 
     for (const test of tests) {
@@ -36,7 +36,7 @@ describe('schema', () => {
     const testsDir = resolve(__dirname, 'custom')
     const tests = fs
       .readdirSync(testsDir)
-      .filter(t => t[0] != '.')
+      .filter(t => t[0] !== '.')
       .map(t => basename(t, extname(t)))
 
     for (const test of tests) {

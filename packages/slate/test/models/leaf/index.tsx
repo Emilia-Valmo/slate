@@ -7,14 +7,14 @@ describe('leaf', () => {
 
   const methods = fs
     .readdirSync(dir)
-    .filter(c => c[0] != '.' && c != 'index.tsx')
+    .filter(c => c[0] !== '.' && c !== 'index.tsx')
 
   for (const method of methods) {
     describe(method, () => {
       const testDir = resolve(dir, method)
       const tests = fs
         .readdirSync(testDir)
-        .filter(t => t[0] != '.' && t.includes('.tsx'))
+        .filter(t => t[0] !== '.' && t.includes('.tsx'))
 
       for (const test of tests) {
         const module = require(resolve(testDir, test))

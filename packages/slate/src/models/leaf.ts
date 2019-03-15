@@ -62,7 +62,7 @@ class Leaf extends Record(DEFAULTS) {
             return attrs;
         }
 
-        if (typeof attrs == 'string') {
+        if (typeof attrs === 'string') {
             attrs = { text: attrs };
         }
 
@@ -139,12 +139,11 @@ class Leaf extends Record(DEFAULTS) {
      * Corner Cases:
      *   1. if offset is smaller than 0, then return [List(), leaves]
      *   2. if offset is bigger than the text length, then return [leaves, List()]
-     *
-     * @param {List<Leaf> leaves
-     * @return {Array<List<Leaf>>}
      */
-
-    public static splitLeaves(leaves, offset) {
+    public static splitLeaves(
+        leaves: List<Leaf>,
+        offset: number
+    ): Array<List<Leaf>> {
         if (offset < 0) {
             return [List(), leaves];
         }
@@ -155,7 +154,8 @@ class Leaf extends Record(DEFAULTS) {
 
         let endOffset = 0;
         let index = -1;
-        let left, right;
+        let left;
+        let right;
 
         leaves.find(leaf => {
             index++;
@@ -252,22 +252,15 @@ class Leaf extends Record(DEFAULTS) {
 
     /*
      * Check if `any` is a list of leaves.
-     *
-     * @param {Any} any
-     * @return {Boolean}
      */
-
-    public static isLeafList(any) {
-        return List.isList(any) && any.every(item => Leaf.isLeaf(item));
+    public static isLeafList(input: any): boolean {
+        return List.isList(input) && input.every(item => Leaf.isLeaf(item));
     }
 
     /*
      * Return leaf as a list of characters
-     *
-     * @return {List<Character>}
      */
-
-    public getCharacters() {
+    public getCharacters(): List<Character> {
         logger.deprecate(
             'slate@0.34.0',
             'The `characters` property of Slate objects is deprecated'
@@ -288,13 +281,8 @@ class Leaf extends Record(DEFAULTS) {
 
     /*
      * Update a `mark` at leaf, replace with newMark
-     *
-     * @param {Mark} mark
-     * @param {Mark} newMark
-     * @returns {Leaf}
      */
-
-    public updateMark(mark, newMark) {
+    public updateMark(mark: Mark, newMark: Mark): Leaf {
         const { marks } = this;
         if (newMark.equals(mark)) {
             return this;
@@ -310,34 +298,23 @@ class Leaf extends Record(DEFAULTS) {
 
     /*
      * Add a `set` of marks at `index` and `length`.
-     *
-     * @param {Set<Mark>} set
-     * @returns {Text}
      */
-
-    public addMarks(set) {
+    public addMarks(set: Set<Mark>): Text {
         const { marks } = this;
         return this.set('marks', marks.union(set));
     }
 
     /*
      * Remove a `mark` at `index` and `length`.
-     *
-     * @param {Mark} mark
-     * @returns {Text}
      */
-
-    public removeMark(mark) {
+    public removeMark(mark: Mark): Text {
         const { marks } = this;
         return this.set('marks', marks.remove(mark));
     }
 
     /*
      * Return a JSON representation of the leaf.
-     *
-     * @return {Object}
      */
-
     public toJS() {
         const object = {
             object: this.object,
@@ -351,7 +328,6 @@ class Leaf extends Record(DEFAULTS) {
     /*
      * Alias `toJSON`.
      */
-
     public toJSON() {
         logger.deprecate(
             'slate@0.35.0',
@@ -366,11 +342,5 @@ class Leaf extends Record(DEFAULTS) {
  */
 
 Leaf.prototype[MODEL_TYPES.LEAF] = true;
-
-/*
- * Export.
- *
- * @type {Leaf}
- */
 
 export default Leaf;

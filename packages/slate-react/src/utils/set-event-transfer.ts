@@ -57,8 +57,8 @@ function setEventTransfer(event, type, content) {
         }
 
         obj[mime] = content;
-        const string = `${prefix}${JSON.stringify(obj)}`;
-        transfer.setData(TEXT, string);
+        const textContent = `${prefix}${JSON.stringify(obj)}`;
+        transfer.setData(TEXT, textContent);
     }
 }
 

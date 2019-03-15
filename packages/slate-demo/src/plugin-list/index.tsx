@@ -58,7 +58,7 @@ class ListExample extends React.Component {
 
   hasMark = type => {
     const { value } = this.state
-    return value.activeMarks.some(mark => mark.type == type)
+    return value.activeMarks.some(mark => mark.type === type)
   }
 
   /**
@@ -70,7 +70,7 @@ class ListExample extends React.Component {
 
   hasBlock = type => {
     const { value } = this.state
-    return value.blocks.some(node => node.type == type)
+    return value.blocks.some(node => node.type === type)
   }
 
   /**
@@ -266,7 +266,7 @@ class ListExample extends React.Component {
     const change = value.change()
 
     // Handle everything but list buttons.
-    if (type != 'bulleted-list' && type != 'numbered-list') {
+    if (type !== 'bulleted-list' && type !== 'numbered-list') {
       const isActive = this.hasBlock(type)
       const isList = this.hasBlock('list-item')
 

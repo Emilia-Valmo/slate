@@ -28,7 +28,7 @@ function onModEnter(
     });
 
     const parent = value.document.getParent(blockquote.key);
-    const index = parent.nodes.findIndex(child => child.key == blockquote.key);
+    const index = parent.nodes.findIndex(child => child.key === blockquote.key);
 
     return change
         .insertNodeByKey(parent.key, index + 1, exitBlock)

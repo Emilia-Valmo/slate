@@ -14,7 +14,7 @@ describe('models', () => {
       const testsDir = resolve(__dirname, 'change')
       const tests = fs
         .readdirSync(testsDir)
-        .filter(t => t[0] != '.')
+        .filter(t => t[0] !== '.')
         .map(t => basename(t, extname(t)))
 
       for (const test of tests) {
@@ -40,7 +40,7 @@ describe('models', () => {
       const testsDir = resolve(__dirname, 'node')
       const tests = fs
         .readdirSync(testsDir)
-        .filter(t => t[0] != '.')
+        .filter(t => t[0] !== '.')
         .map(t => basename(t, extname(t)))
 
       for (const test of tests) {

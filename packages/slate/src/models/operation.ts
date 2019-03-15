@@ -106,16 +106,16 @@ class Operation extends Record(DEFAULTS) {
             if (v === undefined) {
                 // Skip keys for objects that should not be serialized, and are only used
                 // for providing the local-only invert behavior for the history stack.
-                if (key == 'document') {
+                if (key === 'document') {
                     continue;
                 }
-                if (key == 'selection') {
+                if (key === 'selection') {
                     continue;
                 }
-                if (key == 'value') {
+                if (key === 'value') {
                     continue;
                 }
-                if (key == 'node' && type != 'insert_node') {
+                if (key === 'node' && type !== 'insert_node') {
                     continue;
                 }
 
@@ -124,39 +124,39 @@ class Operation extends Record(DEFAULTS) {
                 );
             }
 
-            if (key == 'mark') {
+            if (key === 'mark') {
                 v = Mark.create(v);
             }
 
-            if (key == 'marks' && v != null) {
+            if (key === 'marks' && v !== null) {
                 v = Mark.createSet(v);
             }
 
-            if (key == 'node') {
+            if (key === 'node') {
                 v = Node.create(v);
             }
 
-            if (key == 'selection') {
+            if (key === 'selection') {
                 v = Range.create(v);
             }
 
-            if (key == 'value') {
+            if (key === 'value') {
                 v = Value.create(v);
             }
 
-            if (key == 'properties' && type == 'merge_node') {
+            if (key === 'properties' && type === 'merge_node') {
                 v = Node.createProperties(v);
             }
 
-            if (key == 'properties' && type == 'set_mark') {
+            if (key === 'properties' && type === 'set_mark') {
                 v = Mark.createProperties(v);
             }
 
-            if (key == 'properties' && type == 'set_node') {
+            if (key === 'properties' && type === 'set_node') {
                 v = Node.createProperties(v);
             }
 
-            if (key == 'properties' && type == 'set_selection') {
+            if (key === 'properties' && type === 'set_selection') {
                 const { anchorKey, focusKey, ...rest } = v;
                 v = Range.createProperties(rest);
 
@@ -175,11 +175,11 @@ class Operation extends Record(DEFAULTS) {
                 }
             }
 
-            if (key == 'properties' && type == 'set_value') {
+            if (key === 'properties' && type === 'set_value') {
                 v = Value.createProperties(v);
             }
 
-            if (key == 'properties' && type == 'split_node') {
+            if (key === 'properties' && type === 'split_node') {
                 v = Node.createProperties(v);
             }
 
@@ -204,39 +204,30 @@ class Operation extends Record(DEFAULTS) {
 
     /*
      * Check if `any` is a `Operation`.
-     *
-     * @param {Any} any
-     * @return {Boolean}
      */
-
-    public static isOperation(any) {
-        return !!(any && any[MODEL_TYPES.OPERATION]);
+    public static isOperation(input: any): boolean {
+        return !!(input && input[MODEL_TYPES.OPERATION]);
     }
 
     /*
      * Check if `any` is a list of operations.
-     *
-     * @param {Any} any
-     * @return {Boolean}
      */
-
-    public static isOperationList(any) {
+    public static isOperationList(input: any): boolean {
         return (
-            List.isList(any) && any.every(item => Operation.isOperation(item))
+            List.isList(input) &&
+            input.every(item => Operation.isOperation(item))
         );
     }
 
     /*
      * Object.
-     *
-     * @return {String}
      */
 
-    get object() {
+    get object(): 'operation' {
         return 'operation';
     }
 
-    get kind() {
+    get kind(): 'operation' {
         logger.deprecate(
             'slate@0.32.0',
             'The `kind` property of Slate objects has been renamed to `object`.'
@@ -261,24 +252,24 @@ class Operation extends Record(DEFAULTS) {
 
             // Skip keys for objects that should not be serialized, and are only used
             // for providing the local-only invert behavior for the history stack.
-            if (key == 'document') {
+            if (key === 'document') {
                 continue;
             }
-            if (key == 'selection') {
+            if (key === 'selection') {
                 continue;
             }
-            if (key == 'value') {
+            if (key === 'value') {
                 continue;
             }
-            if (key == 'node' && type != 'insert_node') {
+            if (key === 'node' && type !== 'insert_node') {
                 continue;
             }
 
-            if (key == 'mark' || key == 'marks' || key == 'node') {
+            if (key === 'mark' || key === 'marks' || key === 'node') {
                 value = value.toJS();
             }
 
-            if (key == 'properties' && type == 'merge_node') {
+            if (key === 'properties' && type === 'merge_node') {
                 const v = {};
                 if ('data' in value) {
                     v.data = value.data.toJS();
@@ -289,7 +280,7 @@ class Operation extends Record(DEFAULTS) {
                 value = v;
             }
 
-            if (key == 'properties' && type == 'set_mark') {
+            if (key === 'properties' && type === 'set_mark') {
                 const v = {};
                 if ('data' in value) {
                     v.data = value.data.toJS();
@@ -300,7 +291,7 @@ class Operation extends Record(DEFAULTS) {
                 value = v;
             }
 
-            if (key == 'properties' && type == 'set_node') {
+            if (key === 'properties' && type === 'set_node') {
                 const v = {};
                 if ('data' in value) {
                     v.data = value.data.toJS();
@@ -314,7 +305,7 @@ class Operation extends Record(DEFAULTS) {
                 value = v;
             }
 
-            if (key == 'properties' && type == 'set_selection') {
+            if (key === 'properties' && type === 'set_selection') {
                 const v = {};
                 if ('anchorOffset' in value) {
                     v.anchorOffset = value.anchorOffset;
@@ -335,12 +326,12 @@ class Operation extends Record(DEFAULTS) {
                     v.isFocused = value.isFocused;
                 }
                 if ('marks' in value) {
-                    v.marks = value.marks == null ? null : value.marks.toJS();
+                    v.marks = value.marks === null ? null : value.marks.toJS();
                 }
                 value = v;
             }
 
-            if (key == 'properties' && type == 'set_value') {
+            if (key === 'properties' && type === 'set_value') {
                 const v = {};
                 if ('data' in value) {
                     v.data = value.data.toJS();
@@ -354,7 +345,7 @@ class Operation extends Record(DEFAULTS) {
                 value = v;
             }
 
-            if (key == 'properties' && type == 'split_node') {
+            if (key === 'properties' && type === 'split_node') {
                 const v = {};
                 if ('data' in value) {
                     v.data = value.data.toJS();
@@ -389,11 +380,5 @@ class Operation extends Record(DEFAULTS) {
  */
 
 Operation.prototype[MODEL_TYPES.OPERATION] = true;
-
-/*
- * Export.
- *
- * @type {Operation}
- */
 
 export default Operation;

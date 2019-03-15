@@ -37,7 +37,8 @@ Changes.normalizeDocument = change => {
 
 Changes.normalizeNodeByKey = (change, key) => {
     const { value } = change;
-    let { document, schema } = value;
+    const { schema } = value;
+    let { document } = value;
     const node = document.assertNode(key);
 
     normalizeNodeAndChildren(change, node, schema);
@@ -64,7 +65,7 @@ Changes.normalizeNodeByKey = (change, key) => {
  */
 
 function normalizeNodeAndChildren(change, node, schema) {
-    if (node.object == 'text') {
+    if (node.object === 'text') {
         normalizeNode(change, node, schema);
         return;
     }

@@ -171,16 +171,16 @@ class Images extends React.Component {
 
   onDropOrPaste = (event, change, editor) => {
     const target = getEventRange(event, change.value)
-    if (!target && event.type == 'drop') return
+    if (!target && event.type === 'drop') return
 
     const transfer = getEventTransfer(event)
     const { type, text, files } = transfer
 
-    if (type == 'files') {
+    if (type === 'files') {
       for (const file of files) {
         const reader = new FileReader()
         const [mime] = file.type.split('/')
-        if (mime != 'image') continue
+        if (mime !== 'image') continue
 
         reader.addEventListener('load', () => {
           editor.change(c => {
@@ -192,7 +192,7 @@ class Images extends React.Component {
       }
     }
 
-    if (type == 'text') {
+    if (type === 'text') {
       if (!isUrl(text)) return
       if (!isImage(text)) return
       change.call(insertImage, text, target)

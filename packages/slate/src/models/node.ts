@@ -109,7 +109,7 @@ class Node {
             };
         }
 
-        if (typeof attrs == 'string') {
+        if (typeof attrs === 'string') {
             return { type: attrs };
         }
 
@@ -171,45 +171,33 @@ class Node {
 
     /*
      * Check if `any` is a `Node`.
-     *
-     * @param {Any} any
-     * @return {Boolean}
      */
-
-    public static isNode(any) {
+    public static isNode(input: any): boolean {
         return !!['BLOCK', 'DOCUMENT', 'INLINE', 'TEXT'].find(type =>
-            isType(type, any)
+            isType(type, input)
         );
     }
 
     /*
      * Check if `any` is a list of nodes.
-     *
-     * @param {Any} any
-     * @return {Boolean}
      */
 
-    public static isNodeList(any) {
-        return List.isList(any) && any.every(item => Node.isNode(item));
+    public static isNodeList(input: any): boolean {
+        return List.isList(input) && input.every(item => Node.isNode(item));
     }
 
     /*
      * True if the node has both descendants in that order, false otherwise. The
      * order is depth-first, post-order.
-     *
-     * @param {String} first
-     * @param {String} second
-     * @return {Boolean}
      */
-
-    public areDescendantsSorted(first, second) {
+    public areDescendantsSorted(first: string, second: string): boolean {
         first = assertKey(first);
         second = assertKey(second);
 
         const keys = this.getKeysAsArray();
         const firstIndex = keys.indexOf(first);
         const secondIndex = keys.indexOf(second);
-        if (firstIndex == -1 || secondIndex == -1) {
+        if (firstIndex === -1 || secondIndex === -1) {
             return null;
         }
 
@@ -344,7 +332,7 @@ class Node {
                 return false;
             }
 
-            if (child.object != 'text') {
+            if (child.object !== 'text') {
                 ret = child.forEachDescendant(iterator);
                 return ret;
             }
@@ -363,7 +351,7 @@ class Node {
     public getAncestors(key) {
         key = assertKey(key);
 
-        if (key == this.key) {
+        if (key === this.key) {
             return List();
         }
         if (this.hasChild(key)) {
@@ -373,7 +361,7 @@ class Node {
         let ancestors;
 
         this.nodes.find(node => {
-            if (node.object == 'text') {
+            if (node.object === 'text') {
                 return false;
             }
             ancestors = node.getAncestors(key);
@@ -406,7 +394,7 @@ class Node {
 
     public getBlocksAsArray() {
         return this.nodes.reduce((array, child) => {
-            if (child.object != 'block') {
+            if (child.object !== 'block') {
                 return array;
             }
             if (!child.isLeafBlock()) {
@@ -448,7 +436,7 @@ class Node {
 
         // PERF: the most common case is when the range is in a single block node,
         // where we can avoid a lot of iterating of the tree.
-        if (startKey == endKey) {
+        if (startKey === endKey) {
             return [startBlock];
         }
 
@@ -480,9 +468,9 @@ class Node {
 
     public getBlocksByTypeAsArray(type) {
         return this.nodes.reduce((array, node) => {
-            if (node.object != 'block') {
+            if (node.object !== 'block') {
                 return array;
-            } else if (node.isLeafBlock() && node.type == type) {
+            } else if (node.isLeafBlock() && node.type === type) {
                 array.push(node);
                 return array;
             } else {
@@ -541,7 +529,7 @@ class Node {
 
     public getChild(key) {
         key = assertKey(key);
-        return this.nodes.find(node => node.key == key);
+        return this.nodes.find(node => node.key === key);
     }
 
     /*
@@ -574,7 +562,7 @@ class Node {
      */
 
     public getClosestBlock(key) {
-        return this.getClosest(key, parent => parent.object == 'block');
+        return this.getClosest(key, parent => parent.object === 'block');
     }
 
     /*
@@ -585,7 +573,7 @@ class Node {
      */
 
     public getClosestInline(key) {
-        return this.getClosest(key, parent => parent.object == 'inline');
+        return this.getClosest(key, parent => parent.object === 'inline');
     }
 
     /*
@@ -611,10 +599,10 @@ class Node {
         one = assertKey(one);
         two = assertKey(two);
 
-        if (one == this.key) {
+        if (one === this.key) {
             return this;
         }
-        if (two == this.key) {
+        if (two === this.key) {
             return this;
         }
 
@@ -724,7 +712,7 @@ class Node {
         let descendantFound = null;
 
         const found = this.nodes.find(node => {
-            if (node.object == 'text') {
+            if (node.object === 'text') {
                 return true;
             }
             descendantFound = node.getFirstText();
@@ -759,10 +747,15 @@ class Node {
         let previous;
         let parent;
 
-        while ((parent = node.getParent(child.key))) {
+        while (1) {
+            parent = node.getParent(child.key);
+            if (!parent) {
+                break;
+            }
+
             const index = parent.nodes.indexOf(child);
             const position =
-                child.object == 'text'
+                child.object === 'text'
                     ? startOffset
                     : child.nodes.indexOf(previous);
 
@@ -772,13 +765,17 @@ class Node {
             child = parent;
         }
 
-        child = startKey == endKey ? node.getNextText(startKey) : endText;
+        child = startKey === endKey ? node.getNextText(startKey) : endText;
 
-        while ((parent = node.getParent(child.key))) {
+        while (1) {
+            parent = node.getParent(child.key);
+            if (!parent) {
+                break;
+            }
             const index = parent.nodes.indexOf(child);
             const position =
-                child.object == 'text'
-                    ? startKey == endKey
+                child.object === 'text'
+                    ? startKey === endKey
                         ? endOffset - startOffset
                         : endOffset
                     : child.nodes.indexOf(previous);
@@ -794,7 +791,7 @@ class Node {
             node.getFurthestAncestor(startKey).key
         );
         const endNode =
-            startKey == endKey
+            startKey === endKey
                 ? node.getNextSibling(
                       node.getNextSibling(node.getFurthestAncestor(endKey).key)
                           .key
@@ -840,7 +837,7 @@ class Node {
      */
 
     public getFurthestBlock(key) {
-        return this.getFurthest(key, node => node.object == 'block');
+        return this.getFurthest(key, node => node.object === 'block');
     }
 
     /*
@@ -851,7 +848,7 @@ class Node {
      */
 
     public getFurthestInline(key) {
-        return this.getFurthest(key, node => node.object == 'inline');
+        return this.getFurthest(key, node => node.object === 'inline');
     }
 
     /*
@@ -864,10 +861,10 @@ class Node {
     public getFurthestAncestor(key) {
         key = assertKey(key);
         return this.nodes.find(node => {
-            if (node.key == key) {
+            if (node.key === key) {
                 return true;
             }
-            if (node.object == 'text') {
+            if (node.object === 'text') {
                 return false;
             }
             return node.hasDescendant(key);
@@ -926,7 +923,7 @@ class Node {
         let array = [];
 
         this.nodes.forEach(child => {
-            if (child.object == 'text') {
+            if (child.object === 'text') {
                 return;
             }
 
@@ -992,9 +989,9 @@ class Node {
 
     public getInlinesByTypeAsArray(type) {
         return this.nodes.reduce((inlines, node) => {
-            if (node.object == 'text') {
+            if (node.object === 'text') {
                 return inlines;
-            } else if (node.isLeafInline() && node.type == type) {
+            } else if (node.isLeafInline() && node.type === type) {
                 inlines.push(node);
                 return inlines;
             } else {
@@ -1040,7 +1037,7 @@ class Node {
         let descendantFound = null;
 
         const found = this.nodes.findLast(node => {
-            if (node.object == 'text') {
+            if (node.object === 'text') {
                 return true;
             }
             descendantFound = node.getLastText();
@@ -1206,8 +1203,10 @@ class Node {
         }
 
         if (range.isCollapsed) {
-            const { startKey, startOffset } = range;
-            return this.getMarksAtPosition(startKey, startOffset).toSet();
+            return this.getMarksAtPosition(
+                range.startKey,
+                range.startOffset
+            ).toSet();
         }
 
         let { startKey, endKey, startOffset, endOffset } = range;
@@ -1215,9 +1214,9 @@ class Node {
 
         if (startKey !== endKey) {
             while (startKey !== endKey && endOffset === 0) {
-                const endText = this.getPreviousText(endKey);
-                endKey = endText.key;
-                endOffset = endText.text.length;
+                const endPrevText = this.getPreviousText(endKey);
+                endKey = endPrevText.key;
+                endOffset = endPrevText.text.length;
             }
 
             while (
@@ -1333,9 +1332,9 @@ class Node {
 
     public getMarksByTypeAsArray(type) {
         return this.nodes.reduce((array, node) => {
-            return node.object == 'text'
+            return node.object === 'text'
                 ? array.concat(
-                      node.getMarksAsArray().filter(m => m.type == type)
+                      node.getMarksAsArray().filter(m => m.type === type)
                   )
                 : array.concat(node.getMarksByTypeAsArray(type));
         }, []);
@@ -1352,7 +1351,7 @@ class Node {
         const child = this.assertDescendant(key);
         let last;
 
-        if (child.object == 'block') {
+        if (child.object === 'block') {
             last = child.getLastText();
         } else {
             const block = this.getClosestBlock(key);
@@ -1378,9 +1377,9 @@ class Node {
         key = assertKey(key);
 
         const parent = this.getParent(key);
-        const after = parent.nodes.skipUntil(child => child.key == key);
+        const after = parent.nodes.skipUntil(child => child.key === key);
 
-        if (after.size == 0) {
+        if (after.size === 0) {
             throw new Error(`Could not find a child node with key "${key}".`);
         }
         return after.get(1);
@@ -1396,7 +1395,7 @@ class Node {
     public getNextText(key) {
         key = assertKey(key);
         return this.getTexts()
-            .skipUntil(text => text.key == key)
+            .skipUntil(text => text.key === key)
             .get(1);
     }
 
@@ -1409,7 +1408,7 @@ class Node {
 
     public getNode(key) {
         key = assertKey(key);
-        return this.key == key ? this : this.getDescendant(key);
+        return this.key === key ? this : this.getDescendant(key);
     }
 
     /*
@@ -1436,7 +1435,7 @@ class Node {
         // Calculate the offset of the nodes before the highest child.
         const child = this.getFurthestAncestor(key);
         const offset = this.nodes
-            .takeUntil(n => n == child)
+            .takeUntil(n => n === child)
             .reduce((memo, n) => memo + n.text.length, 0);
 
         // Recurse if need be.
@@ -1484,7 +1483,7 @@ class Node {
         let node = null;
 
         this.nodes.find(child => {
-            if (child.object == 'text') {
+            if (child.object === 'text') {
                 return false;
             } else {
                 node = child.getParent(key);
@@ -1575,7 +1574,7 @@ class Node {
         const child = this.assertDescendant(key);
         let first;
 
-        if (child.object == 'block') {
+        if (child.object === 'block') {
             first = child.getFirstText();
         } else {
             const block = this.getClosestBlock(key);
@@ -1600,9 +1599,9 @@ class Node {
     public getPreviousSibling(key) {
         key = assertKey(key);
         const parent = this.getParent(key);
-        const before = parent.nodes.takeUntil(child => child.key == key);
+        const before = parent.nodes.takeUntil(child => child.key === key);
 
-        if (before.size == parent.nodes.size) {
+        if (before.size === parent.nodes.size) {
             throw new Error(`Could not find a child node with key "${key}".`);
         }
 
@@ -1619,7 +1618,7 @@ class Node {
     public getPreviousText(key) {
         key = assertKey(key);
         return this.getTexts()
-            .takeUntil(text => text.key == key)
+            .takeUntil(text => text.key === key)
             .last();
     }
 
@@ -1633,7 +1632,7 @@ class Node {
      * @return {Object|Null}
      */
 
-    public getSelectionIndexes(range, isSelected = true) {
+    public getSelectionIndexes(range: Range, isSelected: boolean = true) {
         const { startKey, endKey } = range;
 
         // PERF: if we're not selected, we can exit early.
@@ -1648,7 +1647,7 @@ class Node {
 
         // PERF: if the start and end keys are the same, just check for the child
         // that contains that single key.
-        if (startKey == endKey) {
+        if (startKey === endKey) {
             const child = this.getFurthestAncestor(startKey);
             const index = child ? this.nodes.indexOf(child) : null;
             return { start: index, end: index + 1 };
@@ -1659,33 +1658,33 @@ class Node {
         let end = null;
 
         this.nodes.forEach((child, i) => {
-            if (child.object == 'text') {
-                if (start == null && child.key == startKey) {
+            if (child.object === 'text') {
+                if (start === null && child.key === startKey) {
                     start = i;
                 }
-                if (end == null && child.key == endKey) {
+                if (end === null && child.key === endKey) {
                     end = i + 1;
                 }
             } else {
-                if (start == null && child.hasDescendant(startKey)) {
+                if (start === null && child.hasDescendant(startKey)) {
                     start = i;
                 }
-                if (end == null && child.hasDescendant(endKey)) {
+                if (end === null && child.hasDescendant(endKey)) {
                     end = i + 1;
                 }
             }
 
             // PERF: exit early if both start and end have been found.
-            return start == null || end == null;
+            return start === null || end === null;
         });
 
-        if (isSelected && start == null) {
+        if (isSelected && start === null) {
             start = 0;
         }
-        if (isSelected && end == null) {
+        if (isSelected && end === null) {
             end = this.nodes.size;
         }
-        return start == null ? null : { start, end };
+        return start === null ? null : { start, end };
     }
 
     /*
@@ -1694,9 +1693,9 @@ class Node {
      * @return {String}
      */
 
-    public getText() {
-        return this.nodes.reduce((string, node) => {
-            return string + node.text;
+    public getText(): string {
+        return this.nodes.reduce((content, node) => {
+            return content + node.text;
         }, '');
     }
 
@@ -1709,10 +1708,10 @@ class Node {
 
     public getTextAtOffset(offset) {
         // PERF: Add a few shortcuts for the obvious cases.
-        if (offset == 0) {
+        if (offset === 0) {
             return this.getFirstText();
         }
-        if (offset == this.text.length) {
+        if (offset === this.text.length) {
             return this.getLastText();
         }
         if (offset < 0 || offset > this.text.length) {
@@ -1735,7 +1734,7 @@ class Node {
 
     public getTextDirection() {
         const dir = direction(this.text);
-        return dir == 'neutral' ? undefined : dir;
+        return dir === 'neutral' ? undefined : dir;
     }
 
     /*
@@ -1759,7 +1758,7 @@ class Node {
         let array = [];
 
         this.nodes.forEach(node => {
-            if (node.object == 'text') {
+            if (node.object === 'text') {
                 array.push(node);
             } else {
                 array = array.concat(node.getTextsAsArray());
@@ -1799,7 +1798,7 @@ class Node {
 
         // PERF: the most common case is when the range is in a single text node,
         // where we can avoid a lot of iterating of the tree.
-        if (startKey == endKey) {
+        if (startKey === endKey) {
             return [startText];
         }
 
@@ -1912,7 +1911,7 @@ class Node {
             node = node.regenerateKey();
         }
 
-        if (node.object != 'text') {
+        if (node.object !== 'text') {
             node = node.mapDescendants(desc => {
                 return keys.includes(desc.key) ? desc.regenerateKey() : desc;
             });
@@ -1938,8 +1937,8 @@ class Node {
         // PERF: solve the most common cast where the start or end key are inside
         // the node, for collapsed selections.
         if (
-            node.key == startKey ||
-            node.key == endKey ||
+            node.key === startKey ||
+            node.key === endKey ||
             node.hasDescendant(startKey) ||
             node.hasDescendant(endKey)
         ) {
@@ -1975,7 +1974,8 @@ class Node {
 
     public isLeafBlock() {
         return (
-            this.object == 'block' && this.nodes.every(n => n.object != 'block')
+            this.object === 'block' &&
+            this.nodes.every(n => n.object !== 'block')
         );
     }
 
@@ -1987,8 +1987,8 @@ class Node {
 
     public isLeafInline() {
         return (
-            this.object == 'inline' &&
-            this.nodes.every(n => n.object != 'inline')
+            this.object === 'inline' &&
+            this.nodes.every(n => n.object !== 'inline')
         );
     }
 
@@ -2007,7 +2007,7 @@ class Node {
         let one = node.nodes.get(withIndex);
         const two = node.nodes.get(index);
 
-        if (one.object != two.object) {
+        if (one.object !== two.object) {
             throw new Error(
                 `Tried to merge two nodes of different objects: "${
                     one.object
@@ -2016,7 +2016,7 @@ class Node {
         }
 
         // If the nodes are text nodes, concatenate their leaves together
-        if (one.object == 'text') {
+        if (one.object === 'text') {
             one = one.mergeText(two);
         } else {
             // Otherwise, concatenate their child nodes together.
@@ -2043,7 +2043,7 @@ class Node {
 
         nodes.forEach((node, i) => {
             const ret = iterator(node, i, this.nodes);
-            if (ret != node) {
+            if (ret !== node) {
                 nodes = nodes.set(ret.key, ret);
             }
         });
@@ -2064,11 +2064,11 @@ class Node {
 
         nodes.forEach((node, index) => {
             let ret = node;
-            if (ret.object != 'text') {
+            if (ret.object !== 'text') {
                 ret = ret.mapDescendants(iterator);
             }
             ret = iterator(ret, index, this.nodes);
-            if (ret == node) {
+            if (ret === node) {
                 return;
             }
 
@@ -2143,7 +2143,7 @@ class Node {
 
         // If the child is a text node, the `position` refers to the text offset at
         // which to split it.
-        if (child.object == 'text') {
+        if (child.object === 'text') {
             [one, two] = child.splitText(position);
         } else {
             // Otherwise, if the child is not a text node, the `position` refers to the
@@ -2169,7 +2169,7 @@ class Node {
      */
 
     public updateNode(node) {
-        if (node.key == this.key) {
+        if (node.key === this.key) {
             return node;
         }
 
@@ -2227,7 +2227,7 @@ class Node {
  */
 
 function assertKey(arg) {
-    if (typeof arg == 'string') {
+    if (typeof arg === 'string') {
         return arg;
     }
     throw new Error(
@@ -2299,7 +2299,7 @@ memoize(Node.prototype, [
  */
 
 Object.getOwnPropertyNames(Node.prototype).forEach(method => {
-    if (method == 'constructor') {
+    if (method === 'constructor') {
         return;
     }
     Block.prototype[method] = Node.prototype[method];

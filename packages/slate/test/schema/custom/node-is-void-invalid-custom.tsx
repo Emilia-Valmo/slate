@@ -8,7 +8,7 @@ export const schema = {
     paragraph: {
       isVoid: false,
       normalize: (change, reason, { node }) => {
-        if (reason == NODE_IS_VOID_INVALID) {
+        if (reason === NODE_IS_VOID_INVALID) {
           change.removeNodeByKey(node.key, 'paragraph')
         }
       },

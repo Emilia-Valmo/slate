@@ -2,30 +2,17 @@ import Base64 from '@gitbook/slate-base64-serializer';
 import { IS_IE } from '@gitbook/slate-dev-environment';
 import TRANSFER_TYPES from '../constants/transfer-types';
 
-/*
- * Transfer types.
- *
- * @type {String}
- */
-
 const { FRAGMENT, HTML, NODE, RICH, TEXT } = TRANSFER_TYPES;
 
 /*
  * Fragment matching regexp for HTML nodes.
- *
- * @type {RegExp}
  */
-
 const FRAGMENT_MATCHER = / data-slate-fragment="([^\s"]+)"/;
 
 /*
  * Get the transfer data from an `event`.
- *
- * @param {Event} event
- * @return {Object}
  */
-
-function getEventTransfer(event) {
+function getEventTransfer(event: Event): object {
     // COMPAT: IE 11 doesn't populate nativeEvent with either
     // dataTransfer or clipboardData. We'll need to use the base event
     // object (2018/14/6)
@@ -43,9 +30,9 @@ function getEventTransfer(event) {
 
     // If there isn't a fragment, but there is HTML, check to see if the HTML is
     // actually an encoded fragment.
-    if (!fragment && html && ~html.indexOf(' data-slate-fragment="')) {
+    if (!fragment && html && html.indexOf(' data-slate-fragment="') >= 0) {
         const matches = FRAGMENT_MATCHER.exec(html);
-        const [full, encoded] = matches; // eslint-disable-line no-unused-vars
+        const encoded = matches[1];
         if (encoded) {
             fragment = encoded;
         }
@@ -81,7 +68,7 @@ function getEventTransfer(event) {
         // Get and normalize files if they exist.
         if (transfer.items && transfer.items.length) {
             files = Array.from(transfer.items)
-                .map(item => (item.kind == 'file' ? item.getAsFile() : null))
+                .map(item => (item.kind === 'file' ? item.getAsFile() : null))
                 .filter(exists => exists);
         } else if (transfer.files && transfer.files.length) {
             files = Array.from(transfer.files);
@@ -101,15 +88,12 @@ function getEventTransfer(event) {
 /*
  * Takes text input, checks whether contains embedded data
  * and returns object with original text +/- additional data
- *
- * @param {String} text
- * @return {Object}
  */
 
-function getEmbeddedTypes(text) {
+function getEmbeddedTypes(text: string): object {
     const prefix = 'SLATE-DATA-EMBED::';
 
-    if (text.substring(0, prefix.length) != prefix) {
+    if (text.substring(0, prefix.length) !== prefix) {
         return { TEXT: text };
     }
 
@@ -173,7 +157,7 @@ function getType(transfer, type) {
     if (!transfer.types || !transfer.types.length) {
         // COMPAT: In IE 11, there is no `types` field but `getData('Text')`
         // is supported`. (2017/06/23)
-        return type == TEXT ? transfer.getData('Text') || null : null;
+        return type === TEXT ? transfer.getData('Text') || null : null;
     }
 
     // COMPAT: In Edge, transfer.types doesn't respond to `indexOf`. (2017/10/25)
@@ -181,11 +165,5 @@ function getType(transfer, type) {
 
     return types.indexOf(type) !== -1 ? transfer.getData(type) || null : null;
 }
-
-/*
- * Export.
- *
- * @type {Function}
- */
 
 export default getEventTransfer;

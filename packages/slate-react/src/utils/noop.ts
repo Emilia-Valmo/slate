@@ -1,15 +1,9 @@
 /*
  * Noop.
- *
- * @return {Void}
  */
 
-function noop() {}
-
-/*
- * Export.
- *
- * @type {Function}
- */
+function noop() {
+    // Do nothing
+}
 
 export default noop;

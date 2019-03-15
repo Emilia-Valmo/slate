@@ -11,7 +11,7 @@ import { createCell } from '../utils';
  * Returns a schema definition for the plugin
  */
 
-function schema(opts: Options): Object {
+function schema(opts: Options): object {
     return {
         blocks: {
             [opts.typeTable]: {
@@ -20,7 +20,7 @@ function schema(opts: Options): Object {
             [opts.typeRow]: {
                 nodes: [{ types: [opts.typeCell] }],
                 parent: { types: [opts.typeTable] },
-                normalize(change: Change, violation: string, context: Object) {
+                normalize(change: Change, violation: string, context: object) {
                     switch (violation) {
                         case CHILD_TYPE_INVALID:
                             return onlyCellsInRow(opts, change, context);
@@ -34,7 +34,7 @@ function schema(opts: Options): Object {
             [opts.typeCell]: {
                 nodes: [{ objects: ['block'] }],
                 parent: { types: [opts.typeRow] },
-                normalize(change: Change, violation: string, context: Object) {
+                normalize(change: Change, violation: string, context: object) {
                     switch (violation) {
                         case CHILD_OBJECT_INVALID:
                             return onlyBlocksInCell(opts, change, context);
@@ -54,7 +54,7 @@ function schema(opts: Options): Object {
  * If they're not then we wrap them within a cell.
  */
 
-function onlyCellsInRow(opts: Options, change: Change, context: Object) {
+function onlyCellsInRow(opts: Options, change: Change, context: object) {
     const cell = createCell(opts, []);
     const index = context.node.nodes.findIndex(
         child => child.key === context.child.key
@@ -67,7 +67,7 @@ function onlyCellsInRow(opts: Options, change: Change, context: Object) {
  * Rows can't live outside a table, if one is found then we wrap it within a table.
  */
 
-function rowOnlyInTable(opts: Options, change: Change, context: Object) {
+function rowOnlyInTable(opts: Options, change: Change, context: object) {
     return change.wrapBlockByKey(context.node.key, opts.typeTable);
 }
 
@@ -76,7 +76,7 @@ function rowOnlyInTable(opts: Options, change: Change, context: Object) {
  * If they're not then we wrap them within a block with aof opts.typeContent
  */
 
-function onlyBlocksInCell(opts: Options, change: Change, context: Object) {
+function onlyBlocksInCell(opts: Options, change: Change, context: object) {
     const block = Block.create({
         type: opts.typeContent
     });
@@ -95,7 +95,7 @@ function onlyBlocksInCell(opts: Options, change: Change, context: Object) {
  * Cells can't live outside a row, if one is found then we wrap it within a row.
  */
 
-function cellOnlyInRow(opts: Options, change: Change, context: Object) {
+function cellOnlyInRow(opts: Options, change: Change, context: object) {
     return change.wrapBlockByKey(context.node.key, opts.typeRow);
 }
 

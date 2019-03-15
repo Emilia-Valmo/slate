@@ -17,10 +17,10 @@ const CORE_SCHEMA_RULES = [
 
     {
         validateNode(node) {
-            if (node.object != 'document') {
+            if (node.object !== 'document') {
                 return;
             }
-            const invalids = node.nodes.filter(n => n.object != 'block');
+            const invalids = node.nodes.filter(n => n.object !== 'block');
             if (!invalids.size) {
                 return;
             }
@@ -41,7 +41,7 @@ const CORE_SCHEMA_RULES = [
 
     {
         validateNode(node) {
-            if (node.object != 'block') {
+            if (node.object !== 'block') {
                 return;
             }
             const first = node.nodes.first();
@@ -49,7 +49,7 @@ const CORE_SCHEMA_RULES = [
                 return;
             }
             const objects =
-                first.object == 'block' ? ['block'] : ['inline', 'text'];
+                first.object === 'block' ? ['block'] : ['inline', 'text'];
             const invalids = node.nodes.filter(
                 n => !objects.includes(n.object)
             );
@@ -73,11 +73,11 @@ const CORE_SCHEMA_RULES = [
 
     {
         validateNode(node) {
-            if (node.object != 'inline') {
+            if (node.object !== 'inline') {
                 return;
             }
             const invalids = node.nodes.filter(
-                n => n.object != 'inline' && n.object != 'text'
+                n => n.object !== 'inline' && n.object !== 'text'
             );
             if (!invalids.size) {
                 return;
@@ -99,7 +99,7 @@ const CORE_SCHEMA_RULES = [
 
     {
         validateNode(node) {
-            if (node.object != 'block' && node.object != 'inline') {
+            if (node.object !== 'block' && node.object !== 'inline') {
                 return;
             }
             if (node.nodes.size > 0) {
@@ -125,7 +125,7 @@ const CORE_SCHEMA_RULES = [
 
     {
         validateNode(node) {
-            if (node.object != 'inline' && node.object != 'block') {
+            if (node.object !== 'inline' && node.object !== 'block') {
                 return;
             }
 
@@ -140,7 +140,7 @@ const CORE_SCHEMA_RULES = [
             return change => {
                 // If all of the block's nodes are invalid, insert an empty text node so
                 // that the selection will be preserved when they are all removed.
-                if (node.nodes.size == invalids.size) {
+                if (node.nodes.size === invalids.size) {
                     const text = Text.create();
                     change.insertNodeByKey(node.key, 1, text, {
                         normalize: false
@@ -163,7 +163,7 @@ const CORE_SCHEMA_RULES = [
 
     {
         validateNode(node) {
-            if (node.object != 'block' && node.object != 'inline') {
+            if (node.object !== 'block' && node.object !== 'inline') {
                 return;
             }
 
@@ -178,7 +178,7 @@ const CORE_SCHEMA_RULES = [
                 // We don't test if "prev" is inline, since it has already been
                 // processed in the loop
                 const insertBefore = !prev;
-                const insertAfter = !next || next.object == 'inline';
+                const insertAfter = !next || next.object === 'inline';
 
                 if (insertAfter || insertBefore) {
                     list = list.push({ insertAfter, insertBefore, index });
@@ -234,17 +234,17 @@ const CORE_SCHEMA_RULES = [
 
     {
         validateNode(node) {
-            if (node.object != 'block' && node.object != 'inline') {
+            if (node.object !== 'block' && node.object !== 'inline') {
                 return;
             }
 
             const invalids = node.nodes
                 .map((child, i) => {
                     const next = node.nodes.get(i + 1);
-                    if (child.object != 'text') {
+                    if (child.object !== 'text') {
                         return;
                     }
-                    if (!next || next.object != 'text') {
+                    if (!next || next.object !== 'text') {
                         return;
                     }
                     return next;
@@ -273,7 +273,7 @@ const CORE_SCHEMA_RULES = [
 
     {
         validateNode(node) {
-            if (node.object != 'block' && node.object != 'inline') {
+            if (node.object !== 'block' && node.object !== 'inline') {
                 return;
             }
             const { nodes } = node;
@@ -282,7 +282,7 @@ const CORE_SCHEMA_RULES = [
             }
 
             const invalids = nodes.filter((desc, i) => {
-                if (desc.object != 'text') {
+                if (desc.object !== 'text') {
                     return;
                 }
                 if (desc.text.length > 0) {
@@ -293,12 +293,12 @@ const CORE_SCHEMA_RULES = [
                 const next = nodes.get(i + 1);
 
                 // If it's the first node, and the next is a void, preserve it.
-                if (!prev && next.object == 'inline') {
+                if (!prev && next.object === 'inline') {
                     return;
                 }
 
                 // It it's the last node, and the previous is an inline, preserve it.
-                if (!next && prev.object == 'inline') {
+                if (!next && prev.object === 'inline') {
                     return;
                 }
 
@@ -306,8 +306,8 @@ const CORE_SCHEMA_RULES = [
                 if (
                     next &&
                     prev &&
-                    next.object == 'inline' &&
-                    prev.object == 'inline'
+                    next.object === 'inline' &&
+                    prev.object === 'inline'
                 ) {
                     return;
                 }

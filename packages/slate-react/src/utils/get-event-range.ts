@@ -1,24 +1,19 @@
 import getWindow from 'get-window';
 
-import { Range } from '@gitbook/slate';
+import { Range, Value } from '@gitbook/slate';
 import findNode from './find-node';
 import findRange from './find-range';
 
 /*
  * Get the target range from a DOM `event`.
- *
- * @param {Event} event
- * @param {Value} value
- * @return {Range}
  */
-
-function getEventRange(event, value) {
+function getEventRange(event: Event, value: Value): Range {
     if (event.nativeEvent) {
         event = event.nativeEvent;
     }
 
     const { x, y, target } = event;
-    if (x == null || y == null) {
+    if (x === null || y === null) {
         return null;
     }
 
@@ -34,23 +29,23 @@ function getEventRange(event, value) {
     if (node.isVoid) {
         const rect = target.getBoundingClientRect();
         const isPrevious =
-            node.object == 'inline'
+            node.object === 'inline'
                 ? x - rect.left < rect.left + rect.width - x
                 : y - rect.top < rect.top + rect.height - y;
 
         const text = node.getFirstText();
-        const range = Range.create();
+        const newRange = Range.create();
 
         if (isPrevious) {
             const previousText = document.getPreviousText(text.key);
 
             if (previousText) {
-                return range.moveToEndOf(previousText);
+                return newRange.moveToEndOf(previousText);
             }
         }
 
         const nextText = document.getNextText(text.key);
-        return nextText ? range.moveToStartOf(nextText) : null;
+        return nextText ? newRange.moveToStartOf(nextText) : null;
     }
 
     // Else resolve a range from the caret position where the drop occured.
@@ -87,11 +82,5 @@ function getEventRange(event, value) {
 
     return range;
 }
-
-/*
- * Export.
- *
- * @type {Function}
- */
 
 export default getEventRange;

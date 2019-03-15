@@ -296,7 +296,8 @@ const APPLIERS = {
 
     remove_node(value: Value, operation: Operation) {
         const { path } = operation;
-        let { document, selection } = value;
+        let { document } = value;
+        const { selection } = value;
         const node = document.assertPath(path);
 
         if (selection.isSet || value.decorations !== null) {
@@ -455,7 +456,8 @@ const APPLIERS = {
     set_selection(value: Value, operation: Operation) {
         const { properties } = operation;
         const { anchorPath, focusPath, ...props } = properties;
-        let { document, selection } = value;
+        let { selection } = value;
+        const { document } = value;
 
         if (anchorPath !== undefined) {
             props.anchorKey =

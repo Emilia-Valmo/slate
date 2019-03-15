@@ -25,11 +25,11 @@ const schema = {
         case CHILD_TYPE_INVALID: {
           return change.setNodeByKey(
             child.key,
-            index == 0 ? 'title' : 'paragraph'
+            index === 0 ? 'title' : 'paragraph'
           )
         }
         case CHILD_REQUIRED: {
-          const block = Block.create(index == 0 ? 'title' : 'paragraph')
+          const block = Block.create(index === 0 ? 'title' : 'paragraph')
           return change.insertNodeByKey(node.key, index, block)
         }
       }

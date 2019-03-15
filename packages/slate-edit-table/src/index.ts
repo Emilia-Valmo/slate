@@ -11,7 +11,7 @@ import { onKeyDown, onCopy, onPaste } from './handlers'
 function EditTable(
   // The plugin options
   optionsParam?: OptionsFormat
-): Object {
+): object {
   const opts = new Options(optionsParam || {})
   const corePlugin = core(opts)
 

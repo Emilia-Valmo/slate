@@ -13,7 +13,7 @@ function onCopy(
     opts: Options,
     event: any,
     change: Change
-): Object {
+): object {
     const copiedFragment = getCopiedFragment(opts, change.value);
 
     if (!copiedFragment) {

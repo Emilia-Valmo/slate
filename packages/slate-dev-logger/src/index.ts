@@ -10,10 +10,10 @@ const IS_DEV: boolean = Boolean(
 )
 
 const HAS_CONSOLE =
-  typeof console != 'undefined' &&
-  typeof console.log == 'function' &&
-  typeof console.warn == 'function' &&
-  typeof console.error == 'function'
+  typeof console !== 'undefined' &&
+  typeof console.log === 'function' &&
+  typeof console.warn === 'function' &&
+  typeof console.error === 'function'
 
 /*
  * Log a `message` at `level`.

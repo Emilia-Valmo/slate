@@ -65,7 +65,7 @@
     "bootstrap": "lerna bootstrap",
     "build": "rollup --config ./support/rollup/config.js",
     "watch": "rollup --watch --config ./support/rollup/config.js",
-    "clean:build": "lerna exec --no-sort -- rm -rf dist lib",
+    "clean:build": "lerna exec --no-sort -- rm -rf dist lib build",
     "clean:dependencies": "lerna exec --no-sort -- rm -rf node_modules",
     "clean": "yarn run clean:build && yarn run clean:dependencies && rm -rf node_modules",
     "lint": "tslint ./packages/*/src/**/*.ts",

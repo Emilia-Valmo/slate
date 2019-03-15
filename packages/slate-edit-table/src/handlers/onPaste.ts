@@ -9,7 +9,7 @@ import { isRangeInTable, isSelectionInTable } from '../utils';
  *  Handle pasting inside tables
  */
 
-function onPaste(opts: Options, event: any, change: Change): Object {
+function onPaste(opts: Options, event: any, change: Change): object {
     // Outside of tables, do not alter paste behavior
     if (!isSelectionInTable(opts, change.value)) {
         return undefined;
@@ -18,7 +18,7 @@ function onPaste(opts: Options, event: any, change: Change): Object {
     const transfer = getEventTransfer(event);
     const { type, fragment } = transfer;
 
-    if (type != 'fragment' || fragment.nodes.isEmpty()) {
+    if (type !== 'fragment' || fragment.nodes.isEmpty()) {
         return null;
     }
 

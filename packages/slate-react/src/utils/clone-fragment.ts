@@ -79,7 +79,7 @@ function cloneFragment(event, value, fragment = value.fragment) {
     // Set a `data-slate-fragment` attribute on a non-empty node, so it shows up
     // in the HTML, and can be used for intra-Slate pasting. If it's a text
     // node, wrap it in a `<span>` so we have something to set an attribute on.
-    if (attach.nodeType == 3) {
+    if (attach.nodeType === 3) {
         const span = window.document.createElement('span');
 
         // COMPAT: In Chrome and Safari, if we don't add the `white-space` style

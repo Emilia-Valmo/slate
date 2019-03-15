@@ -36,24 +36,15 @@ const PUNCTUATION = /[\u0021-\u0023\u0025-\u002A\u002C-\u002F\u003A\u003B\u003F\
 
 /*
  * Is a character `code` in a surrogate character.
- *
- * @param {Number} code
- * @return {Boolean}
  */
-
-function isSurrogate(code) {
+function isSurrogate(code: number): boolean {
     return SURROGATE_START <= code && code <= SURROGATE_END;
 }
 
 /*
  * Is a character a word character? Needs the `remaining` characters too.
- *
- * @param {String} char
- * @param {String|Void} remaining
- * @return {Boolean}
  */
-
-function isWord(char, remaining) {
+function isWord(char: string, remaining?: string): boolean {
     if (SPACE.test(char)) {
         return false;
     }
@@ -77,36 +68,23 @@ function isWord(char, remaining) {
 
 /*
  * Get the length of a `character`.
- *
- * @param {String} char
- * @return {Number}
  */
-
-function getCharLength(char) {
+function getCharLength(char: string) {
     return isSurrogate(char.charCodeAt(0)) ? 2 : 1;
 }
 
 /*
  * Get the offset to the end of the first character in `text`.
- *
- * @param {String} text
- * @return {Number}
  */
-
-function getCharOffset(text) {
+function getCharOffset(text: string): number {
     const char = text.charAt(0);
     return getCharLength(char);
 }
 
 /*
  * Get the offset to the end of the character before an `offset` in `text`.
- *
- * @param {String} text
- * @param {Number} offset
- * @return {Number}
  */
-
-function getCharOffsetBackward(text, offset) {
+function getCharOffsetBackward(text: string, offset: number): number {
     text = text.slice(0, offset);
     text = reverse(text);
     return getCharOffset(text);
@@ -114,31 +92,27 @@ function getCharOffsetBackward(text, offset) {
 
 /*
  * Get the offset to the end of the character after an `offset` in `text`.
- *
- * @param {String} text
- * @param {Number} offset
- * @return {Number}
  */
 
-function getCharOffsetForward(text, offset) {
+function getCharOffsetForward(text: string, offset: number): number {
     text = text.slice(offset);
     return getCharOffset(text);
 }
 
 /*
  * Get the offset to the end of the first word in `text`.
- *
- * @param {String} text
- * @return {Number}
  */
-
-function getWordOffset(text) {
+function getWordOffset(text: string): number {
     let length = 0;
     let i = 0;
     let started = false;
-    let char;
 
-    while ((char = text.charAt(i))) {
+    while (1) {
+        let char = text.charAt(i);
+        if (!char) {
+            break;
+        }
+
         const l = getCharLength(char);
         char = text.slice(i, i + l);
         const rest = text.slice(i + l);
@@ -160,13 +134,8 @@ function getWordOffset(text) {
 
 /*
  * Get the offset to the end of the word before an `offset` in `text`.
- *
- * @param {String} text
- * @param {Number} offset
- * @return {Number}
  */
-
-function getWordOffsetBackward(text, offset) {
+function getWordOffsetBackward(text: string, offset: number): number {
     text = text.slice(0, offset);
     text = reverse(text);
     const o = getWordOffset(text);
@@ -175,23 +144,12 @@ function getWordOffsetBackward(text, offset) {
 
 /*
  * Get the offset to the end of the word after an `offset` in `text`.
- *
- * @param {String} text
- * @param {Number} offset
- * @return {Number}
  */
-
-function getWordOffsetForward(text, offset) {
+function getWordOffsetForward(text: string, offset: number): number {
     text = text.slice(offset);
     const o = getWordOffset(text);
     return o;
 }
-
-/*
- * Export.
- *
- * @type {Object}
- */
 
 export default {
     getCharOffsetForward,

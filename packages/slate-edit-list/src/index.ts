@@ -13,7 +13,7 @@ const KEY_BACKSPACE = 'Backspace'
 function EditList(
   // Options for the plugin
   opts: OptionsFormat = {}
-): Object {
+): object {
   opts = new Options(opts)
 
   const corePlugin = core(opts)

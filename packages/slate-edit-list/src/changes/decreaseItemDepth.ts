@@ -17,7 +17,7 @@ function decreaseItemDepth(opts: Options, change: Change): Change {
     // Cannot decrease item depth of root items
     const depth = getItemDepth(opts, value);
 
-    if (depth == 1) {
+    if (depth === 1) {
         return change;
     }
 

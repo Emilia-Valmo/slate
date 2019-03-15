@@ -73,7 +73,7 @@ class RTL extends React.Component {
    */
 
   onKeyDown = (event, change) => {
-    if (event.key == 'Enter' && event.shiftKey) {
+    if (event.key === 'Enter' && event.shiftKey) {
       event.preventDefault()
       change.insertText('\n')
       return true

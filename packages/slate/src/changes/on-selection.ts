@@ -1,8 +1,8 @@
 import isEmpty from 'is-empty';
 import pick from 'lodash/pick';
 
-import Range from '../models/range';
 import Operation from '../models/operation';
+import Range from '../models/range';
 
 /*
  * Changes.
@@ -34,7 +34,7 @@ Changes.select = (change, properties, options = {}) => {
     // create a dictionary of the previous values for all of the properties that
     // are being changed, for the inverse operation.
     for (const k in properties) {
-        if (snapshot == false && properties[k] == sel[k]) {
+        if (snapshot === false && properties[k] === sel[k]) {
             continue;
         }
         props[k] = properties[k];
@@ -46,7 +46,7 @@ Changes.select = (change, properties, options = {}) => {
         p => props.hasOwnProperty(p)
     );
 
-    if (sel.marks && properties.marks == sel.marks && moved) {
+    if (sel.marks && properties.marks === sel.marks && moved) {
         props.marks = null;
     }
 
@@ -258,7 +258,7 @@ MOVE_DIRECTIONS.forEach(direction => {
 
     Changes[`collapseChar${direction}`] = change => {
         const collapse =
-            direction == 'Forward' ? 'collapseToEnd' : 'collapseToStart';
+            direction === 'Forward' ? 'collapseToEnd' : 'collapseToStart';
         change[collapse]()[`moveChar${direction}`]();
     };
 });
@@ -275,7 +275,7 @@ const ALIAS_METHODS = [
 ];
 
 ALIAS_METHODS.forEach(([alias, method]) => {
-    Changes[alias] = function(change, ...args) {
+    Changes[alias] = (change, ...args) => {
         change[method](change, ...args);
     };
 });
@@ -328,7 +328,7 @@ const PROXY_TRANSFORMS = [
 
 PROXY_TRANSFORMS.forEach(method => {
     Changes[method] = (change, ...args) => {
-        const normalize = method != 'deselect';
+        const normalize = method !== 'deselect';
         const { value } = change;
         const { document, selection } = value;
         let next = selection[method](...args);
@@ -360,7 +360,7 @@ const OBJECTS = ['Block', 'Inline', 'Text'];
 PREFIXES.forEach(prefix => {
     const edges = ['Start', 'End'];
 
-    if (prefix == 'moveTo') {
+    if (prefix === 'moveTo') {
         edges.push('Range');
     }
 
@@ -369,7 +369,7 @@ PREFIXES.forEach(prefix => {
 
         OBJECTS.forEach(object => {
             const getNode =
-                object == 'Text' ? 'getNode' : `getClosest${object}`;
+                object === 'Text' ? 'getNode' : `getClosest${object}`;
 
             Changes[`${method}${object}`] = change => {
                 const { value } = change;
@@ -384,7 +384,7 @@ PREFIXES.forEach(prefix => {
             DIRECTIONS.forEach(direction => {
                 const getDirectionNode = `get${direction}${object}`;
                 const directionKey =
-                    direction == 'Next' ? 'startKey' : 'endKey';
+                    direction === 'Next' ? 'startKey' : 'endKey';
 
                 Changes[`${method}${direction}${object}`] = change => {
                     const { value } = change;

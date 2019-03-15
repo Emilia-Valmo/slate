@@ -27,7 +27,7 @@ function invertOperation(op) {
      * Insert node.
      */
 
-    if (type == 'insert_node') {
+    if (type === 'insert_node') {
         const inverse = op.set('type', 'remove_node');
         return inverse;
     }
@@ -36,7 +36,7 @@ function invertOperation(op) {
      * Remove node.
      */
 
-    if (type == 'remove_node') {
+    if (type === 'remove_node') {
         const inverse = op.set('type', 'insert_node');
         return inverse;
     }
@@ -45,7 +45,7 @@ function invertOperation(op) {
      * Move node.
      */
 
-    if (type == 'move_node') {
+    if (type === 'move_node') {
         const { newPath, path } = op;
         let inversePath = newPath;
         let inverseNewPath = path;
@@ -57,7 +57,7 @@ function invertOperation(op) {
         // its new position, we need to adjust part of the path by -1.
         if (
             path.length < inversePath.length &&
-            path.slice(0, pathLast).every((e, i) => e == inversePath[i]) &&
+            path.slice(0, pathLast).every((e, i) => e === inversePath[i]) &&
             path[pathLast] < inversePath[pathLast]
         ) {
             inversePath = inversePath
@@ -73,7 +73,7 @@ function invertOperation(op) {
             newPath.length < inverseNewPath.length &&
             newPath
                 .slice(0, newPathLast)
-                .every((e, i) => e == inverseNewPath[i]) &&
+                .every((e, i) => e === inverseNewPath[i]) &&
             newPath[newPathLast] <= inverseNewPath[newPathLast]
         ) {
             inverseNewPath = inverseNewPath
@@ -94,7 +94,7 @@ function invertOperation(op) {
      * Merge node.
      */
 
-    if (type == 'merge_node') {
+    if (type === 'merge_node') {
         const { path } = op;
         const { length } = path;
         const last = length - 1;
@@ -107,7 +107,7 @@ function invertOperation(op) {
      * Split node.
      */
 
-    if (type == 'split_node') {
+    if (type === 'split_node') {
         const { path } = op;
         const { length } = path;
         const last = length - 1;
@@ -120,7 +120,7 @@ function invertOperation(op) {
      * Set node.
      */
 
-    if (type == 'set_node') {
+    if (type === 'set_node') {
         const { properties, node } = op;
         const inverseNode = node.merge(properties);
         const inverseProperties = pick(node, Object.keys(properties));
@@ -134,7 +134,7 @@ function invertOperation(op) {
      * Insert text.
      */
 
-    if (type == 'insert_text') {
+    if (type === 'insert_text') {
         const inverse = op.set('type', 'remove_text');
         return inverse;
     }
@@ -143,7 +143,7 @@ function invertOperation(op) {
      * Remove text.
      */
 
-    if (type == 'remove_text') {
+    if (type === 'remove_text') {
         const inverse = op.set('type', 'insert_text');
         return inverse;
     }
@@ -152,7 +152,7 @@ function invertOperation(op) {
      * Add mark.
      */
 
-    if (type == 'add_mark') {
+    if (type === 'add_mark') {
         const inverse = op.set('type', 'remove_mark');
         return inverse;
     }
@@ -161,7 +161,7 @@ function invertOperation(op) {
      * Remove mark.
      */
 
-    if (type == 'remove_mark') {
+    if (type === 'remove_mark') {
         const inverse = op.set('type', 'add_mark');
         return inverse;
     }
@@ -170,7 +170,7 @@ function invertOperation(op) {
      * Set mark.
      */
 
-    if (type == 'set_mark') {
+    if (type === 'set_mark') {
         const { properties, mark } = op;
         const inverseMark = mark.merge(properties);
         const inverseProperties = pick(mark, Object.keys(properties));
@@ -184,7 +184,7 @@ function invertOperation(op) {
      * Set selection.
      */
 
-    if (type == 'set_selection') {
+    if (type === 'set_selection') {
         const { properties, selection, value } = op;
         const { anchorPath, focusPath, ...props } = properties;
         const { document } = value;
@@ -232,7 +232,7 @@ function invertOperation(op) {
      * Set value.
      */
 
-    if (type == 'set_value') {
+    if (type === 'set_value') {
         const { properties, value } = op;
         const inverseValue = value.merge(properties);
         const inverseProperties = pick(value, Object.keys(properties));

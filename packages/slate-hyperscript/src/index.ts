@@ -143,13 +143,13 @@ const CREATORS = {
     // focus information saved, so we can set the selection.
     if (document) {
       document.getTexts().forEach(text => {
-        if (text.__anchor != null) {
+        if (text.__anchor !== null) {
           props.anchorKey = text.key
           props.anchorOffset = text.__anchor
           props.isFocused = true
         }
 
-        if (text.__focus != null) {
+        if (text.__focus !== null) {
           props.focusKey = text.key
           props.focusOffset = text.__focus
           props.isFocused = true
@@ -158,7 +158,7 @@ const CREATORS = {
 
       // now check for decorations and hoist them to the top
       document.getTexts().forEach(text => {
-        if (text.__decorations != null) {
+        if (text.__decorations !== null) {
           // add in all mark-like (keyless) decorations
           decorations = decorations.concat(
             text.__decorations.filter(d => d._key === undefined).map(d =>
@@ -250,7 +250,7 @@ function createHyperscript(options = {}) {
       throw new Error(`No hyperscript creator found for tag: "${tagName}"`)
     }
 
-    if (attributes == null) {
+    if (attributes === null) {
       attributes = {}
     }
 
@@ -292,9 +292,9 @@ function createChildren(children, options = {}) {
   // anchor or focus information.
   function setNode(next) {
     const { __anchor, __focus, __decorations } = node
-    if (__anchor != null) next.__anchor = __anchor
-    if (__focus != null) { next.__focus = __focus }
-    if (__decorations != null) { next.__decorations = __decorations }
+    if (__anchor !== null) next.__anchor = __anchor
+    if (__focus !== null) { next.__focus = __focus }
+    if (__decorations !== null) { next.__decorations = __decorations }
     node = next
   }
 
@@ -306,8 +306,8 @@ function createChildren(children, options = {}) {
     if (Node.isNode(child) && !Text.isText(child)) {
       if (
         node.text.length ||
-        node.__anchor != null ||
-        node.__focus != null ||
+        node.__anchor !== null ||
+        node.__focus !== null ||
         node.getMarksAtIndex(0).size
       ) {
         array.push(node)
@@ -346,10 +346,10 @@ function createChildren(children, options = {}) {
         i += leaf.text.length
       })
 
-      if (__anchor != null) { node.__anchor = __anchor + length }
-      if (__focus != null) { node.__focus = __focus + length }
+      if (__anchor !== null) { node.__anchor = __anchor + length }
+      if (__focus !== null) { node.__focus = __focus + length }
 
-      if (__decorations != null) {
+      if (__decorations !== null) {
         node.__decorations = (node.__decorations || []).concat(
           __decorations.map(
             d =>
@@ -380,7 +380,7 @@ function createChildren(children, options = {}) {
     });
 
     // Make sure the most recent node is added.
-    if (node != null) {
+    if (node !== null) {
         array.push(node);
     }
 

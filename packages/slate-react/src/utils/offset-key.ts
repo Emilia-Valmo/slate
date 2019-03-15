@@ -1,50 +1,31 @@
 /*
  * Offset key parser regex.
- *
- * @type {RegExp}
  */
 
 const PARSER = /^([\w-]+)(?::(\d+))?$/;
 
 /*
  * Parse an offset key `string`.
- *
- * @param {String} string
- * @return {Object}
  */
-
-function parse(string) {
-    const matches = PARSER.exec(string);
+function parse(content: string): { key: string; index: number } {
+    const matches = PARSER.exec(content);
 
     if (!matches) {
-        throw new Error(`Invalid offset key string "${string}".`);
+        throw new Error(`Invalid offset key string "${content}".`);
     }
 
-    const [original, key, index] = matches; // eslint-disable-line no-unused-vars
     return {
-        key,
-        index: parseInt(index, 10)
+        key: matches[1],
+        index: parseInt(matches[2], 10)
     };
 }
 
 /*
  * Stringify an offset key `object`.
- *
- * @param {Object} object
- *   @property {String} key
- *   @property {Number} index
- * @return {String}
  */
-
-function stringify(object) {
+function stringify(object: { key: string; index: number }): string {
     return `${object.key}:${object.index}`;
 }
-
-/*
- * Export.
- *
- * @type {Object}
- */
 
 export default {
     parse,

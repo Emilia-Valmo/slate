@@ -28,7 +28,7 @@ import {
 function core(
   // Options for the plugin
   opts: OptionsFormat = {}
-): Object {
+): object {
   opts = new Options(opts)
 
   return {

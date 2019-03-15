@@ -117,12 +117,12 @@ class Schema extends Record(DEFAULTS) {
      * Alias `fromJS`.
      */
 
-    public static fromJSON(object) {
+    public static fromJSON(input) {
         logger.deprecate(
             'slate@0.35.0',
             'fromJSON methods are deprecated, use fromJS instead'
         );
-        return Schema.fromJS(object);
+        return Schema.fromJS(input);
     }
 
     /*
@@ -132,21 +132,19 @@ class Schema extends Record(DEFAULTS) {
      * @return {Boolean}
      */
 
-    public static isSchema(any) {
-        return !!(any && any[MODEL_TYPES.SCHEMA]);
+    public static isSchema(input: any): boolean {
+        return !!(input && input[MODEL_TYPES.SCHEMA]);
     }
 
     /*
      * Object.
-     *
-     * @return {String}
      */
 
-    get object() {
+    get object(): 'schema' {
         return 'schema';
     }
 
-    get kind() {
+    get kind(): 'schema' {
         logger.deprecate(
             'slate@0.32.0',
             'The `kind` property of Slate objects has been renamed to `object`.'
@@ -182,23 +180,23 @@ class Schema extends Record(DEFAULTS) {
         const { blocks, inlines } = this;
         const parents = {};
 
-        for (const key in blocks) {
+        for (const key of Object.keys(blocks)) {
             const rule = blocks[key];
-            if (rule.parent == null) {
+            if (rule.parent === null) {
                 continue;
             }
             parents[key] = rule;
         }
 
-        for (const key in inlines) {
+        for (const key of Object.keys(inlines)) {
             const rule = inlines[key];
-            if (rule.parent == null) {
+            if (rule.parent === null) {
                 continue;
             }
             parents[key] = rule;
         }
 
-        return Object.keys(parents).length == 0 ? null : parents;
+        return Object.keys(parents).length === 0 ? null : parents;
     }
 
     /*
@@ -242,9 +240,9 @@ class Schema extends Record(DEFAULTS) {
             case LAST_CHILD_OBJECT_INVALID:
             case LAST_CHILD_TYPE_INVALID: {
                 const { child, node } = context;
-                return child.object == 'text' &&
-                    node.object == 'block' &&
-                    node.nodes.size == 1
+                return child.object === 'text' &&
+                    node.object === 'block' &&
+                    node.nodes.size === 1
                     ? change.removeNodeByKey(node.key)
                     : change.removeNodeByKey(child.key);
             }
@@ -254,7 +252,7 @@ class Schema extends Record(DEFAULTS) {
             case PARENT_OBJECT_INVALID:
             case PARENT_TYPE_INVALID: {
                 const { node } = context;
-                return node.object == 'document'
+                return node.object === 'document'
                     ? node.nodes.forEach(child =>
                           change.removeNodeByKey(child.key)
                       )
@@ -264,7 +262,7 @@ class Schema extends Record(DEFAULTS) {
             case NODE_DATA_INVALID: {
                 const { node, key } = context;
                 return node.data.get(key) === undefined &&
-                    node.object != 'document'
+                    node.object !== 'document'
                     ? change.removeNodeByKey(node.key)
                     : change.setNodeByKey(node.key, {
                           data: node.data.delete(key)
@@ -301,7 +299,7 @@ class Schema extends Record(DEFAULTS) {
             return ret;
         }
 
-        if (node.object == 'text') {
+        if (node.object === 'text') {
             return;
         }
 
@@ -309,14 +307,14 @@ class Schema extends Record(DEFAULTS) {
         const parents = this.getParentRules();
         const ctx = { node, rule };
 
-        if (rule.isVoid != null) {
-            if (node.isVoid != rule.isVoid) {
+        if (rule.isVoid !== null) {
+            if (node.isVoid !== rule.isVoid) {
                 return this.fail(NODE_IS_VOID_INVALID, ctx);
             }
         }
 
-        if (rule.data != null) {
-            for (const key in rule.data) {
+        if (rule.data !== null) {
+            for (const key of Object.keys(rule.data)) {
                 const fn = rule.data[key];
                 const value = node.data.get(key);
 
@@ -326,7 +324,7 @@ class Schema extends Record(DEFAULTS) {
             }
         }
 
-        if (rule.marks != null) {
+        if (rule.marks !== null) {
             const marks = node.getMarks().toArray();
 
             for (const mark of marks) {
@@ -336,7 +334,7 @@ class Schema extends Record(DEFAULTS) {
             }
         }
 
-        if (rule.text != null) {
+        if (rule.text !== null) {
             const { text } = node;
 
             if (!rule.text.test(text)) {
@@ -344,7 +342,7 @@ class Schema extends Record(DEFAULTS) {
             }
         }
 
-        if (rule.first != null) {
+        if (rule.first !== null) {
             const { objects, types } = rule.first;
             const child = node.nodes.first();
 
@@ -357,7 +355,7 @@ class Schema extends Record(DEFAULTS) {
             }
         }
 
-        if (rule.last != null) {
+        if (rule.last !== null) {
             const { objects, types } = rule.last;
             const child = node.nodes.last();
 
@@ -370,9 +368,9 @@ class Schema extends Record(DEFAULTS) {
             }
         }
 
-        if (rule.nodes != null || parents != null) {
+        if (rule.nodes !== null || parents !== null) {
             const children = node.nodes.toArray();
-            const defs = rule.nodes != null ? rule.nodes.slice() : [];
+            const defs = rule.nodes !== null ? rule.nodes.slice() : [];
 
             let offset;
             let min;
@@ -382,18 +380,18 @@ class Schema extends Record(DEFAULTS) {
             let child;
 
             function nextDef() {
-                offset = offset == null ? null : 0;
+                offset = offset === null ? null : 0;
                 def = defs.shift();
-                min = def && (def.min == null ? 0 : def.min);
-                max = def && (def.max == null ? Infinity : def.max);
+                min = def && (def.min === null ? 0 : def.min);
+                max = def && (def.max === null ? Infinity : def.max);
                 return !!def;
             }
 
             function nextChild() {
-                index = index == null ? 0 : index + 1;
-                offset = offset == null ? 0 : offset + 1;
+                index = index === null ? 0 : index + 1;
+                offset = offset === null ? 0 : offset + 1;
                 child = children[index];
-                if (max != null && offset == max) {
+                if (max !== null && offset === max) {
                     nextDef();
                 }
                 return !!child;
@@ -404,20 +402,20 @@ class Schema extends Record(DEFAULTS) {
                 index -= 1;
             }
 
-            if (rule.nodes != null) {
+            if (rule.nodes !== null) {
                 nextDef();
             }
 
             while (nextChild()) {
                 if (
-                    parents != null &&
-                    child.object != 'text' &&
+                    parents !== null &&
+                    child.object !== 'text' &&
                     child.type in parents
                 ) {
                     const r = parents[child.type];
 
                     if (
-                        r.parent.objects != null &&
+                        r.parent.objects !== null &&
                         !r.parent.objects.includes(node.object)
                     ) {
                         return this.fail(PARENT_OBJECT_INVALID, {
@@ -428,7 +426,7 @@ class Schema extends Record(DEFAULTS) {
                     }
 
                     if (
-                        r.parent.types != null &&
+                        r.parent.types !== null &&
                         !r.parent.types.includes(node.type)
                     ) {
                         return this.fail(PARENT_TYPE_INVALID, {
@@ -439,7 +437,7 @@ class Schema extends Record(DEFAULTS) {
                     }
                 }
 
-                if (rule.nodes != null) {
+                if (rule.nodes !== null) {
                     if (!def) {
                         return this.fail(CHILD_UNKNOWN, {
                             ...ctx,
@@ -449,7 +447,7 @@ class Schema extends Record(DEFAULTS) {
                     }
 
                     if (
-                        def.objects != null &&
+                        def.objects !== null &&
                         !def.objects.includes(child.object)
                     ) {
                         if (offset >= min && nextDef()) {
@@ -463,7 +461,7 @@ class Schema extends Record(DEFAULTS) {
                         });
                     }
 
-                    if (def.types != null && !def.types.includes(child.type)) {
+                    if (def.types !== null && !def.types.includes(child.type)) {
                         if (offset >= min && nextDef()) {
                             rewind();
                             continue;
@@ -477,8 +475,8 @@ class Schema extends Record(DEFAULTS) {
                 }
             }
 
-            if (rule.nodes != null) {
-                while (min != null) {
+            if (rule.nodes !== null) {
+                while (min !== null) {
                     if (offset < min) {
                         return this.fail(CHILD_REQUIRED, { ...ctx, index });
                     }
@@ -558,11 +556,11 @@ function resolveSchema(plugins = []) {
             const bs = {};
             const is = {};
 
-            for (const key in blocks) {
+            for (const key of Object.keys(blocks)) {
                 bs[key] = resolveNodeRule('block', key, blocks[key]);
             }
 
-            for (const key in inlines) {
+            for (const key of Object.keys(inlines)) {
                 is[key] = resolveNodeRule('inline', key, inlines[key]);
             }
 
@@ -621,10 +619,10 @@ function resolveNodeRule(object, type, obj) {
  */
 
 function customizer(target, source, key) {
-    if (key == 'objects' || key == 'types' || key == 'marks') {
-        return target == null ? source : target.concat(source);
+    if (key === 'objects' || key === 'types' || key === 'marks') {
+        return target === null ? source : target.concat(source);
     } else {
-        return source == null ? target : source;
+        return source === null ? target : source;
     }
 }
 

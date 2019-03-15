@@ -153,7 +153,8 @@ Changes.insertFragment = (change, fragment) => {
     }
 
     let { value } = change;
-    let { document, selection } = value;
+    let { document } = value;
+    const { selection } = value;
     const { startText, endText, startInline } = value;
     const lastText = fragment.getLastText();
     const lastInline = fragment.getClosestInline(lastText.key);
@@ -228,7 +229,7 @@ Changes.insertText = (change, text, marks) => {
 
     // If the text was successfully inserted, and the selection had marks on it,
     // unset the selection's marks.
-    if (selection.marks && document != change.value.document) {
+    if (selection.marks && document !== change.value.document) {
         change.select({ marks: null });
     }
 };
@@ -333,7 +334,7 @@ Changes.wrapText = (change, prefix, suffix = prefix) => {
 
     // There's a chance that the selection points moved "through" each other,
     // resulting in a now-incorrect selection direction.
-    if (selection.isForward != change.value.selection.isForward) {
+    if (selection.isForward !== change.value.selection.isForward) {
         change.flip();
     }
 };

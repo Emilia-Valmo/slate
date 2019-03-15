@@ -12,12 +12,12 @@ import { deserializeCode } from '../utils';
 /*
  * Create a schema definition with rules to normalize code blocks
  */
-function schema(opts: Options): Object {
+function schema(opts: Options): object {
     const baseSchema = {
         blocks: {
             [opts.containerType]: {
                 nodes: [{ types: [opts.lineType] }],
-                normalize(change: Change, violation: string, context: Object) {
+                normalize(change: Change, violation: string, context: object) {
                     switch (violation) {
                         case CHILD_TYPE_INVALID:
                             return onlyLine(opts, change, context);
@@ -29,7 +29,7 @@ function schema(opts: Options): Object {
             [opts.lineType]: {
                 nodes: [{ objects: ['text'], min: 1 }],
                 parent: { types: [opts.containerType] },
-                normalize(change: Change, violation: string, context: Object) {
+                normalize(change: Change, violation: string, context: object) {
                     switch (violation) {
                         // This constant does not exist yet in
                         // official Slate, but exists in GitBook's
@@ -79,7 +79,7 @@ function getSuccessiveNodes(
  * A rule that ensure code blocks only contain lines of code, and no marks
  */
 
-function onlyLine(opts: Options, change: Change, context: Object) {
+function onlyLine(opts: Options, change: Change, context: object) {
     const isNotLine = n => n.type !== opts.lineType;
     const nonLineGroups = getSuccessiveNodes(context.node.nodes, isNotLine);
 
@@ -122,7 +122,7 @@ function onlyLine(opts: Options, change: Change, context: Object) {
 function onlyTextInCode(
     opts: Options,
     change: Change,
-    context: Object
+    context: object
 ): Change | undefined {
     const { node } = context;
 
@@ -142,7 +142,7 @@ function onlyTextInCode(
  * of a code block.
  */
 
-function noOrphanLine(opts: Options, change: Change, context: Object): void {
+function noOrphanLine(opts: Options, change: Change, context: object): void {
     const { parent } = context;
 
     const isLine = n => n.type === opts.lineType;

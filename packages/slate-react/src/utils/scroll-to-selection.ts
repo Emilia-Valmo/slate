@@ -4,8 +4,6 @@ import isBackward from 'selection-is-backward';
 
 /*
  * CSS overflow values that would cause scrolling.
- *
- * @type {Array}
  */
 
 const OVERFLOWS = ['auto', 'overlay', 'scroll'];
@@ -18,11 +16,8 @@ const IS_IOS_11 = IS_IOS && !!window.navigator.userAgent.match(/os 11_/i);
 
 /*
  * Find the nearest parent with scrolling, or window.
- *
- * @param {el} Element
  */
-
-function findScrollContainer(el, window) {
+function findScrollContainer(el: HTMLElement, window: Window): HTMLElement {
     let parent = el.parentNode;
     let scroller;
 
@@ -55,12 +50,9 @@ function findScrollContainer(el, window) {
 }
 
 /*
- * Scroll the current selection's focus point into view if needed.
- *
- * @param {Selection} selection
+ * Scroll the current selection's focus point into view if needed.=
  */
-
-function scrollToSelection(selection) {
+function scrollToSelection(selection: Selection) {
     if (IS_IOS_11) {
         return;
     }
@@ -71,8 +63,8 @@ function scrollToSelection(selection) {
     const window = getWindow(selection.anchorNode);
     const scroller = findScrollContainer(selection.anchorNode, window);
     const isWindow =
-        scroller == window.document.body ||
-        scroller == window.document.documentElement;
+        scroller === window.document.body ||
+        scroller === window.document.documentElement;
     const backward = isBackward(selection);
 
     const range = selection.getRangeAt(0).cloneRange();
@@ -85,8 +77,12 @@ function scrollToSelection(selection) {
     // https://bugs.webkit.org/show_bug.cgi?id=138949
     // https://bugs.chromium.org/p/chromium/issues/detail?id=435438
     if (IS_SAFARI) {
-        if (range.collapsed && cursorRect.top == 0 && cursorRect.height == 0) {
-            if (range.startOffset == 0) {
+        if (
+            range.collapsed &&
+            cursorRect.top === 0 &&
+            cursorRect.height === 0
+        ) {
+            if (range.startOffset === 0) {
                 range.setEnd(range.endContainer, 1);
             } else {
                 range.setStart(range.startContainer, range.startOffset - 1);
@@ -94,7 +90,7 @@ function scrollToSelection(selection) {
 
             cursorRect = range.getBoundingClientRect();
 
-            if (cursorRect.top == 0 && cursorRect.height == 0) {
+            if (cursorRect.top === 0 && cursorRect.height === 0) {
                 if (range.getClientRects().length) {
                     cursorRect = range.getClientRects()[0];
                 }
@@ -194,11 +190,5 @@ function scrollToSelection(selection) {
         scroller.scrollLeft = x;
     }
 }
-
-/*
- * Export.
- *
- * @type {Function}
- */
 
 export default scrollToSelection;

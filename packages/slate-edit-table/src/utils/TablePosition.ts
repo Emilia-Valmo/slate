@@ -106,9 +106,9 @@ class TablePosition extends Record({
         }
 
         const { nodes } = cellBlock;
-        const index = nodes.findIndex(block => block.key == contentBlock.key);
+        const index = nodes.findIndex(block => block.key === contentBlock.key);
 
-        return index == 0;
+        return index === 0;
     }
 
     /*
@@ -123,9 +123,9 @@ class TablePosition extends Record({
         }
 
         const { nodes } = cellBlock;
-        const index = nodes.findIndex(block => block.key == contentBlock.key);
+        const index = nodes.findIndex(block => block.key === contentBlock.key);
 
-        return index == nodes.size - 1;
+        return index === nodes.size - 1;
     }
 
     /*

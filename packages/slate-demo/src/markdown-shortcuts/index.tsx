@@ -149,12 +149,12 @@ class MarkdownShortcuts extends React.Component {
     const type = this.getType(chars)
 
     if (!type) return
-    if (type == 'list-item' && startBlock.type == 'list-item') return
+    if (type === 'list-item' && startBlock.type === 'list-item') return
     event.preventDefault()
 
     change.setBlocks(type)
 
-    if (type == 'list-item') {
+    if (type === 'list-item') {
       change.wrapBlock('bulleted-list')
     }
 
@@ -173,15 +173,15 @@ class MarkdownShortcuts extends React.Component {
   onBackspace = (event, change) => {
     const { value } = change
     if (value.isExpanded) return
-    if (value.startOffset != 0) return
+    if (value.startOffset !== 0) return
 
     const { startBlock } = value
-    if (startBlock.type == 'paragraph') return
+    if (startBlock.type === 'paragraph') return
 
     event.preventDefault()
     change.setBlocks('paragraph')
 
-    if (startBlock.type == 'list-item') {
+    if (startBlock.type === 'list-item') {
       change.unwrapBlock('bulleted-list')
     }
 
@@ -201,18 +201,18 @@ class MarkdownShortcuts extends React.Component {
     if (value.isExpanded) return
 
     const { startBlock, startOffset, endOffset } = value
-    if (startOffset == 0 && startBlock.text.length == 0)
+    if (startOffset === 0 && startBlock.text.length === 0)
       return this.onBackspace(event, change)
-    if (endOffset != startBlock.text.length) return
+    if (endOffset !== startBlock.text.length) return
 
     if (
-      startBlock.type != 'heading-one' &&
-      startBlock.type != 'heading-two' &&
-      startBlock.type != 'heading-three' &&
-      startBlock.type != 'heading-four' &&
-      startBlock.type != 'heading-five' &&
-      startBlock.type != 'heading-six' &&
-      startBlock.type != 'block-quote'
+      startBlock.type !== 'heading-one' &&
+      startBlock.type !== 'heading-two' &&
+      startBlock.type !== 'heading-three' &&
+      startBlock.type !== 'heading-four' &&
+      startBlock.type !== 'heading-five' &&
+      startBlock.type !== 'heading-six' &&
+      startBlock.type !== 'block-quote'
     ) {
       return
     }

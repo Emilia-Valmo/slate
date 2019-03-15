@@ -8,7 +8,7 @@ export const schema = {
     link: {
       parent: { objects: ['block'] },
       normalize: (change, reason, { node }) => {
-        if (reason == PARENT_OBJECT_INVALID) {
+        if (reason === PARENT_OBJECT_INVALID) {
           change.unwrapNodeByKey(node.key)
         }
       },

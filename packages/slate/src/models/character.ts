@@ -28,11 +28,11 @@ class Character extends Record(DEFAULTS) {
      * @return {String}
      */
 
-    get object() {
+    get object(): 'character' {
         return 'character';
     }
 
-    get kind() {
+    get kind(): 'character' {
         logger.deprecate(
             'slate@0.32.0',
             'The `kind` property of Slate objects has been renamed to `object`.'
@@ -60,7 +60,7 @@ class Character extends Record(DEFAULTS) {
             return attrs;
         }
 
-        if (typeof attrs == 'string') {
+        if (typeof attrs === 'string') {
             attrs = { text: attrs };
         }
 
@@ -81,7 +81,7 @@ class Character extends Record(DEFAULTS) {
      */
 
     public static createList(elements = []) {
-        if (typeof elements == 'string') {
+        if (typeof elements === 'string') {
             elements = elements.split('');
         }
 
@@ -105,7 +105,7 @@ class Character extends Record(DEFAULTS) {
     public static fromJS(object) {
         const { text, marks = [] } = object;
 
-        if (typeof text != 'string') {
+        if (typeof text !== 'string') {
             throw new Error(
                 '`Character.fromJS` requires a block `text` string.'
             );
@@ -133,14 +133,12 @@ class Character extends Record(DEFAULTS) {
 
     /*
      * Check if `any` is a character list.
-     *
-     * @param {Any} any
-     * @return {Boolean}
      */
 
-    public static isCharacterList(any) {
+    public static isCharacterList(input: any): boolean {
         return (
-            List.isList(any) && any.every(item => Character.isCharacter(item))
+            List.isList(input) &&
+            input.every(item => Character.isCharacter(item))
         );
     }
 

@@ -1,5 +1,5 @@
-import Value from '../models/value';
 import Operation from '../models/operation';
+import Value from '../models/value';
 
 /*
  * Changes.
@@ -23,6 +23,5 @@ Changes.setValue = (change, properties, options = {}) => {
         options
     );
 };
-
 
 export default Changes;

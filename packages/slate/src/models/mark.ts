@@ -28,11 +28,11 @@ class Mark extends Record(DEFAULTS) {
      * Object.
      */
 
-    get object() {
+    get object(): 'mark' {
         return 'mark';
     }
 
-    get kind() {
+    get kind(): 'mark' {
         logger.deprecate(
             'slate@0.32.0',
             'The `kind` property of Slate objects has been renamed to `object`.'
@@ -60,7 +60,7 @@ class Mark extends Record(DEFAULTS) {
             return attrs;
         }
 
-        if (typeof attrs == 'string') {
+        if (typeof attrs === 'string') {
             attrs = { type: attrs };
         }
 
@@ -86,7 +86,7 @@ class Mark extends Record(DEFAULTS) {
             return marks;
         }
 
-        if (elements == null) {
+        if (elements === null) {
             return Set();
         }
 
@@ -110,7 +110,7 @@ class Mark extends Record(DEFAULTS) {
             };
         }
 
-        if (typeof attrs == 'string') {
+        if (typeof attrs === 'string') {
             return { type: attrs };
         }
 
@@ -140,7 +140,7 @@ class Mark extends Record(DEFAULTS) {
     public static fromJS(object) {
         const { data = {}, type } = object;
 
-        if (typeof type != 'string') {
+        if (typeof type !== 'string') {
             throw new Error('`Mark.fromJS` requires a `type` string.');
         }
 
@@ -166,13 +166,10 @@ class Mark extends Record(DEFAULTS) {
 
     /*
      * Check if `any` is a set of marks.
-     *
-     * @param {Any} any
-     * @return {Boolean}
      */
 
-    public static isMarkSet(any) {
-        return Set.isSet(any) && any.every(item => Mark.isMark(item));
+    public static isMarkSet(input: any): boolean {
+        return Set.isSet(input) && input.every(item => Mark.isMark(item));
     }
 
     /*

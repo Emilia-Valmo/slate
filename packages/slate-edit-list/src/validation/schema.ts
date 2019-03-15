@@ -6,7 +6,7 @@ import Options from '../options';
  * Create a schema definition with rules to normalize lists
  */
 
-function schema(opts: Options): Object {
+function schema(opts: Options): object {
     const constructedSchema = {
         blocks: {
             [opts.typeItem]: {

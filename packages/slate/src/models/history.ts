@@ -145,7 +145,7 @@ class History extends Record(DEFAULTS) {
         const prevBatch = undos.peek();
         const prevOperation = prevBatch && prevBatch.last();
 
-        if (skip == null) {
+        if (skip === null) {
             skip = shouldSkip(operation, prevOperation);
         }
 
@@ -153,7 +153,7 @@ class History extends Record(DEFAULTS) {
             return history;
         }
 
-        if (merge == null) {
+        if (merge === null) {
             merge = shouldMerge(operation, prevOperation);
         }
 
@@ -230,14 +230,14 @@ function shouldMerge(o, p) {
     }
 
     const merge =
-        (o.type == 'set_selection' && p.type == 'set_selection') ||
-        (o.type == 'insert_text' &&
-            p.type == 'insert_text' &&
-            o.offset == p.offset + p.text.length &&
+        (o.type === 'set_selection' && p.type === 'set_selection') ||
+        (o.type === 'insert_text' &&
+            p.type === 'insert_text' &&
+            o.offset === p.offset + p.text.length &&
             isEqual(o.path, p.path)) ||
-        (o.type == 'remove_text' &&
-            p.type == 'remove_text' &&
-            o.offset + o.text.length == p.offset &&
+        (o.type === 'remove_text' &&
+            p.type === 'remove_text' &&
+            o.offset + o.text.length === p.offset &&
             isEqual(o.path, p.path));
 
     return merge;
@@ -256,7 +256,7 @@ function shouldSkip(o, p) {
         return false;
     }
 
-    const skip = o.type == 'set_selection' && p.type == 'set_selection';
+    const skip = o.type === 'set_selection' && p.type === 'set_selection';
 
     return skip;
 }

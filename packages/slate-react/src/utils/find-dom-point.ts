@@ -2,14 +2,12 @@ import findSlateDOMNode from './find-dom-node';
 
 /*
  * Find a native DOM selection point from a Slate `key` and `offset`.
- *
- * @param {String} key
- * @param {Number} offset
- * @param {Window} win (optional)
- * @return {Object|Null}
  */
-
-function findDOMPoint(key, offset, win = window) {
+function findDOMPoint(
+    key: string,
+    offset: number,
+    win: Window = window
+): { node: HTMLElement; offset: number } | null {
     const el = findSlateDOMNode(key, win);
 
     if (!el) {
@@ -17,18 +15,21 @@ function findDOMPoint(key, offset, win = window) {
     }
 
     let start = 0;
-    let n;
 
     // COMPAT: In IE, this method's arguments are not optional, so we have to
     // pass in all four even though the last two are defaults. (2017/10/25)
     const iterator = win.document.createNodeIterator(
         el,
         NodeFilter.SHOW_TEXT,
-        () => NodeFilter.FILTER_ACCEPT,
-        false
+        () => NodeFilter.FILTER_ACCEPT
     );
 
-    while ((n = iterator.nextNode())) {
+    while (1) {
+        const n = iterator.nextNode();
+        if (!n) {
+            break;
+        }
+
         const { length } = n.textContent;
         const end = start + length;
 
@@ -42,11 +43,5 @@ function findDOMPoint(key, offset, win = window) {
 
     return null;
 }
-
-/*
- * Export.
- *
- * @type {Function}
- */
 
 export default findDOMPoint;

@@ -46,9 +46,11 @@ class Change {
     /*
      * Create a new `Change` with `attrs`.
      */
-    constructor(attrs: {
-        value: Value,
-    } & ChangeFlags) {
+    constructor(
+        attrs: {
+            value: Value;
+        } & ChangeFlags
+    ) {
         const { value } = attrs;
         this.value = value;
         this.operations = new List();
@@ -78,7 +80,10 @@ class Change {
      * Apply an `operation` to the current value, saving the operation to the
      * history if needed.
      */
-    public applyOperation(operation: Operation, options: ApplyOperationOptions = {}): Change {
+    public applyOperation(
+        operation: Operation,
+        options: ApplyOperationOptions = {}
+    ): Change {
         const { operations, flags } = this;
         let { value } = this;
         let { history } = value;
@@ -113,7 +118,10 @@ class Change {
     /*
      * Apply a series of `operations` to the current value.
      */
-    public applyOperations(operations: Operation[], options?: ApplyOperationOptions): Change {
+    public applyOperations(
+        operations: Operation[],
+        options?: ApplyOperationOptions
+    ): Change {
         operations.forEach(op => this.applyOperation(op, options));
         return this;
     }
@@ -121,7 +129,10 @@ class Change {
     /*
      * Call a change `fn` with arguments.
      */
-    public call<U extends any[]>(fn: (c: Change, ...args: U) => void, ...args: U): Change {
+    public call<U extends any[]>(
+        fn: (c: Change, ...args: U) => void,
+        ...args: U
+    ): Change {
         fn(this, ...args);
         return this;
     }

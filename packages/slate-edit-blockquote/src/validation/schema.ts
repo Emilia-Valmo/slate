@@ -7,7 +7,7 @@ import Options from '../options';
  * Create a schema definition with rules to normalize blockquotes
  */
 
-function schema(opts: Options): Object {
+function schema(opts: Options): object {
     return {
         blocks: {
             [opts.type]: {
@@ -36,7 +36,7 @@ function schema(opts: Options): Object {
 function containBlocks(
     opts: Options,
     change: Change,
-    context: Object
+    context: object
 ): Change | null {
     const toWrap = context.node.nodes.filter(n => n.object !== 'block');
 

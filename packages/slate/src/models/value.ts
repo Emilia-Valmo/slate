@@ -639,7 +639,7 @@ class Value extends Record(DEFAULTS) {
         if (this.isCollapsed) {
             return true;
         }
-        if (this.endOffset != 0 && this.startOffset != 0) {
+        if (this.endOffset !== 0 && this.startOffset !== 0) {
             return false;
         }
         return this.fragment.isEmpty;

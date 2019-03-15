@@ -59,7 +59,7 @@
                 "object": "text",
                 "leaves": [
                   {
-                    "text": "  if (i % 15 == 0) {"
+                    "text": "  if (i % 15 === 0) {"
                   }
                 ]
               }
@@ -87,7 +87,7 @@
                 "object": "text",
                 "leaves": [
                   {
-                    "text": "  } else if (i % 5 == 0) {"
+                    "text": "  } else if (i % 5 === 0) {"
                   }
                 ]
               }
@@ -115,7 +115,7 @@
                 "object": "text",
                 "leaves": [
                   {
-                    "text": "  } else if (i % 3 == 0) {"
+                    "text": "  } else if (i % 3 === 0) {"
                   }
                 ]
               }

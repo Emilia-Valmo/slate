@@ -174,13 +174,9 @@ class Text extends Record(DEFAULTS) {
 
     /*
      * Check if `any` is a list of texts.
-     *
-     * @param {Any} any
-     * @return {Boolean}
      */
-
-    public static isTextList(any) {
-        return List.isList(any) && any.every(item => Text.isText(item));
+    public static isTextList(input: any): boolean {
+        return List.isList(input) && input.every(item => Text.isText(item));
     }
 
     /*
@@ -189,8 +185,8 @@ class Text extends Record(DEFAULTS) {
      * @returns {String}
      */
 
-    public getString() {
-        return this.leaves.reduce((string, leaf) => string + leaf.text, '');
+    public getString(): string {
+        return this.leaves.reduce((content, leaf) => content + leaf.text, '');
     }
 
     /*
@@ -283,8 +279,9 @@ class Text extends Record(DEFAULTS) {
 
         const [before, bundle] = Leaf.splitLeaves(this.leaves, index);
         const [middle, after] = Leaf.splitLeaves(bundle, length);
-        const leaves = before.concat(middle.map(x => x.addMarks(set)), after);
-        return this.setLeaves(leaves);
+        return this.setLeaves(
+            before.concat(middle.map(x => x.addMarks(set)), after)
+        );
     }
 
     /*
@@ -678,8 +675,7 @@ class Text extends Record(DEFAULTS) {
 
             if (leaf) {
                 if (leaf.text.length === 1) {
-                    const leaves = this.leaves.remove(index);
-                    return this.setLeaves(leaves);
+                    return this.setLeaves(this.leaves.remove(index));
                 }
 
                 const beforeText = leaf.text.slice(0, offset);
@@ -761,8 +757,7 @@ class Text extends Record(DEFAULTS) {
         const newMark = mark.merge(properties);
 
         if (this.text === '' && length === 0 && index === 0) {
-            const { leaves } = this;
-            const first = leaves.first();
+            const first = this.leaves.first();
             if (!first) {
                 return this;
             }

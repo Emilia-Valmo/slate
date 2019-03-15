@@ -35,13 +35,10 @@ class Stack extends Record(DEFAULTS) {
 
     /*
      * Check if `any` is a `Stack`.
-     *
-     * @param {Any} any
-     * @return {Boolean}
      */
 
-    public static isStack(any) {
-        return !!(any && any[MODEL_TYPES.STACK]);
+    public static isStack(input: any): boolean {
+        return !!(input && input[MODEL_TYPES.STACK]);
     }
 
     /*
@@ -70,7 +67,7 @@ class Stack extends Record(DEFAULTS) {
      */
 
     public getPluginsWith(property) {
-        return this.plugins.filter(plugin => plugin[property] != null);
+        return this.plugins.filter(plugin => plugin[property] !== null);
     }
 
     /*
@@ -85,7 +82,7 @@ class Stack extends Record(DEFAULTS) {
 
         for (const plugin of plugins) {
             const ret = plugin[property](...args);
-            if (ret != null) {
+            if (ret !== null) {
                 return ret;
             }
         }
@@ -105,7 +102,7 @@ class Stack extends Record(DEFAULTS) {
 
         for (const plugin of plugins) {
             const ret = plugin[property](...args);
-            if (ret != null) {
+            if (ret !== null) {
                 array.push(ret);
             }
         }
@@ -125,7 +122,7 @@ class Stack extends Record(DEFAULTS) {
 
         for (const plugin of plugins) {
             const ret = plugin[property](...args);
-            if (ret != null) {
+            if (ret !== null) {
                 return;
             }
         }
@@ -147,7 +144,7 @@ class Stack extends Record(DEFAULTS) {
                     return children;
                 }
                 const ret = plugin[property](props, ...args);
-                if (ret == null) {
+                if (ret === null) {
                     return children;
                 }
                 props.children = ret;

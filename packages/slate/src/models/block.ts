@@ -66,7 +66,7 @@ class Block extends Record(DEFAULTS) {
      * @return {String}
      */
 
-    get text() {
+    get text(): string {
         return this.getText();
     }
 
@@ -90,7 +90,7 @@ class Block extends Record(DEFAULTS) {
             return attrs;
         }
 
-        if (typeof attrs == 'string') {
+        if (typeof attrs === 'string') {
             attrs = { type: attrs };
         }
 
@@ -141,7 +141,7 @@ class Block extends Record(DEFAULTS) {
             type
         } = object;
 
-        if (typeof type != 'string') {
+        if (typeof type !== 'string') {
             throw new Error('`Block.fromJS` requires a `type` string.');
         }
 
@@ -170,13 +170,10 @@ class Block extends Record(DEFAULTS) {
 
     /*
      * Check if `any` is a block list.
-     *
-     * @param {Any} any
-     * @return {Boolean}
      */
 
-    public static isBlockList(any) {
-        return List.isList(any) && any.every(item => Block.isBlock(item));
+    public static isBlockList(input: any): boolean {
+        return List.isList(input) && input.every(item => Block.isBlock(item));
     }
 
     /*

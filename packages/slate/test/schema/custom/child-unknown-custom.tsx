@@ -9,7 +9,7 @@ export const schema = {
     quote: {
       nodes: [{ types: ['paragraph'], max: 1 }],
       normalize: (change, reason, { node, child, index }) => {
-        if (reason == CHILD_UNKNOWN) {
+        if (reason === CHILD_UNKNOWN) {
           const previous = node.getPreviousSibling(child.key)
           const offset = previous.nodes.size
 

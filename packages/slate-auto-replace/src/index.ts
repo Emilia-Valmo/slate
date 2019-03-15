@@ -215,7 +215,7 @@ function normalizeMatcher(matcher) {
     case 'array':
       return node => matcher.includes(node)
     case 'string':
-      return node => node == matcher
+      return node => node === matcher
   }
 }
 

@@ -92,7 +92,7 @@ class Tables extends React.Component {
 
   onBackspace = (event, change) => {
     const { value } = change
-    if (value.startOffset != 0) return
+    if (value.startOffset !== 0) return
     event.preventDefault()
     return true
   }
@@ -116,7 +116,7 @@ class Tables extends React.Component {
 
   onDelete = (event, change) => {
     const { value } = change
-    if (value.endOffset != value.startText.text.length) return
+    if (value.endOffset !== value.startText.text.length) return
     event.preventDefault()
     return true
   }

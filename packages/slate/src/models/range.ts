@@ -117,7 +117,7 @@ class Range extends Record(DEFAULTS) {
             }
             if ('marks' in attrs) {
                 props.marks =
-                    attrs.marks == null ? null : Mark.createSet(attrs.marks);
+                    attrs.marks === null ? null : Mark.createSet(attrs.marks);
             }
             if ('isAtomic' in attrs) {
                 props.isAtomic = attrs.isAtomic;
@@ -156,7 +156,7 @@ class Range extends Record(DEFAULTS) {
             focusOffset,
             isBackward,
             isFocused,
-            marks: marks == null ? null : Mark.createSet(marks),
+            marks: marks === null ? null : Mark.createSet(marks),
             isAtomic
         });
 
@@ -222,8 +222,8 @@ class Range extends Record(DEFAULTS) {
 
     get isCollapsed() {
         return (
-            this.anchorKey == this.focusKey &&
-            this.anchorOffset == this.focusOffset
+            this.anchorKey === this.focusKey &&
+            this.anchorOffset === this.focusOffset
         );
     }
 
@@ -244,7 +244,7 @@ class Range extends Record(DEFAULTS) {
      */
 
     get isForward() {
-        return this.isBackward == null ? null : !this.isBackward;
+        return this.isBackward === null ? null : !this.isBackward;
     }
 
     /*
@@ -254,7 +254,7 @@ class Range extends Record(DEFAULTS) {
      */
 
     get isSet() {
-        return this.anchorKey != null && this.focusKey != null;
+        return this.anchorKey !== null && this.focusKey !== null;
     }
 
     /*
@@ -316,11 +316,11 @@ class Range extends Record(DEFAULTS) {
 
     public hasAnchorAtStartOf(node) {
         // PERF: Do a check for a `0` offset first since it's quickest.
-        if (this.anchorOffset != 0) {
+        if (this.anchorOffset !== 0) {
             return false;
         }
         const first = getFirst(node);
-        return this.anchorKey == first.key;
+        return this.anchorKey === first.key;
     }
 
     /*
@@ -333,7 +333,8 @@ class Range extends Record(DEFAULTS) {
     public hasAnchorAtEndOf(node) {
         const last = getLast(node);
         return (
-            this.anchorKey == last.key && this.anchorOffset == last.text.length
+            this.anchorKey === last.key &&
+            this.anchorOffset === last.text.length
         );
     }
 
@@ -363,9 +364,9 @@ class Range extends Record(DEFAULTS) {
      */
 
     public hasAnchorIn(node) {
-        return node.object == 'text'
-            ? node.key == this.anchorKey
-            : this.anchorKey != null && node.hasDescendant(this.anchorKey);
+        return node.object === 'text'
+            ? node.key === this.anchorKey
+            : this.anchorKey !== null && node.hasDescendant(this.anchorKey);
     }
 
     /*
@@ -378,7 +379,7 @@ class Range extends Record(DEFAULTS) {
     public hasFocusAtEndOf(node) {
         const last = getLast(node);
         return (
-            this.focusKey == last.key && this.focusOffset == last.text.length
+            this.focusKey === last.key && this.focusOffset === last.text.length
         );
     }
 
@@ -390,11 +391,11 @@ class Range extends Record(DEFAULTS) {
      */
 
     public hasFocusAtStartOf(node) {
-        if (this.focusOffset != 0) {
+        if (this.focusOffset !== 0) {
             return false;
         }
         const first = getFirst(node);
-        return this.focusKey == first.key;
+        return this.focusKey === first.key;
     }
 
     /*
@@ -423,9 +424,9 @@ class Range extends Record(DEFAULTS) {
      */
 
     public hasFocusIn(node) {
-        return node.object == 'text'
-            ? node.key == this.focusKey
-            : this.focusKey != null && node.hasDescendant(this.focusKey);
+        return node.object === 'text'
+            ? node.key === this.focusKey
+            : this.focusKey !== null && node.hasDescendant(this.focusKey);
     }
 
     /*
@@ -503,7 +504,7 @@ class Range extends Record(DEFAULTS) {
             anchorOffset: this.focusOffset,
             focusKey: this.anchorKey,
             focusOffset: this.anchorOffset,
-            isBackward: this.isBackward == null ? null : !this.isBackward
+            isBackward: this.isBackward === null ? null : !this.isBackward
         });
     }
 
@@ -520,7 +521,7 @@ class Range extends Record(DEFAULTS) {
         return this.merge({
             anchorOffset,
             isBackward:
-                anchorKey == focusKey ? anchorOffset > focusOffset : isBackward
+                anchorKey === focusKey ? anchorOffset > focusOffset : isBackward
         });
     }
 
@@ -537,7 +538,7 @@ class Range extends Record(DEFAULTS) {
         return this.merge({
             focusOffset,
             isBackward:
-                focusKey == anchorKey ? anchorOffset > focusOffset : isBackward
+                focusKey === anchorKey ? anchorOffset > focusOffset : isBackward
         });
     }
 
@@ -555,9 +556,9 @@ class Range extends Record(DEFAULTS) {
             anchorKey: key,
             anchorOffset: offset,
             isBackward:
-                key == focusKey
+                key === focusKey
                     ? offset > focusOffset
-                    : key == anchorKey
+                    : key === anchorKey
                     ? isBackward
                     : null
         });
@@ -577,9 +578,9 @@ class Range extends Record(DEFAULTS) {
             focusKey: key,
             focusOffset: offset,
             isBackward:
-                key == anchorKey
+                key === anchorKey
                     ? anchorOffset > offset
-                    : key == focusKey
+                    : key === focusKey
                     ? isBackward
                     : null
         });
@@ -596,7 +597,7 @@ class Range extends Record(DEFAULTS) {
         return this.merge({
             anchorOffset,
             isBackward:
-                this.anchorKey == this.focusKey
+                this.anchorKey === this.focusKey
                     ? anchorOffset > this.focusOffset
                     : this.isBackward
         });
@@ -613,7 +614,7 @@ class Range extends Record(DEFAULTS) {
         return this.merge({
             focusOffset,
             isBackward:
-                this.anchorKey == this.focusKey
+                this.anchorKey === this.focusKey
                     ? this.anchorOffset > focusOffset
                     : this.isBackward
         });
@@ -717,32 +718,23 @@ class Range extends Record(DEFAULTS) {
     /*
      * Normalize the range, relative to a `node`, ensuring that the anchor
      * and focus nodes of the range always refer to leaf text nodes.
-     *
-     * @param {Node} node
-     * @return {Range}
      */
-
-    public normalize(node) {
+    public normalize(node: Node): Range {
         const range = this;
-        let {
-            anchorKey,
-            anchorOffset,
-            focusKey,
-            focusOffset,
-            isBackward
-        } = range;
+        let { anchorOffset, focusOffset, isBackward } = range;
+        const { anchorKey, focusKey } = range;
 
         const anchorOffsetType = typeof anchorOffset;
         const focusOffsetType = typeof focusOffset;
 
-        if (anchorOffsetType != 'number' || focusOffsetType != 'number') {
+        if (anchorOffsetType !== 'number' || focusOffsetType !== 'number') {
             logger.warn(
                 `The range offsets should be numbers, but they were of type "${anchorOffsetType}" and "${focusOffsetType}".`
             );
         }
 
         // If the range is unset, make sure it is properly zeroed out.
-        if (anchorKey == null || focusKey == null) {
+        if (anchorKey === null || focusKey === null) {
             return range.merge({
                 anchorKey: null,
                 anchorOffset: 0,
@@ -774,33 +766,33 @@ class Range extends Record(DEFAULTS) {
         }
 
         // If the anchor node isn't a text node, match it to one.
-        if (anchorNode.object != 'text') {
+        if (anchorNode.object !== 'text') {
             logger.warn(
                 'The range anchor was set to a Node that is not a Text node. This should not happen and can degrade performance. The node in question was:',
                 anchorNode
             );
 
-            const anchorText = anchorNode.getTextAtOffset(anchorOffset);
-            const offset = anchorNode.getOffset(anchorText.key);
+            const nextAnchorNode = anchorNode.getTextAtOffset(anchorOffset);
+            const offset = anchorNode.getOffset(nextAnchorNode.key);
             anchorOffset = anchorOffset - offset;
-            anchorNode = anchorText;
+            anchorNode = nextAnchorNode;
         }
 
         // If the focus node isn't a text node, match it to one.
-        if (focusNode.object != 'text') {
+        if (focusNode.object !== 'text') {
             logger.warn(
                 'The range focus was set to a Node that is not a Text node. This should not happen and can degrade performance. The node in question was:',
                 focusNode
             );
 
-            const focusText = focusNode.getTextAtOffset(focusOffset);
-            const offset = focusNode.getOffset(focusText.key);
+            const nextFocusNode = focusNode.getTextAtOffset(focusOffset);
+            const offset = focusNode.getOffset(nextFocusNode.key);
             focusOffset = focusOffset - offset;
-            focusNode = focusText;
+            focusNode = nextFocusNode;
         }
 
         // If `isBackward` is not set, derive it.
-        if (isBackward == null) {
+        if (isBackward === null) {
             if (anchorNode.key === focusNode.key) {
                 isBackward = anchorOffset > focusOffset;
             } else {
@@ -847,7 +839,7 @@ class Range extends Record(DEFAULTS) {
             isBackward: this.isBackward,
             isFocused: this.isFocused,
             marks:
-                this.marks == null
+                this.marks === null
                     ? null
                     : this.marks.toArray().map(m => m.toJS()),
             isAtomic: this.isAtomic
@@ -959,7 +951,7 @@ ALIAS_METHODS.forEach(([alias, method]) => {
  */
 
 function getFirst(node) {
-    return node.object == 'text' ? node : node.getFirstText();
+    return node.object === 'text' ? node : node.getFirstText();
 }
 
 /*
@@ -970,7 +962,7 @@ function getFirst(node) {
  */
 
 function getLast(node) {
-    return node.object == 'text' ? node : node.getLastText();
+    return node.object === 'text' ? node : node.getLastText();
 }
 
 /*

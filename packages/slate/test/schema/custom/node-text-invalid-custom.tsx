@@ -8,7 +8,7 @@ export const schema = {
     paragraph: {
       text: /^\d*$/,
       normalize: (change, reason, { node }) => {
-        if (reason == NODE_TEXT_INVALID) {
+        if (reason === NODE_TEXT_INVALID) {
           node.nodes.forEach(n => change.removeNodeByKey(n.key))
         }
       },

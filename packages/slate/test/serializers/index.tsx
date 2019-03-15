@@ -14,7 +14,7 @@ describe('serializers', () => {
       const dir = resolve(__dirname, './raw/deserialize')
       const tests = fs
         .readdirSync(dir)
-        .filter(t => t[0] != '.')
+        .filter(t => t[0] !== '.')
         .map(t => basename(t, extname(t)))
 
       for (const test of tests) {
@@ -32,7 +32,7 @@ describe('serializers', () => {
       const dir = resolve(__dirname, './raw/serialize')
       const tests = fs
         .readdirSync(dir)
-        .filter(t => t[0] != '.')
+        .filter(t => t[0] !== '.')
         .map(t => basename(t, extname(t)))
 
       for (const test of tests) {

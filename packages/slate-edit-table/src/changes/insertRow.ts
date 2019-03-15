@@ -23,7 +23,7 @@ function insertRow(
 
     const {
         at = pos.getRowIndex() + 1,
-        getRow = columns => createRow(opts, columns)
+        getRow = cols => createRow(opts, cols)
     } = options;
 
     // Create a new row with the right count of cells

@@ -1470,12 +1470,8 @@ class Node {
 
     /*
      * Get the parent of a child node by `key`.
-     *
-     * @param {String} key
-     * @return {Node|Null}
      */
-
-    public getParent(key) {
+    public getParent(key: string): Node | null {
         if (this.hasChild(key)) {
             return this;
         }

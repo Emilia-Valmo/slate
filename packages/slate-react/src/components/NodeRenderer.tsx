@@ -17,6 +17,7 @@ interface NodeRendererProps {
     isSelected: boolean;
     readOnly: boolean;
     node: Block | Inline;
+    parent: Block | Inline;
 }
 
 /*
@@ -97,6 +98,7 @@ const NodeRenderer = React.memo(function NodeRenderer(
         isFocused,
         block,
         node,
+        parent,
         decorations,
         readOnly
     } = props;
@@ -129,6 +131,7 @@ const NodeRenderer = React.memo(function NodeRenderer(
                 isSelected={isChildSelected}
                 isFocused={isFocused && isChildSelected}
                 node={child}
+                parent={node}
                 readOnly={readOnly}
             />
         );
@@ -147,9 +150,10 @@ const NodeRenderer = React.memo(function NodeRenderer(
         }
     }
 
-    const nodeProps: NodeProps = {
+    const nodeProps: NodeProps<Block | Inline> = {
         node,
         editor,
+        parent,
         isFocused,
         isSelected,
         attributes,

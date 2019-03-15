@@ -9,7 +9,7 @@ All packages follow the same versions. Before 1.0.0, each package was progressin
 * [BREAKING] Remove `renderPortal`, `renderPlaceholder`, `renderNode` and `renderMark` and `renderEditor` from plugins. `renderNode` and `renderMark` should now be passed as props to `<Editor />`
 * [BREAKING] Support only `react>=16.8`
 * [BREAKING] Package `@gitbook/slate-prop-types` is no longer published
-* [BREAKING] Props `parent` and `readOnly` have been removed when rendering nodes, you should use `editor.readOnly` and `editor.value` instead
+* [BREAKING] Props `readOnly` has been removed when rendering nodes, you should use `editor.readOnly` instead
 * Debug logs are no longer emitted during rendering (you can use the React dev tools instead)
 * Switch to Typescript, not all modules are typed yet
 * Compatibility with react strict/concurrent modes 

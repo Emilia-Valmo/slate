@@ -399,7 +399,7 @@ function Editor(props: EditorProps): React.Node {
                 isFocused={isFocused && isSelected}
                 key={child.key}
                 node={child}
-                ancestors={[document]}
+                parent={document}
                 readOnly={readOnly}
             />
         );

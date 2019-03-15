@@ -1,4 +1,4 @@
-import { Block, EditorContainer, Inline, Mark } from '@gitbook/slate';
+import { Block, EditorContainer, Inline, Mark, Node } from '@gitbook/slate';
 import { Set } from 'immutable';
 import * as React from 'react';
 
@@ -14,8 +14,9 @@ export interface MarkDOMAttributes {
 /*
  * Props passed to a component to render a node.
  */
-export interface NodeProps {
-    node: Block | Inline;
+export interface NodeProps<NodeType extends Block | Inline> {
+    node: NodeType;
+    parent: Block | Inline;
     editor: EditorContainer;
     isFocused: boolean;
     isSelected: boolean;

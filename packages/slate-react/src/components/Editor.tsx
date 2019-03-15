@@ -1,7 +1,6 @@
 import {
     Block,
     Change,
-    EditorContainer,
     Inline,
     Mark,
     Plugin,
@@ -365,7 +364,7 @@ function Editor(props: EditorProps): React.Node {
     /*
      * On update, update the selection.
      */
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         const element = domRef.current;
         if (!element) {
             return;

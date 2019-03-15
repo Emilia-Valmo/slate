@@ -6,7 +6,7 @@ import pick from 'lodash/pick';
 import MODEL_TYPES, { isType } from '../constants/model-types';
 import apply from '../operations/apply';
 import Operation from './operation';
-import { Value } from '../index';
+import Value from './value';
 
 const debug = Debug('slate:change');
 
@@ -17,27 +17,31 @@ interface ApplyOperationOptions {
 }
 
 interface ChangeFlags {
-    normalize?: boolean, merge?: boolean, save?: boolean, normalize?: boolean
+    normalize?: boolean;
+    merge?: boolean;
+    save?: boolean;
 }
 
 /*
- * Change.
- *
- * @type {Change}
+ * Mutable interface to make changes to a value.
  */
 
 class Change {
     public static debug = debug;
 
-    public value: Value;
-    public operations: List<Operation>;
-    private flags: ChangeFlags;
-
     /*
      * Check if `any` is a `Change`.
      */
-
     public static isChange = isType.bind(null, 'CHANGE');
+
+    public value: Value;
+    public operations: List<Operation>;
+    public flags: ChangeFlags;
+
+    /*
+     * Types for all the change methods.
+     */
+    public normalizeDocument: () => Change;
 
     /*
      * Create a new `Change` with `attrs`.

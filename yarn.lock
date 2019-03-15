@@ -76,10 +76,6 @@
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.2.tgz#576ff7fb1230185b619a75d258cbc98f0867a8dc"
 
-"@gitbook/slate-dev-benchmark@*":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@gitbook/slate-dev-benchmark/-/slate-dev-benchmark-2.0.0.tgz#ea5f217a2d5e4a8bf529d06e322eb75f932149cb"
-
 "@gitbook/slate-hyperprint@^2.2.6":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@gitbook/slate-hyperprint/-/slate-hyperprint-2.3.0.tgz#8ab71034095460d0e610fbf3b8b3a5ebec2e0f3b"

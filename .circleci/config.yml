@@ -77,6 +77,20 @@ jobs:
           name: Linting code
           command: yarn run lint
 
+  #
+  # Build the code
+  #
+  build:
+    docker: *docker_image
+    steps:
+      - checkout
+      # Restore saved root node_modules
+      - restore_cache: *root_dependencies_cache
+      # Run lint
+      - run:
+          name: Building code
+          command: yarn run build
+
 # CircleCI main workflow
 workflows:
   version: 2
@@ -87,5 +101,8 @@ workflows:
           requires:
             - install
       - lint:
+          requires:
+            - install
+      - build:
           requires:
             - install

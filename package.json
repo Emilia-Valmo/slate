@@ -26,6 +26,7 @@
     "jest": "^23.6.0",
     "jsdom": "^11.5.1",
     "lerna": "^2.7.1",
+    "lerna-alias": "^3.0.2",
     "lodash": "^4.17.4",
     "mini-css-extract-plugin": "^0.5.0",
     "npm-run-all": "^4.1.2",
@@ -75,24 +76,5 @@
     "release": "yarn build:production && yarn test:only && yarn lint && lerna publish && yarn gh-pages",
     "start": "lerna exec --scope @gitbook/slate-demo -- yarn start",
     "test": "jest"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
-    "globals": {
-      "ts-jest": {
-        "diagnostics": false
-      }
-    }
   }
 }

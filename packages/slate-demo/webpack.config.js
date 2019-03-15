@@ -62,7 +62,8 @@ const config = {
     ],
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ]
+    extensions: [ '.tsx', '.ts', '.js' ],
+    mainFields: ['source', 'browser', 'module', 'main']
   },
   plugins: [
     new MiniCssExtractPlugin({

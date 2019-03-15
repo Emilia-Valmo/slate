@@ -22,7 +22,11 @@ const debug = Debug('slate:before');
  * Returns null if no selection could be computed.
  */
 
-function ensureSlateSelection(event: Event, change: Change, editor: EditorContainer) {
+function ensureSlateSelection(
+    event: Event,
+    change: Change,
+    editor: EditorContainer
+) {
     const { readOnly } = editor;
     const { value } = change;
 
@@ -161,7 +165,11 @@ function BeforePlugin() {
      * On composition end.
      */
 
-    function onCompositionEnd(event: Event, change: Change, editor: EditorContainer) {
+    function onCompositionEnd(
+        event: Event,
+        change: Change,
+        editor: EditorContainer
+    ) {
         const n = compositionCount;
 
         // The `count` check here ensures that if another composition starts
@@ -189,7 +197,11 @@ function BeforePlugin() {
      * On composition start.
      */
 
-    function onCompositionStart(event: Event, change: Change, editor: EditorContainer) {
+    function onCompositionStart(
+        event: Event,
+        change: Change,
+        editor: EditorContainer
+    ) {
         isComposing = true;
         compositionCount++;
 
@@ -211,7 +223,7 @@ function BeforePlugin() {
     function onCopy(event: Event, change: Change, editor: EditorContainer) {
         const window = getWindow(event.target);
 
-        const hasSelection = ensureSlateSelection(event: Event, change: Change, editor: EditorContainer);
+        const hasSelection = ensureSlateSelection(event, change, editor);
 
         if (!hasSelection) {
             // We don't have a selection, so let the browser
@@ -251,7 +263,11 @@ function BeforePlugin() {
      * On drag enter.
      */
 
-    function onDragEnter(event: Event, change: Change, editor: EditorContainer) {
+    function onDragEnter(
+        event: Event,
+        change: Change,
+        editor: EditorContainer
+    ) {
         debug('onDragEnter', { event });
     }
 
@@ -267,7 +283,11 @@ function BeforePlugin() {
      * On drag leave.
      */
 
-    function onDragLeave(event: Event, change: Change, editor: EditorContainer) {
+    function onDragLeave(
+        event: Event,
+        change: Change,
+        editor: EditorContainer
+    ) {
         debug('onDragLeave', { event });
     }
 
@@ -311,7 +331,11 @@ function BeforePlugin() {
      * On drag start.
      */
 
-    function onDragStart(event: Event, change: Change, editor: EditorContainer) {
+    function onDragStart(
+        event: Event,
+        change: Change,
+        editor: EditorContainer
+    ) {
         isDragging = true;
 
         debug('onDragStart', { event });
@@ -442,7 +466,6 @@ function BeforePlugin() {
         debug('onSelect', { event });
     }
 
-
     return {
         onBeforeInput,
         onBlur,
@@ -465,6 +488,5 @@ function BeforePlugin() {
         onSelect
     };
 }
-
 
 export default BeforePlugin;

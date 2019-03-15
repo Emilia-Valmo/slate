@@ -1,6 +1,6 @@
 /* @jsx h */
 
-import { Mark, Data } from '../../../../..'
+import { Mark, Data } from '@gitbook/slate'
 import h from '../../../../helpers/h'
 
 export const input = <b />[0]

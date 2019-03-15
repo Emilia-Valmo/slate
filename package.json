@@ -62,7 +62,7 @@
     "prettier": "1.16.4"
   },
   "scripts": {
-    "prepare": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap",
     "build": "rollup --config ./support/rollup/config.js",
     "watch": "rollup --watch --config ./support/rollup/config.js",
     "clean:build": "lerna exec --no-sort -- rm -rf dist lib build",

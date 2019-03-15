@@ -36,6 +36,10 @@ jobs:
       - run:
           name: Installing dependencies
           command: yarn --frozen-lockfile
+      # Boostrap lerna
+      - run:
+          name: Bootstrap packages
+          command: yarn run bootstrap
       # Save yarn cache for future builds
       - save_cache:
           name: Saving yarn cache

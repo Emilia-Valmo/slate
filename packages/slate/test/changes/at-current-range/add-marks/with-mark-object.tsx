@@ -1,49 +1,51 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
+import h from '../../../helpers/h';
 
-import { Mark } from '../../../..'
+import { Mark } from '@gitbook/slate';
 
 export default function(change) {
-  const marks = []
+    const marks = [];
 
-  marks.push(
-    Mark.create({
-      type: 'bold',
-      data: { thing: 'value' },
-    })
-  )
+    marks.push(
+        Mark.create({
+            type: 'bold',
+            data: { thing: 'value' }
+        })
+    );
 
-  marks.push(
-    Mark.create({
-      type: 'italic',
-      data: { thing2: 'value2' },
-    })
-  )
+    marks.push(
+        Mark.create({
+            type: 'italic',
+            data: { thing2: 'value2' }
+        })
+    );
 
-  change.addMarks(marks)
+    change.addMarks(marks);
 }
 
 export const input = (
-  <value>
-    <document>
-      <paragraph>
-        <anchor />w<focus />ord
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                <anchor />w<focus />
+                ord
+            </paragraph>
+        </document>
+    </value>
+);
 
 export const output = (
-  <value>
-    <document>
-      <paragraph>
-        <anchor />
-        <i thing2="value2">
-          <b thing="value">w</b>
-        </i>
-        <focus />ord
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                <anchor />
+                <i thing2="value2">
+                    <b thing="value">w</b>
+                </i>
+                <focus />
+                ord
+            </paragraph>
+        </document>
+    </value>
+);

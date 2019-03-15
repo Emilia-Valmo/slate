@@ -1,7 +1,7 @@
 import assert from 'assert';
-import fs from 'fs-promise'; // eslint-disable-line import/no-extraneous-dependencies
+import fs from 'fs';
 import { basename, extname, resolve } from 'path';
-import toCamel from 'to-camel-case'; // eslint-disable-line import/no-extraneous-dependencies
+import toCamel from 'to-camel-case';
 
 /*
  * Tests.

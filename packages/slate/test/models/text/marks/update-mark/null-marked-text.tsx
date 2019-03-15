@@ -1,14 +1,14 @@
 /* @jsx h */
 
-import { Mark, Data } from '@gitbook/slate'
-import h from '../../../../helpers/h'
+import { Data, Mark } from '@gitbook/slate';
+import h from '../../../../helpers/h';
 
-export const input = <b />[0]
+export const input = (() => <b />)()[0];
 
 export default function(t) {
-  return t.updateMark(0, 0, Mark.create('bold'), {
-    data: Data.fromJS({ x: 1 }),
-  })
+    return t.updateMark(0, 0, Mark.create('bold'), {
+        data: Data.fromJS({ x: 1 })
+    });
 }
 
-export const output = <b x={1} />[0]
+export const output = (() => <b x={1} />)()[0];

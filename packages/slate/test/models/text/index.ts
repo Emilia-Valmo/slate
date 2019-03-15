@@ -7,7 +7,7 @@ describe('texts', () => {
 
     const categories = fs
         .readdirSync(dir)
-        .filter(c => c[0] !== '.' && c !== 'index.tsx');
+        .filter(c => c[0] !== '.' && c !== 'index.ts');
 
     for (const category of categories) {
         describe(category, () => {

@@ -9,6 +9,7 @@ import {
     Value
 } from '@gitbook/slate';
 import {
+    IS_BROWSER,
     IS_ANDROID,
     IS_FIREFOX,
     IS_IOS,
@@ -364,14 +365,16 @@ function Editor(props: EditorProps): React.Node {
     /*
      * On update, update the selection.
      */
-    React.useLayoutEffect(() => {
-        const element = domRef.current;
-        if (!element) {
-            return;
-        }
-
-        updateSelection(element, value, isUpdatingSelectionRef);
-    });
+    if (IS_BROWSER) {
+        React.useLayoutEffect(() => {
+            const element = domRef.current;
+            if (!element) {
+                return;
+            }
+    
+            updateSelection(element, value, isUpdatingSelectionRef);
+        });
+    }
 
     /*
      * Create the event handlers to be passed to the DOM element.

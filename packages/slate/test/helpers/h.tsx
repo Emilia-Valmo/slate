@@ -1,4 +1,4 @@
-import { createHyperscript } from '@gitbook/slate-hyperscript'
+import { createHyperscript } from '@gitbook/slate-hyperscript';
 
 /*
  * Define a hyperscript.
@@ -7,37 +7,37 @@ import { createHyperscript } from '@gitbook/slate-hyperscript'
  */
 
 const h = createHyperscript({
-  blocks: {
-    line: 'line',
-    paragraph: 'paragraph',
-    quote: 'quote',
-    code: 'code',
-    list: 'list',
-    item: 'item',
-    image: {
-      type: 'image',
-      isVoid: true,
+    blocks: {
+        line: 'line',
+        paragraph: 'paragraph',
+        quote: 'quote',
+        code: 'code',
+        list: 'list',
+        item: 'item',
+        image: {
+            type: 'image',
+            isVoid: true
+        }
     },
-  },
-  inlines: {
-    link: 'link',
-    hashtag: 'hashtag',
-    comment: 'comment',
-    emoji: {
-      type: 'emoji',
-      isVoid: true,
+    inlines: {
+        link: 'link',
+        hashtag: 'hashtag',
+        comment: 'comment',
+        emoji: {
+            type: 'emoji',
+            isVoid: true
+        }
     },
-  },
-  marks: {
-    b: 'bold',
-    i: 'italic',
-    u: 'underline',
-    fontSize: 'font-size',
-  },
-  decorators: {
-    highlight: 'highlight',
-  },
-})
+    marks: {
+        b: 'bold',
+        i: 'italic',
+        u: 'underline',
+        fontSize: 'font-size'
+    },
+    decorators: {
+        highlight: 'highlight'
+    }
+});
 
 /*
  * Export.
@@ -45,4 +45,4 @@ const h = createHyperscript({
  * @type {Function}
  */
 
-export default h
+export default h;

@@ -1,3 +1,3 @@
 export default function(plugin, change) {
-  return plugin.changes.removeColumn(change, { at: 0 })
+    return plugin.changes.removeColumn(change, { at: 0 });
 }

@@ -9,8 +9,8 @@ import {
     Value
 } from '@gitbook/slate';
 import {
-    IS_BROWSER,
     IS_ANDROID,
+    IS_BROWSER,
     IS_FIREFOX,
     IS_IOS,
     SUPPORTED_EVENTS
@@ -297,11 +297,11 @@ function Editor(props: EditorProps): React.Node {
                 // input type, but Safari uses `insertText` for spell check replacements
                 // and sets `data` to `null`.
                 const text =
-                    event.data  == null
+                    event.data == null
                         ? event.dataTransfer.getData('text/plain')
                         : event.data;
 
-                if (text  == null) {
+                if (text == null) {
                     return;
                 }
 
@@ -371,7 +371,7 @@ function Editor(props: EditorProps): React.Node {
             if (!element) {
                 return;
             }
-    
+
             updateSelection(element, value, isUpdatingSelectionRef);
         });
     }

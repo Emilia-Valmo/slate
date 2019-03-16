@@ -21,7 +21,7 @@ const render = Component => {
 
 render(App);
 
-/**
+/*
  * Re-render for hot module replacement in development.
  */
 

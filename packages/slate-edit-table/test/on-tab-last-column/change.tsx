@@ -1,24 +1,24 @@
 export default function(plugin, change) {
-  const cursorBlock = change.value.document.getDescendant('anchor')
-  change.moveToRangeOf(cursorBlock)
+    const cursorBlock = change.value.document.getDescendant('anchor');
+    change.moveToRangeOf(cursorBlock);
 
-  const initialPosition = plugin.utils.getPosition(change.value)
+    const initialPosition = plugin.utils.getPosition(change.value);
 
-  plugin.onKeyDown(
-    {
-      key: 'Tab',
-      preventDefault() {},
-      stopPropagation() {},
-    },
-    change
-  )
+    plugin.onKeyDown(
+        {
+            key: 'Tab',
+            preventDefault() {},
+            stopPropagation() {}
+        },
+        change
+    );
 
-  const position = plugin.utils.getPosition(change.value)
+    const position = plugin.utils.getPosition(change.value);
 
-  // Next row
-  expect(position.getRowIndex()).toEqual(initialPosition.getRowIndex() + 1)
-  // Moved to first column
-  expect(position.getColumnIndex()).toEqual(0)
+    // Next row
+    expect(position.getRowIndex()).toEqual(initialPosition.getRowIndex() + 1);
+    // Moved to first column
+    expect(position.getColumnIndex()).toEqual(0);
 
-  return change
+    return change;
 }

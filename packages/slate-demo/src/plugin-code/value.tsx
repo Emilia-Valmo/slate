@@ -1,4 +1,4 @@
-/** @jsx h */
+/* @jsx h */
 // eslint-disable-next-line
 import { createHyperscript } from '@gitbook/slate-hyperscript';
 

@@ -1,9 +1,9 @@
 /* @jsx hyperscript */
 
-import hyperscript from '../hyperscript'
+import hyperscript from '../hyperscript';
 
 export default (
-  <value>
-    <document />
-  </value>
-)
+    <value>
+        <document />
+    </value>
+);

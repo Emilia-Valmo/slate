@@ -1,125 +1,127 @@
 /* eslint-disable no-console */
 
-import { Editor } from '@gitbook/slate-react'
-import { Value } from '@gitbook/slate'
+import { Value } from '@gitbook/slate';
+import { Editor } from '@gitbook/slate-react';
 
-import React from 'react'
-import faker from 'faker'
+import faker from 'faker';
+import React from 'react';
 
-/**
+/*
  * Create a huge JSON document.
  *
  * @type {Object}
  */
 
-const HEADINGS = 100
-const PARAGRAPHS = 8 // Paragraphs per heading
-const nodes = []
+const HEADINGS = 100;
+const PARAGRAPHS = 8; // Paragraphs per heading
+const nodes = [];
 const json = {
-  document: { nodes },
-}
+    document: { nodes }
+};
 
 for (let h = 0; h < HEADINGS; h++) {
-  nodes.push({
-    object: 'block',
-    type: 'heading',
-    nodes: [{ object: 'text', leaves: [{ text: faker.lorem.sentence() }] }],
-  })
-
-  for (let p = 0; p < PARAGRAPHS; p++) {
     nodes.push({
-      object: 'block',
-      type: 'paragraph',
-      nodes: [{ object: 'text', leaves: [{ text: faker.lorem.paragraph() }] }],
-    })
-  }
+        object: 'block',
+        type: 'heading',
+        nodes: [{ object: 'text', leaves: [{ text: faker.lorem.sentence() }] }]
+    });
+
+    for (let p = 0; p < PARAGRAPHS; p++) {
+        nodes.push({
+            object: 'block',
+            type: 'paragraph',
+            nodes: [
+                { object: 'text', leaves: [{ text: faker.lorem.paragraph() }] }
+            ]
+        });
+    }
 }
 
-/**
+/*
  * The huge document example.
  *
  * @type {Component}
  */
 
 class HugeDocument extends React.Component {
-  /**
-   * Deserialize the initial editor value.
-   *
-   * @type {Object}
-   */
+    /*
+     * Deserialize the initial editor value.
+     *
+     * @type {Object}
+     */
 
-  state = { value: Value.fromJS(json, { normalize: false }) }
+    public state = { value: Value.fromJS(json, { normalize: false }) };
 
-  /**
-   * Render the editor.
-   *
-   * @return {Component} component
-   */
+    /*
+     * Render the editor.
+     *
+     * @return {Component} component
+     */
 
-  render() {
-    return (
-      <Editor
-        placeholder="Enter some text..."
-        spellCheck={false}
-        value={this.state.value}
-        onChange={this.onChange}
-        renderNode={this.renderNode}
-        renderMark={this.renderMark}
-      />
-    )
-  }
-
-  /**
-   * Render a Slate node.
-   *
-   * @param {Object} props
-   * @return {Element}
-   */
-
-  renderNode = props => {
-    const { attributes, children, node } = props
-
-    switch (node.type) {
-      case 'heading':
-        return <h1 {...attributes}>{children}</h1>
+    public render() {
+        return (
+            <Editor
+                placeholder="Enter some text..."
+                spellCheck={false}
+                value={this.state.value}
+                onChange={this.onChange}
+                renderNode={this.renderNode}
+                renderMark={this.renderMark}
+            />
+        );
     }
-  }
 
-  /**
-   * Render a Slate mark.
-   *
-   * @param {Object} props
-   * @return {Element}
-   */
+    /*
+     * Render a Slate node.
+     *
+     * @param {Object} props
+     * @return {Element}
+     */
 
-  renderMark = props => {
-    const { children, mark, attributes } = props
+    public renderNode = props => {
+        const { attributes, children, node } = props;
 
-    switch (mark.type) {
-      case 'bold':
-        return <strong {...attributes}>{children}</strong>
-      case 'code':
-        return <code {...attributes}>{children}</code>
-      case 'italic':
-        return <em {...attributes}>{children}</em>
-      case 'underlined':
-        return <u {...attributes}>{children}</u>
-    }
-  }
+        switch (node.type) {
+            case 'heading':
+                return <h1 {...attributes}>{children}</h1>;
+        }
+    };
 
-  /**
-   * On change.
-   *
-   * @param {Change} change
-   */
+    /*
+     * Render a Slate mark.
+     *
+     * @param {Object} props
+     * @return {Element}
+     */
 
-  onChange = ({ value }) => {
-    this.setState({ value })
-  }
+    public renderMark = props => {
+        const { children, mark, attributes } = props;
+
+        switch (mark.type) {
+            case 'bold':
+                return <strong {...attributes}>{children}</strong>;
+            case 'code':
+                return <code {...attributes}>{children}</code>;
+            case 'italic':
+                return <em {...attributes}>{children}</em>;
+            case 'underlined':
+                return <u {...attributes}>{children}</u>;
+        }
+    };
+
+    /*
+     * On change.
+     *
+     * @param {Change} change
+     */
+
+    public onChange = ({ value }) => {
+        this.setState({ value });
+    };
 }
 
-/**
+/*
  * Export.
  */
 
-export default HugeDocument
+export default HugeDocument;

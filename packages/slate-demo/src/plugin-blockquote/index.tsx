@@ -26,29 +26,29 @@ function renderNode(props: *) {
 }
 
 class BlockquoteExample extends React.Component<*, *> {
-  state = {
+  public state = {
     value: INITIAL_VALUE,
   }
 
-  onChange = ({ value }) => {
+  public onChange = ({ value }) => {
     this.setState({
       value,
     })
   }
 
-  onWrapInBlockquote = e => {
+  public onWrapInBlockquote = e => {
     const { value } = this.state
 
     this.onChange(plugin.changes.wrapInBlockquote(value.change()))
   }
 
-  onUnwrapBlockquote = e => {
+  public onUnwrapBlockquote = e => {
     const { value } = this.state
 
     this.onChange(plugin.changes.unwrapBlockquote(value.change()))
   }
 
-  render() {
+  public render() {
     const { value } = this.state
     const inBlockquote = plugin.utils.isSelectionInBlockquote(value)
 
@@ -72,7 +72,7 @@ class BlockquoteExample extends React.Component<*, *> {
   }
 }
 
-/**
+/*
  * Export.
  */
 

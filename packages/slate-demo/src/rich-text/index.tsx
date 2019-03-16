@@ -1,60 +1,60 @@
-import { Editor } from '@gitbook/slate-react'
-import { Value } from '@gitbook/slate'
+import { Value } from '@gitbook/slate';
+import { Editor } from '@gitbook/slate-react';
 
-import React from 'react'
-import initialValue from './value.json'
-import { isKeyHotkey } from 'is-hotkey'
-import { Button, Icon, Toolbar } from '../components'
+import { isKeyHotkey } from 'is-hotkey';
+import React from 'react';
+import { Button, Icon, Toolbar } from '../components';
+import initialValue from './value.json';
 
-/**
+/*
  * Define the default node type.
  *
  * @type {String}
  */
 
-const DEFAULT_NODE = 'paragraph'
+const DEFAULT_NODE = 'paragraph';
 
-/**
+/*
  * Define hotkey matchers.
  *
  * @type {Function}
  */
 
-const isBoldHotkey = isKeyHotkey('mod+b')
-const isItalicHotkey = isKeyHotkey('mod+i')
-const isUnderlinedHotkey = isKeyHotkey('mod+u')
-const isCodeHotkey = isKeyHotkey('mod+`')
+const isBoldHotkey = isKeyHotkey('mod+b');
+const isItalicHotkey = isKeyHotkey('mod+i');
+const isUnderlinedHotkey = isKeyHotkey('mod+u');
+const isCodeHotkey = isKeyHotkey('mod+`');
 
-/**
+/*
  * The rich text example.
  *
  * @type {Component}
  */
 
 class RichTextExample extends React.Component {
-  /**
-   * Deserialize the initial editor value.
-   *
-   * @type {Object}
-   */
+    /*
+     * Deserialize the initial editor value.
+     *
+     * @type {Object}
+     */
 
     public state = {
-    value: Value.fromJS(initialValue),
+        value: Value.fromJS(initialValue)
     };
 
-  /**
-   * Check if the current selection has a mark with `type` in it.
-   *
-   * @param {String} type
-   * @return {Boolean}
-   */
+    /*
+     * Check if the current selection has a mark with `type` in it.
+     *
+     * @param {String} type
+     * @return {Boolean}
+     */
 
-  hasMark = type => {
-    const { value } = this.state
-    return value.activeMarks.some(mark => mark.type === type)
+    public hasMark = type => {
+        const { value } = this.state;
+        return value.activeMarks.some(mark => mark.type === type);
     };
 
-    /**
+    /*
      * Check if the any of the currently selected blocks are of `type`.
      *
      * @param {String} type
@@ -66,7 +66,7 @@ class RichTextExample extends React.Component {
         return value.blocks.some(node => node.type === type);
     };
 
-    /**
+    /*
      * Render.
      *
      * @return {Element}
@@ -106,7 +106,7 @@ class RichTextExample extends React.Component {
         );
     }
 
-    /**
+    /*
      * Render a mark-toggling toolbar button.
      *
      * @param {String} type
@@ -127,7 +127,7 @@ class RichTextExample extends React.Component {
         );
     };
 
-    /**
+    /*
      * Render a block-toggling toolbar button.
      *
      * @param {String} type
@@ -155,7 +155,7 @@ class RichTextExample extends React.Component {
         );
     };
 
-    /**
+    /*
      * Render a Slate node.
      *
      * @param {Object} props
@@ -181,7 +181,7 @@ class RichTextExample extends React.Component {
         }
     };
 
-    /**
+    /*
      * Render a Slate mark.
      *
      * @param {Object} props
@@ -203,7 +203,7 @@ class RichTextExample extends React.Component {
         }
     };
 
-    /**
+    /*
      * On change, save the new `value`.
      *
      * @param {Change} change
@@ -213,7 +213,7 @@ class RichTextExample extends React.Component {
         this.setState({ value });
     };
 
-    /**
+    /*
      * On key down, if it's a formatting command toggle a mark.
      *
      * @param {Event} event
@@ -241,7 +241,7 @@ class RichTextExample extends React.Component {
         return true;
     };
 
-    /**
+    /*
      * When a mark button is clicked, toggle the current mark.
      *
      * @param {Event} event
@@ -255,7 +255,7 @@ class RichTextExample extends React.Component {
         this.onChange(change);
     };
 
-    /**
+    /*
      * When a block button is clicked, toggle the block type.
      *
      * @param {Event} event
@@ -313,7 +313,7 @@ class RichTextExample extends React.Component {
     };
 }
 
-/**
+/*
  * Export.
  */
 

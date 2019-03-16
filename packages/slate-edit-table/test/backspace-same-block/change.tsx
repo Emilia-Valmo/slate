@@ -1,22 +1,22 @@
 export default function(plugin, change) {
-  const { value } = change
-  const blockStart = value.document.getDescendant('anchor')
-  const blockEnd = value.document.getDescendant('anchor')
+    const { value } = change;
+    const blockStart = value.document.getDescendant('anchor');
+    const blockEnd = value.document.getDescendant('anchor');
 
-  const withCursor = change
-    .collapseToStartOf(blockStart)
-    .extendToEndOf(blockEnd)
+    const withCursor = change
+        .collapseToStartOf(blockStart)
+        .extendToEndOf(blockEnd);
 
-  const result = plugin.onKeyDown(
-    {
-      key: 'Backspace',
-      preventDefault() {},
-      stopPropagation() {},
-    },
-    withCursor
-  )
+    const result = plugin.onKeyDown(
+        {
+            key: 'Backspace',
+            preventDefault() {},
+            stopPropagation() {}
+        },
+        withCursor
+    );
 
-  expect(result).toBe(undefined)
+    expect(result).toBe(undefined);
 
-  return change
+    return change;
 }

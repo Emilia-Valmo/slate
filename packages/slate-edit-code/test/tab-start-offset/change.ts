@@ -1,10 +1,12 @@
-import simulateKey from '../simulate-key'
+import simulateKey from '../simulate-key';
 
 export default function(plugin, change) {
-  const { value } = change
-  const block = value.document.findDescendant(node => node.type === 'code_block')
+    const { value } = change;
+    const block = value.document.findDescendant(
+        node => node.type === 'code_block'
+    );
 
-  change.collapseToStartOf(block).moveOffsetsTo(0)
+    change.collapseToStartOf(block).moveOffsetsTo(0);
 
-  return plugin.onKeyDown(simulateKey('tab'), change, {})
+    return plugin.onKeyDown(simulateKey('tab'), change, {});
 }

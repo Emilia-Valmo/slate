@@ -28,17 +28,17 @@ function renderNode(props: *) {
 }
 
 class CodeExample extends React.Component {
-  state = {
+  public state = {
     value: INITIAL_VALUE,
   }
 
-  onChange = ({ value }) => {
+  public onChange = ({ value }) => {
     this.setState({
       value,
     })
   }
 
-  onToggleCode = () => {
+  public onToggleCode = () => {
     const { value } = this.state
 
     this.onChange(
@@ -46,7 +46,7 @@ class CodeExample extends React.Component {
     )
   }
 
-  render() {
+  public render() {
     const { value } = this.state
 
     return (
@@ -68,7 +68,7 @@ class CodeExample extends React.Component {
   }
 }
 
-/**
+/*
  * Export.
  */
 

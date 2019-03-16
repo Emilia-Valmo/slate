@@ -1,17 +1,17 @@
 export default function(plugin, change) {
-  const { value } = change
+    const { value } = change;
 
-  // Copy the selection
-  const copiedFragment = plugin.utils.getCopiedFragment(value)
-  expect(copiedFragment).toBeTruthy()
+    // Copy the selection
+    const copiedFragment = plugin.utils.getCopiedFragment(value);
+    expect(copiedFragment).toBeTruthy();
 
-  // Paste it
-  return change
-    .select({
-      anchorKey: 'paste-here',
-      anchorOffset: 4,
-      focusKey: 'paste-here',
-      focusOffset: 4,
-    })
-    .insertFragment(copiedFragment)
+    // Paste it
+    return change
+        .select({
+            anchorKey: 'paste-here',
+            anchorOffset: 4,
+            focusKey: 'paste-here',
+            focusOffset: 4
+        })
+        .insertFragment(copiedFragment);
 }

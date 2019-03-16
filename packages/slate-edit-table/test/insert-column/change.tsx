@@ -1,7 +1,7 @@
 export default function(plugin, change) {
-  const { value } = change
-  const cursorBlock = value.document.getDescendant('anchor')
-  change.moveToRangeOf(cursorBlock)
+    const { value } = change;
+    const cursorBlock = value.document.getDescendant('anchor');
+    change.moveToRangeOf(cursorBlock);
 
-  return plugin.changes.insertColumn(change)
+    return plugin.changes.insertColumn(change);
 }

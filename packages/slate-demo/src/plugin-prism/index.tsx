@@ -38,17 +38,17 @@ function renderNode(props: *) {
 }
 
 class PrismExample extends React.Component<*, *> {
-  state = {
+  public state = {
     value: INITIAL_VALUE,
   }
 
-  onChange = ({ value }) => {
+  public onChange = ({ value }) => {
     this.setState({
       value,
     })
   }
 
-  render() {
+  public render() {
     return (
       <>
         <link
@@ -67,7 +67,7 @@ class PrismExample extends React.Component<*, *> {
   }
 }
 
-/**
+/*
  * Export.
  */
 

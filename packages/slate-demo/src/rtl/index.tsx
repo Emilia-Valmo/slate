@@ -1,88 +1,88 @@
-import { Editor } from '@gitbook/slate-react'
-import { Value } from '@gitbook/slate'
+import { Value } from '@gitbook/slate';
+import { Editor } from '@gitbook/slate-react';
 
-import React from 'react'
-import initialValue from './value.json'
+import React from 'react';
+import initialValue from './value.json';
 
-/**
+/*
  * A right-to-left text example.
  *
  * @type {Component}
  */
 
 class RTL extends React.Component {
-  /**
-   * Deserialize the initial editor value.
-   *
-   * @type {Object}
-   */
+    /*
+     * Deserialize the initial editor value.
+     *
+     * @type {Object}
+     */
 
-  state = {
-    value: Value.fromJS(initialValue),
-  }
+    public state = {
+        value: Value.fromJS(initialValue)
+    };
 
-  /**
-   * Render the editor.
-   *
-   * @return {Component} component
-   */
+    /*
+     * Render the editor.
+     *
+     * @return {Component} component
+     */
 
-  render() {
-    return (
-      <Editor
-        placeholder="Enter some plain text..."
-        value={this.state.value}
-        onChange={this.onChange}
-        onKeyDown={this.onKeyDown}
-        renderNode={this.renderNode}
-      />
-    )
-  }
-
-  /**
-   * Render a Slate node.
-   *
-   * @param {Object} props
-   * @return {Element}
-   */
-
-  renderNode = props => {
-    const { attributes, children, node } = props
-
-    switch (node.type) {
-      case 'block-quote':
-        return <blockquote {...attributes}>{children}</blockquote>
+    public render() {
+        return (
+            <Editor
+                placeholder="Enter some plain text..."
+                value={this.state.value}
+                onChange={this.onChange}
+                onKeyDown={this.onKeyDown}
+                renderNode={this.renderNode}
+            />
+        );
     }
-  }
 
-  /**
-   * On change.
-   *
-   * @param {Change} change
-   */
+    /*
+     * Render a Slate node.
+     *
+     * @param {Object} props
+     * @return {Element}
+     */
 
-  onChange = ({ value }) => {
-    this.setState({ value })
-  }
+    public renderNode = props => {
+        const { attributes, children, node } = props;
 
-  /**
-   * On key down, if it's <shift-enter> add a soft break.
-   *
-   * @param {Event} event
-   * @param {Change} change
-   */
+        switch (node.type) {
+            case 'block-quote':
+                return <blockquote {...attributes}>{children}</blockquote>;
+        }
+    };
 
-  onKeyDown = (event, change) => {
-    if (event.key === 'Enter' && event.shiftKey) {
-      event.preventDefault()
-      change.insertText('\n')
-      return true
-    }
-  }
+    /*
+     * On change.
+     *
+     * @param {Change} change
+     */
+
+    public onChange = ({ value }) => {
+        this.setState({ value });
+    };
+
+    /*
+     * On key down, if it's <shift-enter> add a soft break.
+     *
+     * @param {Event} event
+     * @param {Change} change
+     */
+
+    public onKeyDown = (event, change) => {
+        if (event.key === 'Enter' && event.shiftKey) {
+            event.preventDefault();
+            change.insertText('\n');
+            return true;
+        }
+    };
 }
 
-/**
+/*
  * Export.
  */
 
-export default RTL
+export default RTL;

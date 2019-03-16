@@ -37,7 +37,7 @@ const plugins = [tablePlugin, alignPlugin, { renderNode }]
 const TableContext = React.createContext(false)
 
 class Table extends React.Component {
-  render() {
+  public render() {
     const { attributes, children } = this.props
     return (
       <TableContext.Provider value>
@@ -50,14 +50,14 @@ class Table extends React.Component {
 }
 
 class TableRow extends React.Component {
-  render() {
+  public render() {
     const { attributes, children } = this.props
     return <tr {...attributes}>{children}</tr>
   }
 }
 
 class TableCell extends React.Component {
-  render() {
+  public render() {
     const { attributes, children, node } = this.props
 
     const textAlign = node.get('data').get('align', 'left')
@@ -71,9 +71,9 @@ class TableCell extends React.Component {
 }
 
 class Paragraph extends React.Component {
-  static contextType = TableContext
+  public static contextType = TableContext
 
-  render() {
+  public render() {
     const { attributes, children } = this.props
     const isInTable = this.context
 
@@ -88,11 +88,11 @@ class Paragraph extends React.Component {
 }
 
 class TableExample extends React.Component<*, *> {
-  state = {
+  public state = {
     value: INITIAL_VALUE,
   }
 
-  renderToolbar() {
+  public renderToolbar() {
     const { value } = this.state
     const isInTable = tablePlugin.utils.isSelectionInTable(value)
     const isOutTable = tablePlugin.utils.isSelectionOutOfTable(value)
@@ -140,47 +140,47 @@ class TableExample extends React.Component<*, *> {
     )
   }
 
-  submitChange = fn => {
+  public submitChange = fn => {
     this.onChange(this.state.value.change().call(fn))
   }
 
-  onChange = ({ value }) => {
+  public onChange = ({ value }) => {
     this.setState({
       value,
     })
   }
 
-  onInsertTable = event => {
+  public onInsertTable = event => {
     event.preventDefault()
     this.submitChange(tablePlugin.changes.insertTable)
   }
 
-  onInsertColumn = event => {
+  public onInsertColumn = event => {
     event.preventDefault()
     this.submitChange(tablePlugin.changes.insertColumn)
   }
 
-  onInsertRow = event => {
+  public onInsertRow = event => {
     event.preventDefault()
     this.submitChange(tablePlugin.changes.insertRow)
   }
 
-  onRemoveColumn = event => {
+  public onRemoveColumn = event => {
     event.preventDefault()
     this.submitChange(tablePlugin.changes.removeColumn)
   }
 
-  onRemoveRow = event => {
+  public onRemoveRow = event => {
     event.preventDefault()
     this.submitChange(tablePlugin.changes.removeRow)
   }
 
-  onRemoveTable = event => {
+  public onRemoveTable = event => {
     event.preventDefault()
     this.submitChange(tablePlugin.changes.removeTable)
   }
 
-  onSetAlign = (event, align) => {
+  public onSetAlign = (event, align) => {
     event.preventDefault()
 
     this.submitChange(change =>
@@ -188,7 +188,7 @@ class TableExample extends React.Component<*, *> {
     )
   }
 
-  render() {
+  public render() {
     const { value } = this.state
     return (
       <div>
@@ -203,9 +203,5 @@ class TableExample extends React.Component<*, *> {
     )
   }
 }
-
-/**
- * Export.
- */
 
 export default TableExample

@@ -1,91 +1,74 @@
-/*
- * Dependencies.
- */
-
-import logger from '@gitbook/slate-dev-logger';
 import { List, Map, Record } from 'immutable';
 import isPlainObject from 'is-plain-object';
 
 import MODEL_TYPES, { isType } from '../constants/model-types';
 import generateKey from '../utils/generate-key';
+import { DataJSON, DataMap } from './data';
+import Node from './node';
+
+interface BlockProperties {
+    data: DataMap;
+    isVoid: boolean;
+    key: string;
+    nodes: List<Node>;
+    type: string;
+}
+
+type BlockPartialProps = Partial<BlockProperties>;
+
+interface BlockJSON {
+    key?: string;
+    data: DataJSON;
+    isVoid: boolean;
+    nodes: BlockJSON[];
+    type: string;
+}
 
 /*
- * Default properties.
- *
- * @type {Object}
+ * Model to represent a block node.
  */
-
-const DEFAULTS = {
-    data: new Map(),
-    isVoid: false,
-    key: undefined,
-    nodes: new List(),
-    type: undefined
-};
-
-/*
- * Block.
- *
- * @type {Block}
- */
-
-class Block extends Record(DEFAULTS) {
-    /*
-     * Object.
-     *
-     * @return {String}
-     */
-
+class Block
+    extends Record<BlockProperties>({
+        data: Map(),
+        isVoid: false,
+        key: '',
+        nodes: new List(),
+        type: ''
+    })
+    implements Node {
     get object(): 'block' {
         return 'block';
-    }
-
-    get kind() {
-        logger.deprecate(
-            'slate@0.32.0',
-            'The `kind` property of Slate objects has been renamed to `object`.'
-        );
-        return this.object;
     }
 
     /*
      * Check if the block is empty.
      * Returns true if block is not void and all it's children nodes are empty.
      * Void node is never empty, regardless of it's content.
-     *
-     * @return {Boolean}
      */
-
-    get isEmpty() {
+    get isEmpty(): boolean {
         return !this.isVoid && !this.nodes.some(child => !child.isEmpty);
     }
 
     /*
      * Get the concatenated text of all the block's children.
-     *
-     * @return {String}
      */
-
     get text(): string {
         return this.getText();
     }
 
     /*
-     * Check if `any` is a `Block`.
-     *
-     * @param {Any} any
-     * @return {Boolean}
+     * Check if `input` is a `Block`.
      */
+    public static isBlock(input: any): input is Block {
+        return isType('BLOCK', input);
+    }
 
-    public static isBlock = isType.bind(null, 'BLOCK');
     /*
      * Create a new `Block` from `attrs`.
-     *
-     * @param {Object|String|Block} attrs
-     * @return {Block}
      */
-
-    public static create(attrs = {}) {
+    public static create(
+        attrs: string | Block | BlockPartialProps = {}
+    ): Block {
         if (Block.isBlock(attrs)) {
             return attrs;
         }
@@ -105,12 +88,12 @@ class Block extends Record(DEFAULTS) {
 
     /*
      * Create a list of `Blocks` from `attrs`.
-     *
-     * @param {Array<Block|Object>|List<Block|Object>} attrs
-     * @return {List<Block>}
      */
-
-    public static createList(attrs = []) {
+    public static createList(
+        attrs:
+            | Array<Block | BlockPartialProps | string>
+            | List<Block | BlockPartialProps | string> = []
+    ): List<Block> {
         if (List.isList(attrs) || Array.isArray(attrs)) {
             const list = new List(attrs.map(Block.create));
             return list;
@@ -123,14 +106,10 @@ class Block extends Record(DEFAULTS) {
 
     /*
      * Create a `Block` from a JSON `object`.
-     *
-     * @param {Object|Block} object
-     * @return {Block}
      */
-
-    public static fromJS(object) {
-        if (Block.isBlock(object)) {
-            return object;
+    public static fromJS(input: BlockJSON | Block): Block {
+        if (Block.isBlock(input)) {
+            return input;
         }
 
         const {
@@ -139,7 +118,7 @@ class Block extends Record(DEFAULTS) {
             key = generateKey(),
             nodes = [],
             type
-        } = object;
+        } = input;
 
         if (typeof type !== 'string') {
             throw new Error('`Block.fromJS` requires a `type` string.');
@@ -157,33 +136,20 @@ class Block extends Record(DEFAULTS) {
     }
 
     /*
-     * Alias `fromJS`.
+     * Check if `input` is a block list.
      */
-
-    public static fromJSON(object) {
-        logger.deprecate(
-            'slate@0.35.0',
-            'fromJSON methods are deprecated, use fromJS instead'
-        );
-        return Block.fromJS(object);
-    }
-
-    /*
-     * Check if `any` is a block list.
-     */
-
     public static isBlockList(input: any): boolean {
         return List.isList(input) && input.every(item => Block.isBlock(item));
     }
 
     /*
      * Return a JSON representation of the block.
-     *
-     * @param {Object} options
-     * @return {Object}
      */
-
-    public toJS(options = {}) {
+    public toJS(
+        options: {
+            preserveKeys?: boolean;
+        } = {}
+    ): BlockJSON {
         const object = {
             object: this.object,
             type: this.type,
@@ -198,30 +164,11 @@ class Block extends Record(DEFAULTS) {
 
         return object;
     }
-
-    /*
-     * Alias `toJSON`.
-     */
-
-    public toJSON(options) {
-        logger.deprecate(
-            'slate@0.35.0',
-            'toJSON methods are deprecated, use toJS instead'
-        );
-        return this.toJS(options);
-    }
 }
 
 /*
  * Attach a pseudo-symbol for type checking.
  */
-
 Block.prototype[MODEL_TYPES.BLOCK] = true;
-
-/*
- * Export.
- *
- * @type {Block}
- */
 
 export default Block;

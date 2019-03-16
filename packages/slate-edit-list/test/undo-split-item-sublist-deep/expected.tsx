@@ -1,28 +1,28 @@
 /* @jsx h */
 
-import h from '../hyperscript'
+import h from '../hyperscript';
 
 export default (
-  <value>
-    <document>
-      <ol_list>
-        <list_item>
-          <paragraph>Item 1</paragraph>
-          <ol_list>
-            <list_item>
-              <paragraph>Item 1.1</paragraph>
-              <ol_list>
+    <value>
+        <document>
+            <ol_list>
                 <list_item>
-                  <paragraph>Item 1.1.1</paragraph>
+                    <paragraph>Item 1</paragraph>
+                    <ol_list>
+                        <list_item>
+                            <paragraph>Item 1.1</paragraph>
+                            <ol_list>
+                                <list_item>
+                                    <paragraph>Item 1.1.1</paragraph>
+                                </list_item>
+                                <list_item>
+                                    <paragraph>Item 1.1.2</paragraph>
+                                </list_item>
+                            </ol_list>
+                        </list_item>
+                    </ol_list>
                 </list_item>
-                <list_item>
-                  <paragraph>Item 1.1.2</paragraph>
-                </list_item>
-              </ol_list>
-            </list_item>
-          </ol_list>
-        </list_item>
-      </ol_list>
-    </document>
-  </value>
-)
+            </ol_list>
+        </document>
+    </value>
+);

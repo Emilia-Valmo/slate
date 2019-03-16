@@ -5,7 +5,6 @@ docker_image: &docker_image
 
 # Cache keys for yarn cache
 yarn_cache_keys: &yarn_cache_keys
-  - yarn-cache-{{ checksum "yarn.lock" }}-{{ checksum "modules/yarn.lock" }}
   - yarn-cache-{{ checksum "yarn.lock" }}-
   - yarn-cache-
 yarn_cache: &yarn_cache

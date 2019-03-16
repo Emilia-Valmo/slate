@@ -1,13 +1,16 @@
 {
   "name": "@gitbook/slate-prism",
   "description": "A Slate plugin to highlight code blocks using PrismJS.",
-  "version": "2.0.1",
-  "license": "Apache-2.0",
-  "repository": "git://github.com/GitbookIO/slate.git",
-  "main": "lib/slate-prism.js",
-  "module": "lib/slate-prism.es.js",
-  "umd": "dist/slate-prism.js",
-  "umdMin": "dist/slate-prism.min.js",
+  "version": "3.0.0-alpha.1",
+  "license": "MIT",
+  "repository": "https://github.com/GitbookIO/slate.git",
+  "source": "src/index.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
+  "files": [
+    "*.md",
+    "dist/"
+  ],
   "peerDependencies": {
     "@gitbook/slate": "1.0.0",
     "immutable": "*",
@@ -16,17 +19,11 @@
     "react-dom": "*"
   },
   "devDependencies": {
-    "@gitbook/slate": "^2.0.0",
-    "@gitbook/slate-edit-code": "^2.0.1",
+    "@gitbook/slate": "^3.0.0-alpha.1",
+    "@gitbook/slate-edit-code": "^3.0.0-alpha.1",
     "@gitbook/slate-hyperprint": "^2.2.6",
-    "@gitbook/slate-hyperscript": "^2.0.0",
-    "@gitbook/slate-react": "^2.0.1",
+    "@gitbook/slate-hyperscript": "^3.0.0-alpha.1",
+    "@gitbook/slate-react": "^3.0.0-alpha.1",
     "prismjs": "^1.15.0"
-  },
-  "scripts": {
-    "clean": "rm -rf ./dist ./lib ./node_modules"
-  },
-  "keywords": [
-    "slate"
-  ]
+  }
 }

@@ -149,7 +149,7 @@ Increase the depth of the current item.
 
 Decrease the depth of the current item.
 
-#### `plugin.changes.wrapInList(change: Change, type: String?, data: Object|Data?) => Transform`
+#### `plugin.changes.wrapInList(change: Change, type: String?, data: object|Data?) => Transform`
 
 Wrap the current blocks in list items of a list container of the given type. You can pass optional data for the created list container.
 

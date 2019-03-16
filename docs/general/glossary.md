@@ -58,8 +58,6 @@ An offset is a distance from the start of a text node, measured in ["characters"
 
 ### Operation
 
-### Placeholder
-
 ### Plugin
 
 ### Point

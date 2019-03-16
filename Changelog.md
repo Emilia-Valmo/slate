@@ -4,6 +4,19 @@ Slate is a monorepo. All notable changes to any of the Slate package will be doc
 
 All packages follow the same versions. Before 1.0.0, each package was progressing independently, and they had individual changelogs.
 
+# 3.0.0
+
+* [BREAKING] Remove `renderPortal`, `renderPlaceholder`, `renderNode` and `renderMark` and `renderEditor` from plugins. `renderNode` and `renderMark` should now be passed as props to `<Editor />`
+* [BREAKING] Support only `react>=16.8`
+* [BREAKING] Package `@gitbook/slate-prop-types` is no longer published
+* [BREAKING] Props `readOnly` has been removed when rendering nodes, you should use `editor.readOnly` instead
+* [BREAKING] Remove deprecated `toJSON`, `fromJSON` and `kind` properties on models
+* [BREAKING] Remove deprecated `Character` model
+* [BREAKING] Switch to Typescript, not all modules are typed yet. Dynamic type checks are no longer done.
+* Debug logs are no longer emitted during rendering (you can use the React dev tools instead)
+* Compatibility with react strict/concurrent modes 
+
+
 # 2.0.1
 
 * Fixed a mistake that would crash when a DOM node could not be found.

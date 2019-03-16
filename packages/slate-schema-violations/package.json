@@ -1,28 +1,17 @@
 {
   "name": "@gitbook/slate-schema-violations",
   "description": "A set of constants for the built-in violations in a Slate schema.",
-  "version": "2.0.0",
+  "version": "3.0.0-alpha.1",
   "license": "MIT",
-  "repository": "git://github.com/GitbookIO/slate.git",
-  "main": "lib/slate-schema-violations.js",
-  "module": "lib/slate-schema-violations.es.js",
-  "umd": "dist/slate-schema-violations.js",
-  "umdMin": "dist/slate-schema-violations.min.js",
+  "repository": "https://github.com/GitbookIO/slate.git",
+  "source": "src/index.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
   "files": [
-    "dist/",
-    "lib/"
+    "*.md",
+    "dist/"
   ],
   "devDependencies": {
-    "@gitbook/slate": "^2.0.0",
-    "mocha": "^2.5.3"
-  },
-  "scripts": {
-    "clean": "rm -rf ./dist ./lib ./node_modules"
-  },
-  "keywords": [
-    "constants",
-    "schema",
-    "slate",
-    "violation"
-  ]
+    "@gitbook/slate": "^3.0.0-alpha.1"
+  }
 }

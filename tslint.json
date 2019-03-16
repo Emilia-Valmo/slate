@@ -1,0 +1,6 @@
+{
+    "extends": "tslint-config-gitbook",
+    "rules": {
+        "max-classes-per-file": [false]
+    }
+}

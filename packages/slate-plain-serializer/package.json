@@ -1,46 +1,25 @@
 {
   "name": "@gitbook/slate-plain-serializer",
   "description": "A plain text serializer for Slate editors.",
-  "version": "2.0.0",
+  "version": "3.0.0-alpha.1",
   "license": "MIT",
-  "repository": "git://github.com/GitbookIO/slate.git",
-  "main": "lib/slate-plain-serializer.js",
-  "module": "lib/slate-plain-serializer.es.js",
-  "umd": "dist/slate-plain-serializer.js",
-  "umdMin": "dist/slate-plain-serializer.min.js",
+  "repository": "https://github.com/GitbookIO/slate.git",
+  "source": "src/index.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
   "files": [
-    "dist/",
-    "lib/"
+    "*.md",
+    "dist/"
   ],
   "dependencies": {
-    "@gitbook/slate-dev-logger": "^2.0.0"
+    "@gitbook/slate-dev-logger": "^3.0.0-alpha.1"
   },
   "peerDependencies": {
     "@gitbook/slate": ">=0.32.0",
     "immutable": ">=4.0.0-rc.12"
   },
   "devDependencies": {
-    "@gitbook/slate": "^2.0.0",
-    "@gitbook/slate-hyperscript": "^2.0.0",
-    "mocha": "^2.5.3"
-  },
-  "scripts": {
-    "clean": "rm -rf ./dist ./lib ./node_modules"
-  },
-  "umdGlobals": {
-    "immutable": "Immutable",
-    "@gitbook/slate": "Slate"
-  },
-  "keywords": [
-    "deserialize",
-    "editor",
-    "plain",
-    "plaintext",
-    "serialize",
-    "serializer",
-    "slate",
-    "string",
-    "text",
-    "xml"
-  ]
+    "@gitbook/slate": "^3.0.0-alpha.1",
+    "@gitbook/slate-hyperscript": "^3.0.0-alpha.1"
+  }
 }

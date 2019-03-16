@@ -1,16 +1,15 @@
 {
   "name": "@gitbook/slate-edit-code",
   "description": "A Slate plugin to handle code blocks editing.",
-  "version": "2.0.1",
-  "license": "Apache-2.0",
-  "repository": "git://github.com/GitbookIO/slate.git",
-  "main": "lib/slate-edit-code.js",
-  "module": "lib/slate-edit-code.es.js",
-  "umd": "dist/slate-edit-code.js",
-  "umdMin": "dist/slate-edit-code.min.js",
+  "version": "3.0.0-alpha.1",
+  "license": "MIT",
+  "repository": "https://github.com/GitbookIO/slate.git",
+  "source": "src/index.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
   "files": [
-    "dist",
-    "*.md"
+    "*.md",
+    "dist/"
   ],
   "dependencies": {
     "detect-indent": "^4.0.0",
@@ -25,16 +24,10 @@
     "immutable": ">=4.0.0-rc.12"
   },
   "devDependencies": {
-    "@gitbook/slate": "^2.0.0",
+    "@gitbook/slate": "^3.0.0-alpha.1",
     "@gitbook/slate-hyperprint": "^2.2.6",
-    "@gitbook/slate-hyperscript": "^2.0.0",
-    "@gitbook/slate-react": "^2.0.1",
-    "@gitbook/slate-schema-violations": "^2.0.0"
-  },
-  "scripts": {
-    "clean": "rm -rf ./dist ./lib ./node_modules"
-  },
-  "keywords": [
-    "slate"
-  ]
+    "@gitbook/slate-hyperscript": "^3.0.0-alpha.1",
+    "@gitbook/slate-react": "^3.0.0-alpha.1",
+    "@gitbook/slate-schema-violations": "^3.0.0-alpha.1"
+  }
 }

@@ -1,0 +1,32 @@
+{
+    "name": "@gitbook/slate-demo",
+    "private": true,
+    "main": "dist/js/index.js",
+    "source": "index.ts",
+    "scripts": {
+        "start": "webpack-dev-server --config ./webpack.config.js",
+        "build": "NODE_ENV=production webpack --config ./webpack.config.js",
+        "prepublish-demo": "yarn run build",
+        "publish-demo": "gh-pages --dist ./build"
+    },
+    "dependencies": {
+        "@gitbook/slate": "^3.0.0-alpha.1",
+        "@gitbook/slate-auto-replace": "^3.0.0-alpha.1",
+        "@gitbook/slate-edit-blockquote": "^3.0.0-alpha.1",
+        "@gitbook/slate-edit-code": "^3.0.0-alpha.1",
+        "@gitbook/slate-edit-list": "^3.0.0-alpha.1",
+        "@gitbook/slate-edit-table": "^3.0.0-alpha.1",
+        "@gitbook/slate-react": "^3.0.0-alpha.1",
+        "@helpscout/stats": "^0.0.5",
+        "emojis": "^1.0.10",
+        "emotion": "^9.2.4",
+        "faker": "^3.1.0",
+        "immutable": ">=4.0.0-rc.12",
+        "react": "^16.8.4",
+        "react-dom": "^16.8.4",
+        "react-emotion": "^9.2.4",
+        "react-hot-loader": "^4.6.3",
+        "react-router-dom": "^4.3.1"
+    },
+    "version": "3.0.0-alpha.1"
+}

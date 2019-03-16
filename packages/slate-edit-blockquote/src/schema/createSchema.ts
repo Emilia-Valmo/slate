@@ -1,4 +1,4 @@
-import { Block, Change } from '@gitbook/slate';
+import { Block, Change, Schema } from '@gitbook/slate';
 import { CHILD_OBJECT_INVALID } from '@gitbook/slate-schema-violations';
 
 import Options from '../options';
@@ -6,9 +6,8 @@ import Options from '../options';
 /*
  * Create a schema definition with rules to normalize blockquotes
  */
-
-function schema(opts: Options): object {
-    return {
+function createSchema(opts: Options): Schema {
+    return Schema.create({
         blocks: {
             [opts.type]: {
                 nodes: [
@@ -26,13 +25,12 @@ function schema(opts: Options): object {
                 }
             }
         }
-    };
+    });
 }
 
 /*
  *  Ensures that blockquotes always contain blocks.
  */
-
 function containBlocks(
     opts: Options,
     change: Change,
@@ -70,4 +68,4 @@ function containBlocks(
     return change;
 }
 
-export default schema;
+export default createSchema;

@@ -2,19 +2,13 @@ import Options, { OptionsFormat } from './options'
 import { isSelectionInBlockquote } from './utils'
 import { wrapInBlockquote, unwrapBlockquote } from './changes'
 
-import { schema } from './validation'
 
 /*
  * The core of the plugin, which does not relies on `slate-react`, and includes
  * everything but behavior and rendering logic.
  */
-
-function core(optsParam: OptionsFormat): Object {
-  const opts = new Options(optsParam)
-
+function createAPI(opts: OptionsFormat): Object {
   return {
-    schema: schema(opts),
-
     utils: {
       isSelectionInBlockquote: isSelectionInBlockquote.bind(null, opts),
     },
@@ -43,4 +37,6 @@ function bindAndScopeChange(opts: Options, fn: any): any {
   }
 }
 
-export default core
+export {
+  createAPI
+}

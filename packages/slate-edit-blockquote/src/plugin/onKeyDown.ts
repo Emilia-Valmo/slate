@@ -12,7 +12,6 @@ const KEY_BACKSPACE = 'Backspace';
 /*
  * User is pressing a key in the editor
  */
-
 function onKeyDown(
     opts: Options,
     event: any,

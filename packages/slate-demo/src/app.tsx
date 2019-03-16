@@ -7,6 +7,7 @@ import {
     Route,
     Switch
 } from 'react-router-dom';
+import {StatsGraph} from '@helpscout/stats'
 
 import CheckLists from './check-lists';
 import CodeHighlighting from './code-highlighting';
@@ -150,33 +151,14 @@ const Warning = styled(Wrapper)`
  */
 
 export default class App extends React.Component {
-    /**
-     * Initial state.
-     *
-     * @type {Object}
-     */
-
     public state = {
         error: null,
         info: null
     };
 
-    /**
-     * Catch the `error` and `info`.
-     *
-     * @param {Error} error
-     * @param {Object} info
-     */
-
-    public componentDidCatch(error, info) {
+    public componentDidCatch(error: Error, info: object ) {
         this.setState({ error, info });
     }
-
-    /**
-     * Render the example app.
-     *
-     * @return {Element}
-     */
 
     public render() {
         return (
@@ -235,6 +217,7 @@ export default class App extends React.Component {
                             </Switch>
                         </Example>
                     )}
+                    <StatsGraph bottom={15} right={15} top="auto" />
                 </div>
             </HashRouter>
         );

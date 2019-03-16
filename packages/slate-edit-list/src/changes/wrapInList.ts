@@ -12,7 +12,7 @@ function wrapInList(
     opts: Options,
     change: Change,
     type?: string,
-    data?: object | Data
+    data?: object
 ): Change {
     const selectedBlocks = getHighestSelectedBlocks(change.value);
     type = type || opts.types[0];

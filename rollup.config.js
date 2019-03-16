@@ -6,7 +6,7 @@ import globals from 'rollup-plugin-node-globals'
 import json from 'rollup-plugin-json'
 import resolve from 'rollup-plugin-node-resolve'
 
-const ROOT_DIR = path.resolve(__dirname, '../..')
+const ROOT_DIR = __dirname;
 const PACKAGES_DIR = path.resolve(ROOT_DIR, 'packages')
 
 const packages = fs.readdirSync(PACKAGES_DIR)

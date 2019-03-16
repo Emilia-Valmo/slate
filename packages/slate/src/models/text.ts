@@ -20,7 +20,7 @@ export interface TextJSON {
 }
 
 // Type of parameter to create a Text
-type MaybeText = Text | Partial<TextJSON> | string | { text: string };
+type MaybeText = Text | Partial<TextJSON & Partial<LeafJSON>> | string;
 
 /*
  * A node of text in the document
@@ -94,7 +94,9 @@ class Text extends Record({
         elements: List<MaybeText> | MaybeText[] = []
     ): List<Text> {
         if (List.isList(elements) || Array.isArray(elements)) {
-            const list = new List(elements.map(Text.create));
+            const list = List(
+                elements.map((element: MaybeText) => Text.create(element))
+            );
             return list;
         }
 
@@ -146,7 +148,7 @@ class Text extends Record({
     ): {
         startOffset: number;
         endOffset: number;
-        index: index;
+        index: number;
         leaf: Leaf;
     } {
         let endOffset = 0;

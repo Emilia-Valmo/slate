@@ -4,6 +4,9 @@ import isPlainObject from 'is-plain-object';
 export type DataMap = Map<string, any>;
 export type DataJSON = object;
 
+// Argument to create a data set
+export type DataCreateProps = Map | DataJSON;
+
 /*
  * Data. It isn't a class but a tiny wrapper around "Map".
  */

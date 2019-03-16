@@ -2,6 +2,7 @@ import direction from 'direction';
 import { List, Map, OrderedSet, Record, Set } from 'immutable';
 import memoize from 'immutablejs-record-memoize';
 
+import generateKey from '../utils/generate-key';
 import { DataMap } from './data';
 import Range from './range';
 import Schema, { SchemaNormalizeFn } from './schema';

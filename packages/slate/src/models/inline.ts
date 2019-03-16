@@ -114,10 +114,17 @@ class Inline extends NodeFactory<InlineProperties>({
     ): List<Text | Inline> {
         return List(
             elements.map(element => {
-                if (element.object === 'text') {
-                    return Text.create(element);
-                } else {
+                if (Inline.isInline(element)) {
+                    return element;
+                }
+                if (Text.isText(element)) {
+                    return element;
+                }
+
+                if (element.object === 'inline') {
                     return Inline.create(element);
+                } else {
+                    return Text.create(element);
                 }
             })
         );

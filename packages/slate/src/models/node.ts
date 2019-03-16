@@ -1,14 +1,15 @@
-import { List} from 'immutable';
+import { List } from 'immutable';
 import isPlainObject from 'is-plain-object';
 
 import { isType } from '../constants/model-types';
 import Block, { BlockJSON } from './block';
+import Data, { DataCreateProps, DataMap } from './data';
 import Document, { DocumentJSON } from './document';
 import Inline, { InlineJSON } from './inline';
 import Text, { TextJSON } from './text';
 
 type NodeType = Block | Document | Inline | Text;
-type NodeJSON = BlockJSON | DocumentJSON | InlineJSON | TextJSON
+type NodeJSON = BlockJSON | DocumentJSON | InlineJSON | TextJSON;
 
 /*
  * Static interface to create nodes.
@@ -70,6 +71,59 @@ const Node = {
     },
 
     /*
+     * Create a dictionary of settable node properties from `attrs`.
+     */
+    createProperties(
+        attrs:
+            | Block
+            | Inline
+            | string
+            | {
+                  type?: string;
+                  data?: DataCreateProps;
+                  isVoid?: boolean;
+              } = {}
+    ): {
+        data?: DataMap;
+        isVoid?: boolean;
+        type?: string;
+    } {
+        if (Block.isBlock(attrs) || Inline.isInline(attrs)) {
+            return {
+                data: attrs.data,
+                isVoid: attrs.isVoid,
+                type: attrs.type
+            };
+        }
+
+        if (typeof attrs === 'string') {
+            return { type: attrs };
+        }
+
+        if (isPlainObject(attrs)) {
+            const props: {
+                data?: DataMap;
+                isVoid?: boolean;
+                type?: string;
+            } = {};
+            if ('type' in attrs) {
+                props.type = attrs.type;
+            }
+            if ('data' in attrs) {
+                props.data = Data.create(attrs.data);
+            }
+            if ('isVoid' in attrs) {
+                props.isVoid = attrs.isVoid;
+            }
+            return props;
+        }
+
+        throw new Error(
+            `\`Node.createProperties\` only accepts objects, strings, blocks or inlines, but you passed it: ${attrs}`
+        );
+    },
+
+    /*
      * Create a `Node` from a JSON `value`
      */
 
@@ -91,6 +145,6 @@ const Node = {
             }
         }
     }
-}
+};
 
 export default Node;

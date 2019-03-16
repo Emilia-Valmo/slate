@@ -8,11 +8,6 @@ import Leaf, { LeafJSON } from './leaf';
 import Mark, { MarkProperties } from './mark';
 import Schema, { SchemaNormalizeFn } from './schema';
 
-interface TextProperties {
-    key: string;
-    leaves: List<Leaf>;
-}
-
 // JSON representation of a text node
 export interface TextJSON {
     key?: string;

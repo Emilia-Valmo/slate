@@ -3,9 +3,9 @@ import isPlainObject from 'is-plain-object';
 
 import MODEL_TYPES, { isType } from '../constants/model-types';
 import generateKey from '../utils/generate-key';
-import Block, { BlockJSON, BlockCreateProps } from './block';
+import Block, { BlockJSON } from './block';
 import { DataJSON } from './data';
-import NodeFactory, { NodeDefaultProps, memoizeMethods } from './node-factory';
+import NodeFactory, { memoizeMethods, NodeDefaultProps } from './node-factory';
 
 // JSON representation of a document node
 export interface DocumentJSON {
@@ -16,9 +16,7 @@ export interface DocumentJSON {
 }
 
 // Argument to create an Inline
-export type DocumentCreateProps =
-    | Document
-    | Partial<NodeDefaultProps>;
+export type DocumentCreateProps = Document | Partial<NodeDefaultProps>;
 
 /*
  * Main node in an editor value.
@@ -42,6 +40,14 @@ class Document extends NodeFactory<{}>({}) {
     get text(): string {
         return this.getText();
     }
+
+    /*
+     * Create a set of children nodes for a document.
+
+     * TODO: It should not allow text/inline, but only block as children.
+     * But it's not easily feasible because of "slate-hyperscript"
+     */
+    public static createChildren = Block.createChildren;
 
     /*
      * Check if `input` is a `Document`.
@@ -86,13 +92,6 @@ class Document extends NodeFactory<{}>({}) {
             data: Map(data),
             nodes: Document.createChildren(nodes)
         });
-    }
-
-    /*
-     * Create a set of children nodes for a document.
-     */
-    public static createChildren(elements: BlockCreateProps[]): List<Block> {
-        return Block.createList(elements)
     }
 
     /*
@@ -204,6 +203,6 @@ class Document extends NodeFactory<{}>({}) {
 
 Document.prototype[MODEL_TYPES.DOCUMENT] = true;
 
-memoizeMethods(Document)
+memoizeMethods(Document);
 
 export default Document;

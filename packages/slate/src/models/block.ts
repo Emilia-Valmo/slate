@@ -7,6 +7,7 @@ import generateKey from '../utils/generate-key';
 import { DataJSON } from './data';
 import { InlineCreateProps, InlineJSON } from './inline';
 import NodeFactory, { memoizeMethods, NodeDefaultProps } from './node-factory';
+import Text, { TextCreateProps } from './text';
 
 interface BlockProperties {
     isVoid: boolean;
@@ -15,7 +16,7 @@ interface BlockProperties {
 
 // JSON representation of a block node
 export interface BlockJSON {
-    object: 'block',
+    object: 'block';
     key?: string;
     data: DataJSON;
     isVoid: boolean;
@@ -98,15 +99,17 @@ class Block extends NodeFactory<BlockProperties>({
      */
     public static createChildren(
         elements:
-            | Array<BlockCreateProps | InlineCreateProps>
-            | List<BlockCreateProps | InlineCreateProps>
+            | Array<BlockCreateProps | InlineCreateProps | TextCreateProps>
+            | List<BlockCreateProps | InlineCreateProps | TextCreateProps>
     ): List<Block | Inline> {
         return List(
             elements.map(element => {
                 if (element.object === 'block') {
                     return Block.create(element);
-                } else {
+                } else if (element.object === 'inline') {
                     return Inline.create(element);
+                } else {
+                    return Text.create(element);
                 }
             })
         );

@@ -89,11 +89,11 @@ class Text extends Record({
      * Create a list of `Texts` from `elements`.
      */
     public static createList(
-        elements: List<MaybeText> | MaybeText[] = []
+        elements: List<TextCreateProps> | TextCreateProps[] = []
     ): List<Text> {
         if (List.isList(elements) || Array.isArray(elements)) {
             const list = List(
-                elements.map((element: MaybeText) => Text.create(element))
+                elements.map((element: TextCreateProps) => Text.create(element))
             );
             return list;
         }

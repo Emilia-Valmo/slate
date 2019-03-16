@@ -2,10 +2,9 @@ import { List, Map, Record } from 'immutable';
 import isPlainObject from 'is-plain-object';
 
 import MODEL_TYPES, { isType } from '../constants/model-types';
-import { Inline } from '../index';
 import generateKey from '../utils/generate-key';
 import { DataJSON } from './data';
-import { InlineCreateProps, InlineJSON } from './inline';
+import Inline, { InlineCreateProps, InlineJSON } from './inline';
 import NodeFactory, { memoizeMethods, NodeDefaultProps } from './node-factory';
 import Text, { TextCreateProps } from './text';
 

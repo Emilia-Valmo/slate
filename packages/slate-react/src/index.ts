@@ -11,22 +11,9 @@ import getEventTransfer from './utils/get-event-transfer';
 import setEventTransfer from './utils/set-event-transfer';
 
 export * from './interfaces';
+export * from './plugins';
 
 export {
-    Editor,
-    cloneFragment,
-    findDOMNode,
-    findDOMRange,
-    findNode,
-    findRange,
-    getEventRange,
-    getEventTransfer,
-    setEventTransfer,
-    AfterPlugin,
-    BeforePlugin
-};
-
-export default {
     Editor,
     cloneFragment,
     findDOMNode,

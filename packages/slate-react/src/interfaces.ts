@@ -1,6 +1,8 @@
-import { Block, EditorContainer, Inline, Mark, Node } from '@gitbook/slate';
+import { Block, EditorContainer, Inline, Mark, Value, Schema, Change } from '@gitbook/slate';
 import { Set } from 'immutable';
 import * as React from 'react';
+
+import PluginsStack from '../plugins/stack';
 
 export interface NodeDOMAttributes {
     'data-key': string;
@@ -9,6 +11,19 @@ export interface NodeDOMAttributes {
 
 export interface MarkDOMAttributes {
     'data-slate-leaf': true;
+}
+
+/*
+ * Mutable representation of the editor.
+ */
+export interface EditorContainer {
+    readOnly: boolean;
+    value: Value;
+    stack: PluginsStack;
+    schema: Schema;
+    element: HTMLElement;
+    onChange: (change: Change) => void;
+    change: (fn: (change: Change) => Change) => void;
 }
 
 /*

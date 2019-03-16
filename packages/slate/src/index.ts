@@ -55,26 +55,3 @@ export {
     resetMemoization,
     useMemoization
 };
-
-export default {
-    Block,
-    Changes,
-    Data,
-    Document,
-    History,
-    Inline,
-    Leaf,
-    Mark,
-    Node,
-    Operation,
-    Operations,
-    Range,
-    Schema,
-    Stack,
-    Text,
-    Value,
-    resetKeyGenerator,
-    setKeyGenerator,
-    resetMemoization,
-    useMemoization
-};

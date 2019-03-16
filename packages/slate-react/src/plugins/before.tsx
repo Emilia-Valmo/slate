@@ -13,6 +13,8 @@ import getWindow from 'get-window';
 import findNode from '../utils/find-node';
 import findRange from '../utils/find-range';
 
+import { Plugin } from './plugin';
+
 const debug = Debug('slate:before');
 
 /*
@@ -52,8 +54,7 @@ function ensureSlateSelection(
 /*
  * The core before plugin.
  */
-
-function BeforePlugin() {
+function BeforePlugin(): Plugin {
     let activeElement = null;
     let compositionCount = 0;
     let isComposing = false;

@@ -1,94 +1,70 @@
-import logger from '@gitbook/slate-dev-logger';
 import { List, OrderedSet, Record, Set } from 'immutable';
 import memoize from 'immutablejs-record-memoize';
 import isPlainObject from 'is-plain-object';
 
 import MODEL_TYPES, { isType } from '../constants/model-types';
 import generateKey from '../utils/generate-key';
-import Leaf from './leaf';
+import Leaf, { LeafJSON } from './leaf';
+import Mark, { MarkProperties } from './mark';
+
+interface TextProperties {
+    key: string;
+    leaves: List<Leaf>;
+}
+
+// JSON representation of a text
+export interface TextJSON {
+    key?: string;
+    object: 'text';
+    leaves: Array<Partial<LeafJSON>>;
+}
+
+// Type of parameter to create a Text
+type MaybeText = Text | Partial<TextJSON> | string | { text: string };
 
 /*
- * Default properties.
- *
- * @type {Object}
+ * A node of text in the document
  */
-
-const DEFAULTS = {
+class Text extends Record({
     leaves: List(),
-    key: undefined
-};
-
-/*
- * Text.
- *
- * @type {Text}
- */
-
-class Text extends Record(DEFAULTS) {
-    /*
-     * Object.
-     *
-     * @return {String}
-     */
-
-    get object() {
+    key: ''
+}) {
+    get object(): 'text' {
         return 'text';
-    }
-
-    get kind() {
-        logger.deprecate(
-            'slate@0.32.0',
-            'The `kind` property of Slate objects has been renamed to `object`.'
-        );
-        return this.object;
     }
 
     /*
      * Is the node empty?
-     *
-     * @return {Boolean}
      */
-
-    get isEmpty() {
+    get isEmpty(): boolean {
         return this.text === '';
     }
 
     /*
      * Get the concatenated text of the node.
-     *
-     * @return {String}
      */
-
-    get text() {
+    get text(): string {
         return this.getString();
     }
 
     /*
-     * Get the concatenated characters of the node;
-     *
-     * @returns {String}
+     * Check if `input` is a `Text`.
      */
-
-    get characters() {
-        return this.leaves.flatMap(x => x.getCharacters());
+    public static isText(input: any): input is Text {
+        return isType('TEXT', input);
     }
 
     /*
-     * Check if `any` is a `Text`.
-     *
-     * @param {Any} any
-     * @return {Boolean}
+     * Check if `input` is a list of texts.
      */
+    public static isTextList(input: any): input is List<Text> {
+        return List.isList(input) && input.every(item => Text.isText(item));
+    }
 
-    public static isText = isType.bind(null, 'TEXT');
     /*
      * Create a new `Text` with `attrs`.
-     *
-     * @param {Object|Array|List|String|Text} attrs
-     * @return {Text}
      */
-
-    public static create(attrs = '') {
+    public static create(attrs: MaybeText = ''): Text {
         if (Text.isText(attrs)) {
             return attrs;
         }
@@ -113,12 +89,10 @@ class Text extends Record(DEFAULTS) {
 
     /*
      * Create a list of `Texts` from `elements`.
-     *
-     * @param {Array<Text|Object>|List<Text|Object>} elements
-     * @return {List<Text>}
      */
-
-    public static createList(elements = []) {
+    public static createList(
+        elements: List<MaybeText> | MaybeText[] = []
+    ): List<Text> {
         if (List.isList(elements) || Array.isArray(elements)) {
             const list = new List(elements.map(Text.create));
             return list;
@@ -131,12 +105,8 @@ class Text extends Record(DEFAULTS) {
 
     /*
      * Create a `Text` from a JSON `object`.
-     *
-     * @param {Object|Text} object
-     * @return {Text}
      */
-
-    public static fromJS(object) {
+    public static fromJS(object: Partial<TextJSON>): Text {
         if (Text.isText(object)) {
             return object;
         }
@@ -152,39 +122,15 @@ class Text extends Record(DEFAULTS) {
             throw new Error('leaves must be either Array or Immutable.List');
         }
 
-        const node = new Text({
+        return new Text({
             leaves: Leaf.createLeaves(leaves),
             key
         });
-
-        return node;
-    }
-
-    /*
-     * Alias `fromJS`.
-     */
-
-    public static fromJSON(object) {
-        logger.deprecate(
-            'slate@0.35.0',
-            'fromJSON methods are deprecated, use fromJS instead'
-        );
-        return Text.fromJS(object);
-    }
-
-    /*
-     * Check if `any` is a list of texts.
-     */
-    public static isTextList(input: any): boolean {
-        return List.isList(input) && input.every(item => Text.isText(item));
     }
 
     /*
      * Get the concatenated text of the node, cached for text getter
-     *
-     * @returns {String}
      */
-
     public getString(): string {
         return this.leaves.reduce((content, leaf) => content + leaf.text, '');
     }
@@ -194,16 +140,15 @@ class Text extends Record(DEFAULTS) {
      * Corner Cases:
      *   1. if offset is negative, return the first leaf;
      *   2. if offset is larger than text length, the leaf is null, startOffset, endOffset and index is of the last leaf
-     *
-     * @param {number}
-     * @returns {Object}
-     *   @property {number} startOffset
-     *   @property {number} endOffset
-     *   @property {number} index
-     *   @property {Leaf} leaf
      */
-
-    public searchLeafAtOffset(offset) {
+    public searchLeafAtOffset(
+        offset: number
+    ): {
+        startOffset: number;
+        endOffset: number;
+        index: index;
+        leaf: Leaf;
+    } {
         let endOffset = 0;
         let startOffset = 0;
         let index = -1;
@@ -225,14 +170,8 @@ class Text extends Record(DEFAULTS) {
 
     /*
      * Add a `mark` at `index` and `length`.
-     *
-     * @param {Number} index
-     * @param {Number} length
-     * @param {Mark} mark
-     * @return {Text}
      */
-
-    public addMark(index, length, mark) {
+    public addMark(index: number, length: number, mark: Mark): Text {
         const marks = Set.of(mark);
         return this.addMarks(index, length, marks);
     }
@@ -241,14 +180,8 @@ class Text extends Record(DEFAULTS) {
      * Add a `set` of marks at `index` and `length`.
      * Corner Cases:
      *   1. If empty text, and if length === 0 and index === 0, will make sure the text contain an empty leaf with the given mark.
-     *
-     * @param {Number} index
-     * @param {Number} length
-     * @param {Set<Mark>} set
-     * @return {Text}
      */
-
-    public addMarks(index, length, set) {
+    public addMarks(index: number, length: number, set: Set<Mark>): Text {
         if (this.text === '' && length === 0 && index === 0) {
             const { leaves } = this;
             const first = leaves.first();
@@ -297,12 +230,9 @@ class Text extends Record(DEFAULTS) {
 
     /*
      * Derive the leaves for a list of `decorations`.
-     *
-     * @param {Array|Void} decorations (optional)
-     * @return {List<Leaf>}
      */
 
-    public getLeaves(decorations = []) {
+    public getLeaves(decorations: Range[] | null = []): List<Leaf> {
         let { leaves } = this;
         if (leaves.size === 0) {
             return List.of(Leaf.create({}));
@@ -358,11 +288,11 @@ class Text extends Record(DEFAULTS) {
      * Corner Cases:
      *   1. if startOffset is equal or bigger than endOffset, then return Set();
      *   2. If no text is selected between start and end, then return Set()
-     *
-     * @return {Set<Mark>}
      */
-
-    public getActiveMarksBetweenOffsets(startOffset, endOffset) {
+    public getActiveMarksBetweenOffsets(
+        startOffset: number,
+        endOffset: number
+    ): Set<Mark> {
         if (startOffset <= 0 && endOffset >= this.text.length) {
             return this.getActiveMarks();
         }
@@ -405,12 +335,9 @@ class Text extends Record(DEFAULTS) {
     }
 
     /*
-     * Get all of the active marks on the text
-     *
-     * @return {Set<Mark>}
+     * Get all of the active marks on the text.
      */
-
-    public getActiveMarks() {
+    public getActiveMarks(): Set<Mark> {
         if (this.leaves.size === 0) {
             return Set();
         }
@@ -435,11 +362,11 @@ class Text extends Record(DEFAULTS) {
      * Corner Cases:
      *   1. if startOffset is equal or bigger than endOffset, then return Set();
      *   2. If no text is selected between start and end, then return Set()
-     *
-     * @return {OrderedSet<Mark>}
      */
-
-    public getMarksBetweenOffsets(startOffset, endOffset) {
+    public getMarksBetweenOffsets(
+        startOffset: number,
+        endOffset: number
+    ): Set<Mark> {
         if (startOffset <= 0 && endOffset >= this.text.length) {
             return this.getMarks();
         }
@@ -479,22 +406,16 @@ class Text extends Record(DEFAULTS) {
 
     /*
      * Get all of the marks on the text.
-     *
-     * @return {OrderedSet<Mark>}
      */
-
-    public getMarks() {
+    public getMarks(): OrderedSet<Mark> {
         const array = this.getMarksAsArray();
         return new OrderedSet(array);
     }
 
     /*
-     * Get all of the marks on the text as an array
-     *
-     * @return {Array}
+     * Get all of the marks on the text as an array.
      */
-
-    public getMarksAsArray() {
+    public getMarksAsArray(): Mark[] {
         if (this.leaves.size === 0) {
             return [];
         }
@@ -518,13 +439,8 @@ class Text extends Record(DEFAULTS) {
      *   1. if no text is before the index, and index !== 0, then return Set()
      *   2. (for insert after split node or mark at range) if index === 0, and text === '', then return the leaf.marks
      *   3. if index === 0, text !== '', return Set()
-     *
-     *
-     * @param {Number} index
-     * @return {Set<Mark>}
      */
-
-    public getMarksAtIndex(index) {
+    public getMarksAtIndex(index: number): Set<Mark> {
         const { leaf } = this.searchLeafAtOffset(index);
         if (!leaf) {
             return Set();
@@ -534,36 +450,22 @@ class Text extends Record(DEFAULTS) {
 
     /*
      * Get a node by `key`, to parallel other nodes.
-     *
-     * @param {String} key
-     * @return {Node|Null}
      */
-
-    public getNode(key) {
+    public getNode(key: string): Mark | null {
         return this.key === key ? this : null;
     }
 
     /*
      * Check if the node has a node by `key`, to parallel other nodes.
-     *
-     * @param {String} key
-     * @return {Boolean}
      */
-
-    public hasNode(key) {
+    public hasNode(key: string): boolean {
         return !!this.getNode(key);
     }
 
     /*
      * Insert `text` at `index`.
-     *
-     * @param {Numbder} offset
-     * @param {String} text
-     * @param {Set} marks (optional)
-     * @return {Text}
      */
-
-    public insertText(offset, text, marks) {
+    public insertText(offset: number, text: string, marks?: Set<Mark>): Text {
         if (this.text === '') {
             return this.set('leaves', List.of(Leaf.create({ text, marks })));
         }
@@ -604,25 +506,16 @@ class Text extends Record(DEFAULTS) {
 
     /*
      * Regenerate the node's key.
-     *
-     * @return {Text}
      */
-
-    public regenerateKey() {
+    public regenerateKey(): Text {
         const key = generateKey();
-        return this.set('key', key);
+        return this.merge({ key });
     }
 
     /*
      * Remove a `mark` at `index` and `length`.
-     *
-     * @param {Number} index
-     * @param {Number} length
-     * @param {Mark} mark
-     * @return {Text}
      */
-
-    public removeMark(index, length, mark) {
+    public removeMark(index: number, length: number, mark: Mark): Text {
         if (this.text === '' && index === 0 && length === 0) {
             const first = this.leaves.first();
             if (!first) {
@@ -652,13 +545,8 @@ class Text extends Record(DEFAULTS) {
 
     /*
      * Remove text from the text node at `start` for `length`.
-     *
-     * @param {Number} start
-     * @param {Number} length
-     * @return {Text}
      */
-
-    public removeText(start, length) {
+    public removeText(start: number, length: number): Text {
         if (length <= 0) {
             return this;
         }
@@ -706,17 +594,17 @@ class Text extends Record(DEFAULTS) {
             }
         }
 
-        return this.set('leaves', leaves);
+        return this.merge({ leaves });
     }
 
     /*
      * Return a JSON representation of the text.
-     *
-     * @param {Object} options
-     * @return {Object}
      */
-
-    public toJS(options = {}) {
+    public toJS(
+        options: {
+            preserveKeys?: boolean;
+        } = {}
+    ): TextJSON {
         const object = {
             object: this.object,
             leaves: this.getLeaves()
@@ -732,28 +620,14 @@ class Text extends Record(DEFAULTS) {
     }
 
     /*
-     * Alias `toJSON`.
-     */
-
-    public toJSON(options) {
-        logger.deprecate(
-            'slate@0.35.0',
-            'toJSON methods are deprecated, use toJS instead'
-        );
-        return this.toJS(options);
-    }
-
-    /*
      * Update a `mark` at `index` and `length` with `properties`.
-     *
-     * @param {Number} index
-     * @param {Number} length
-     * @param {Mark} mark
-     * @param {Object} properties
-     * @return {Text}
      */
-
-    public updateMark(index, length, mark, properties) {
+    public updateMark(
+        index: number,
+        length: number,
+        mark: Mark,
+        properties: Partial<MarkProperties>
+    ): Text {
         const newMark = mark.merge(properties);
 
         if (this.text === '' && length === 0 && index === 0) {
@@ -823,18 +697,14 @@ class Text extends Record(DEFAULTS) {
      * @returns {Text|Null}
      */
 
-    public getFirstInvalidDescendant(schema) {
+    public getFirstInvalidDescendant(schema): Text | null {
         return this.validate(schema) ? this : null;
     }
 
     /*
-     * Set leaves with normalized `leaves`
-     *
-     * @param {Schema} schema
-     * @returns {Text|Null}
+     * Set leaves with normalized `leaves`.
      */
-
-    public setLeaves(leaves) {
+    public setLeaves(leaves: List<Leaf>): Text {
         const result = Leaf.createLeaves(leaves);
 
         if (result.size === 1) {
@@ -869,11 +739,5 @@ memoize(Text.prototype, [
     'validate',
     'getString'
 ]);
-
-/*
- * Export.
- *
- * @type {Text}
- */
 
 export default Text;

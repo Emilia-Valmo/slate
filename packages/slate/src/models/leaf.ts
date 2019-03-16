@@ -3,61 +3,49 @@ import { List, Record, Set } from 'immutable';
 import isPlainObject from 'is-plain-object';
 
 import MODEL_TYPES, { isType } from '../constants/model-types';
-import Character from './character';
-import Mark from './mark';
+import Mark, { MarkJSON } from './mark';
+
+interface LeafProperties {
+    marks: Set<Mark>;
+    text: string;
+}
+
+// JSON representation of a leaf
+export interface LeafJSON {
+    object: 'leaf';
+    text: string;
+    marks: MarkJSON[];
+}
+
+// Type from what a mark can be created
+type MaybeLeaf = Leaf | string | Partial<LeafJSON>;
 
 /*
- * Default properties.
- *
- * @type {Object}
+ * Leaf of text annotated with marks.
  */
-
-const DEFAULTS = {
+class Leaf extends Record<LeafProperties>({
     marks: Set(),
     text: ''
-};
-
-/*
- * Leaf.
- *
- * @type {Leaf}
- */
-
-class Leaf extends Record(DEFAULTS) {
+}) {
     /*
      * Object.
-     *
-     * @return {String}
      */
 
-    get object() {
+    get object(): 'leaf' {
         return 'leaf';
     }
 
-    get kind() {
-        logger.deprecate(
-            'slate@0.32.0',
-            'The `kind` property of Slate objects has been renamed to `object`.'
-        );
-        return this.object;
+    /*
+     * Check if `input` is a `Leaf`.
+     */
+    public static isLeaf(input: any): input is Leaf {
+        return isType('LEAF', input);
     }
 
     /*
-     * Check if `any` is a `Leaf`.
-     *
-     * @param {Any} any
-     * @return {Boolean}
-     */
-
-    public static isLeaf = isType.bind(null, 'LEAF');
-    /*
      * Create a new `Leaf` with `attrs`.
-     *
-     * @param {Object|Leaf} attrs
-     * @return {Leaf}
      */
-
-    public static create(attrs = {}) {
+    public static create(attrs: MaybeLeaf = {}): Leaf {
         if (Leaf.isLeaf(attrs)) {
             return attrs;
         }
@@ -76,13 +64,9 @@ class Leaf extends Record(DEFAULTS) {
     }
 
     /*
-     * Create a valid List of `Leaf` from `leaves`
-     *
-     * @param {List<Leaf>} leaves
-     * @return {List<Leaf>}
+     * Create a valid List of `Leaf` from `leaves`.
      */
-
-    public static createLeaves(leaves) {
+    public static createLeaves(leaves: List<Leaf>): List<Leaf> {
         if (leaves.size <= 1) {
             return leaves;
         }
@@ -204,12 +188,10 @@ class Leaf extends Record(DEFAULTS) {
 
     /*
      * Create a `Leaf` list from `attrs`.
-     *
-     * @param {Array<Leaf|Object>|List<Leaf|Object>} attrs
-     * @return {List<Leaf>}
      */
-
-    public static createList(attrs = []) {
+    public static createList(
+        attrs: List<MaybeLeaf> | MaybeLeaf[] = []
+    ): List<Leaf> {
         if (List.isList(attrs) || Array.isArray(attrs)) {
             const list = new List(attrs.map(Leaf.create));
             return list;
@@ -222,61 +204,22 @@ class Leaf extends Record(DEFAULTS) {
 
     /*
      * Create a `Leaf` from a JSON `object`.
-     *
-     * @param {Object} object
-     * @return {Leaf}
      */
 
-    public static fromJS(object) {
+    public static fromJS(object: Partial<LeafJSON>): Leaf {
         const { text = '', marks = [] } = object;
 
-        const leaf = new Leaf({
+        return new Leaf({
             text,
             marks: Set(marks.map(Mark.fromJS))
         });
-
-        return leaf;
     }
 
     /*
-     * Alias `fromJS`.
+     * Check if `input` is a list of leaves.
      */
-
-    public static fromJSON(object) {
-        logger.deprecate(
-            'slate@0.35.0',
-            'fromJSON methods are deprecated, use fromJS instead'
-        );
-        return Leaf.fromJS(object);
-    }
-
-    /*
-     * Check if `any` is a list of leaves.
-     */
-    public static isLeafList(input: any): boolean {
+    public static isLeafList(input: any): input is List<Leaf> {
         return List.isList(input) && input.every(item => Leaf.isLeaf(item));
-    }
-
-    /*
-     * Return leaf as a list of characters
-     */
-    public getCharacters(): List<Character> {
-        logger.deprecate(
-            'slate@0.34.0',
-            'The `characters` property of Slate objects is deprecated'
-        );
-
-        const { marks } = this;
-        const characters = Character.createList(
-            this.text.split('').map(char => {
-                return Character.create({
-                    text: char,
-                    marks
-                });
-            })
-        );
-
-        return characters;
     }
 
     /*
@@ -315,25 +258,12 @@ class Leaf extends Record(DEFAULTS) {
     /*
      * Return a JSON representation of the leaf.
      */
-    public toJS() {
-        const object = {
+    public toJS(): LeafJSON {
+        return {
             object: this.object,
             text: this.text,
             marks: this.marks.toArray().map(m => m.toJS())
         };
-
-        return object;
-    }
-
-    /*
-     * Alias `toJSON`.
-     */
-    public toJSON() {
-        logger.deprecate(
-            'slate@0.35.0',
-            'toJSON methods are deprecated, use toJS instead'
-        );
-        return this.toJS();
     }
 }
 

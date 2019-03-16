@@ -27,6 +27,7 @@
     "react": ">=16.8.4"
   },
   "devDependencies": {
+    "immutable": ">=4.0.0-rc.12",
     "@gitbook/slate-hyperscript": "^3.0.0-alpha.1"
   }
 }

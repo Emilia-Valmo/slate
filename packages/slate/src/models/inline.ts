@@ -1,51 +1,45 @@
-/*
- * Dependencies.
- */
-
 import logger from '@gitbook/slate-dev-logger';
 import { List, Map, Record } from 'immutable';
 import isPlainObject from 'is-plain-object';
 
 import MODEL_TYPES, { isType } from '../constants/model-types';
 import generateKey from '../utils/generate-key';
+import { DataJSON, DataMap } from './data';
+import { TextJSON } from './text';
+
+interface InlineProperties {
+    data: DataMap;
+    isVoid: boolean;
+    key: string;
+    type: string;
+    nodes: List<Node>;
+}
+
+interface InlineJSON {
+    key?: string;
+    object: 'inline';
+    type: string;
+    isVoid: boolean;
+    data: DataJSON;
+    nodes: Array<InlineJSON | TextJSON>;
+}
 
 /*
- * Default properties.
- *
- * @type {Object}
+ * Model for an inline node.
  */
-
-const DEFAULTS = {
+class Inline extends Record<InlineProperties>({
     data: new Map(),
     isVoid: false,
-    key: undefined,
+    key: '',
     nodes: new List(),
-    type: undefined
-};
-
-/*
- * Inline.
- *
- * @type {Inline}
- */
-
-class Inline extends Record(DEFAULTS) {
+    type: ''
+}) {
     /*
      * Object.
-     *
-     * @return {String}
      */
 
     get object(): 'inline' {
         return 'inline';
-    }
-
-    get kind(): 'inline' {
-        logger.deprecate(
-            'slate@0.32.0',
-            'The `kind` property of Slate objects has been renamed to `object`.'
-        );
-        return this.object;
     }
 
     /*
@@ -53,7 +47,6 @@ class Inline extends Record(DEFAULTS) {
      * Returns true if inline is not void and all it's children nodes are empty.
      * Void node is never empty, regardless of it's content.
      */
-
     get isEmpty(): boolean {
         return !this.isVoid && !this.nodes.some(child => !child.isEmpty);
     }
@@ -67,21 +60,26 @@ class Inline extends Record(DEFAULTS) {
     }
 
     /*
-     * Check if `any` is a `Inline`.
-     *
-     * @param {Any} any
-     * @return {Boolean}
+     * Check if `input` is a `Inline`.
      */
+    public static isInline(input: any): input is Inline {
+        return isType('INLINE', input);
+    }
 
-    public static isInline = isType.bind(null, 'INLINE');
+    /*
+     * Check if `any` is a list of inlines.
+     */
+    public static isInlineList(input: any): input is List<Inline> {
+        return List.isList(input) && input.every(item => Inline.isInline(item));
+    }
+
     /*
      * Create a new `Inline` with `attrs`.
      *
      * @param {Object|String|Inline} attrs
      * @return {Inline}
      */
-
-    public static create(attrs = {}) {
+    public static create(attrs = {}): Inline {
         if (Inline.isInline(attrs)) {
             return attrs;
         }
@@ -106,7 +104,7 @@ class Inline extends Record(DEFAULTS) {
      * @return {List<Inline>}
      */
 
-    public static createList(elements = []) {
+    public static createList(elements = []): List<Inline> {
         if (List.isList(elements) || Array.isArray(elements)) {
             const list = new List(elements.map(Inline.create));
             return list;
@@ -119,12 +117,8 @@ class Inline extends Record(DEFAULTS) {
 
     /*
      * Create a `Inline` from a JSON `object`.
-     *
-     * @param {Object|Inline} object
-     * @return {Inline}
      */
-
-    public static fromJS(object) {
+    public static fromJS(object: Partial<InlineJSON>): Inline {
         if (Inline.isInline(object)) {
             return object;
         }
@@ -141,45 +135,23 @@ class Inline extends Record(DEFAULTS) {
             throw new Error('`Inline.fromJS` requires a `type` string.');
         }
 
-        const inline = new Inline({
+        return new Inline({
             key,
             type,
             isVoid: !!isVoid,
             data: new Map(data),
             nodes: Inline.createChildren(nodes)
         });
-
-        return inline;
-    }
-
-    /*
-     * Alias `fromJS`.
-     */
-
-    public static fromJSON(object) {
-        logger.deprecate(
-            'slate@0.35.0',
-            'fromJSON methods are deprecated, use fromJS instead'
-        );
-        return Inline.fromJS(object);
-    }
-
-    /*
-     * Check if `any` is a list of inlines.
-     */
-
-    public static isInlineList(input: any): boolean {
-        return List.isList(input) && input.every(item => Inline.isInline(item));
     }
 
     /*
      * Return a JSON representation of the inline.
-     *
-     * @param {Object} options
-     * @return {Object}
      */
-
-    public toJS(options = {}) {
+    public toJS(
+        options: {
+            preserveKeys?: boolean;
+        } = {}
+    ): InlineJSON {
         const object = {
             object: this.object,
             type: this.type,
@@ -194,18 +166,6 @@ class Inline extends Record(DEFAULTS) {
 
         return object;
     }
-
-    /*
-     * Alias `toJS`.
-     */
-
-    public toJSON(options) {
-        logger.deprecate(
-            'slate@0.35.0',
-            'toJSON methods are deprecated, use toJS instead'
-        );
-        return this.toJS(options);
-    }
 }
 
 /*
@@ -213,11 +173,5 @@ class Inline extends Record(DEFAULTS) {
  */
 
 Inline.prototype[MODEL_TYPES.INLINE] = true;
-
-/*
- * Export.
- *
- * @type {Inline}
- */
 
 export default Inline;

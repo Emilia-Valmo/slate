@@ -1,61 +1,51 @@
-import logger from '@gitbook/slate-dev-logger';
 import { Map, Record, Set } from 'immutable';
 import memoize from 'immutablejs-record-memoize';
 import isPlainObject from 'is-plain-object';
 
 import MODEL_TYPES, { isType } from '../constants/model-types';
-import Data from './data';
+import Data, { DataJSON, DataMap } from './data';
 
-/*
- * Default properties.
- *
- * @type {Object}
- */
+export interface MarkProperties {
+    data: DataMap;
+    type: string;
+}
 
-const DEFAULTS = {
-    data: new Map(),
-    type: undefined
-};
+// JSON representation of a mark
+export interface MarkJSON {
+    object: 'mark';
+    data: DataJSON;
+    type: string;
+}
+
+// Type from what a mark can be created
+type MaybeMark = Mark | string | Partial<MarkJSON>;
 
 /*
  * Mark.
- *
- * @type {Mark}
  */
-
-class Mark extends Record(DEFAULTS) {
+class Mark extends Record<MarkProperties>({
+    data: new Map(),
+    type: ''
+}) {
     /*
      * Object.
      */
-
     get object(): 'mark' {
         return 'mark';
     }
 
-    get kind(): 'mark' {
-        logger.deprecate(
-            'slate@0.32.0',
-            'The `kind` property of Slate objects has been renamed to `object`.'
-        );
-        return this.object;
+    /*
+     * Check if `any` is a `Mark`.
+     */
+
+    public static isMark(input: any): input is Mark {
+        return isType('MARK', input);
     }
 
     /*
-     * Check if `any` is a `Mark`.
-     *
-     * @param {Any} any
-     * @return {Boolean}
-     */
-
-    public static isMark = isType.bind(null, 'MARK');
-    /*
      * Create a new `Mark` with `attrs`.
-     *
-     * @param {Object|Mark} attrs
-     * @return {Mark}
      */
-
-    public static create(attrs = {}) {
+    public static create(attrs: MaybeMark = {}): Mark {
         if (Mark.isMark(attrs)) {
             return attrs;
         }
@@ -75,12 +65,8 @@ class Mark extends Record(DEFAULTS) {
 
     /*
      * Create a set of marks.
-     *
-     * @param {Array<Object|Mark>} elements
-     * @return {Set<Mark>}
      */
-
-    public static createSet(elements) {
+    public static createSet(elements: Set<MaybeMark> | MaybeMark[]): Set<Mark> {
         if (Set.isSet(elements) || Array.isArray(elements)) {
             const marks = new Set(elements.map(Mark.create));
             return marks;
@@ -97,12 +83,10 @@ class Mark extends Record(DEFAULTS) {
 
     /*
      * Create a dictionary of settable mark properties from `attrs`.
-     *
-     * @param {Object|String|Mark} attrs
-     * @return {Object}
      */
-
-    public static createProperties(attrs = {}) {
+    public static createProperties(
+        attrs: MaybeMark = {}
+    ): Partial<MarkProperties> {
         if (Mark.isMark(attrs)) {
             return {
                 data: attrs.data,
@@ -115,7 +99,7 @@ class Mark extends Record(DEFAULTS) {
         }
 
         if (isPlainObject(attrs)) {
-            const props = {};
+            const props: Partial<MarkProperties> = {};
             if ('type' in attrs) {
                 props.type = attrs.type;
             }
@@ -132,43 +116,24 @@ class Mark extends Record(DEFAULTS) {
 
     /*
      * Create a `Mark` from a JSON `object`.
-     *
-     * @param {Object} object
-     * @return {Mark}
      */
-
-    public static fromJS(object) {
+    public static fromJS(object: Partial<MarkJSON>): Mark {
         const { data = {}, type } = object;
 
         if (typeof type !== 'string') {
             throw new Error('`Mark.fromJS` requires a `type` string.');
         }
 
-        const mark = new Mark({
+        return new Mark({
             type,
             data: Data.fromJS(data)
         });
-
-        return mark;
-    }
-
-    /*
-     * Alias `fromJS`.
-     */
-
-    public static fromJSON(object) {
-        logger.deprecate(
-            'slate@0.35.0',
-            'fromJSON methods are deprecated, use fromJS instead'
-        );
-        return Mark.fromJS(object);
     }
 
     /*
      * Check if `any` is a set of marks.
      */
-
-    public static isMarkSet(input: any): boolean {
+    public static isMarkSet(input: any): input is Set<Mark> {
         return Set.isSet(input) && input.every(item => Mark.isMark(item));
     }
 
@@ -185,30 +150,13 @@ class Mark extends Record(DEFAULTS) {
 
     /*
      * Return a JSON representation of the mark.
-     *
-     * @return {Object}
      */
-
-    public toJS() {
-        const object = {
+    public toJS(): MarkJSON {
+        return {
             object: this.object,
             type: this.type,
             data: this.data.toJS()
         };
-
-        return object;
-    }
-
-    /*
-     * Alias `toJSON`.
-     */
-
-    public toJSON() {
-        logger.deprecate(
-            'slate@0.35.0',
-            'toJSON methods are deprecated, use toJS instead'
-        );
-        return this.toJS();
     }
 }
 
@@ -223,11 +171,5 @@ Mark.prototype[MODEL_TYPES.MARK] = true;
  */
 
 memoize(Mark.prototype, ['getComponent']);
-
-/*
- * Export.
- *
- * @type {Mark}
- */
 
 export default Mark;

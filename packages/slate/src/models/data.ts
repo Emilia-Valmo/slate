@@ -1,25 +1,17 @@
-import logger from '@gitbook/slate-dev-logger';
 import { Map } from 'immutable';
 import isPlainObject from 'is-plain-object';
 
-/*
- * Data.
- *
- * This isn't an immutable record, it's just a thin wrapper around `Map` so that
- * we can allow for more convenient creation.
- *
- * @type {Object}
- */
+export type DataMap = Map<string, any>;
+export type DataJSON = object;
 
-class Data {
+/*
+ * Data. It isn't a class but a tiny wrapper around "Map".
+ */
+const Data = {
     /*
      * Create a new `Data` with `attrs`.
-     *
-     * @param {Object|Data|Map} attrs
-     * @return {Data} data
      */
-
-    public static create(attrs = {}) {
+    create(attrs: DataJSON | Map = {}): DataMap {
         if (Map.isMap(attrs)) {
             return attrs;
         }
@@ -31,36 +23,14 @@ class Data {
         throw new Error(
             `\`Data.create\` only accepts objects or maps, but you passed it: ${attrs}`
         );
-    }
+    },
 
     /*
      * Create a `Data` from a JSON `object`.
-     *
-     * @param {Object} object
-     * @return {Data}
      */
-
-    public static fromJS(object) {
+    fromJS(object: DataJSON): DataMap {
         return new Map(object);
     }
-
-    /*
-     * Alias `fromJSON`.
-     */
-
-    public static fromJSON(object) {
-        logger.deprecate(
-            'slate@0.35.0',
-            'fromJSON methods are deprecated, use fromJS instead'
-        );
-        return Data.fromJS(object);
-    }
-}
-
-/*
- * Export.
- *
- * @type {Object}
- */
+};
 
 export default Data;

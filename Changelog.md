@@ -12,8 +12,8 @@ All packages follow the same versions. Before 1.0.0, each package was progressin
 * [BREAKING] Props `readOnly` has been removed when rendering nodes, you should use `editor.readOnly` instead
 * [BREAKING] Remove deprecated `toJSON`, `fromJSON` and `kind` properties on models
 * [BREAKING] Remove deprecated `Character` model
+* [BREAKING] Switch to Typescript, not all modules are typed yet. Dynamic type checks are no longer done.
 * Debug logs are no longer emitted during rendering (you can use the React dev tools instead)
-* Switch to Typescript, not all modules are typed yet
 * Compatibility with react strict/concurrent modes 
 
 

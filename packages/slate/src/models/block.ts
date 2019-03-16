@@ -2,40 +2,40 @@ import { List, Map, Record } from 'immutable';
 import isPlainObject from 'is-plain-object';
 
 import MODEL_TYPES, { isType } from '../constants/model-types';
+import { Inline } from '../index';
 import generateKey from '../utils/generate-key';
-import { DataJSON, DataMap } from './data';
-import Node from './node';
+import { DataJSON } from './data';
+import { InlineCreateProps, InlineJSON } from './inline';
+import NodeFactory, { memoizeMethods, NodeDefaultProps } from './node-factory';
 
 interface BlockProperties {
-    data: DataMap;
     isVoid: boolean;
-    key: string;
-    nodes: List<Node>;
     type: string;
 }
 
-type BlockPartialProps = Partial<BlockProperties>;
-
-interface BlockJSON {
+// JSON representation of a block node
+export interface BlockJSON {
+    object: 'block',
     key?: string;
     data: DataJSON;
     isVoid: boolean;
-    nodes: BlockJSON[];
+    nodes: Array<BlockJSON | InlineJSON>;
     type: string;
 }
+
+// Argument to create a block
+export type BlockCreateProps =
+    | string
+    | Block
+    | Partial<BlockProperties & NodeDefaultProps>;
 
 /*
  * Model to represent a block node.
  */
-class Block
-    extends Record<BlockProperties>({
-        data: Map(),
-        isVoid: false,
-        key: '',
-        nodes: new List(),
-        type: ''
-    })
-    implements Node {
+class Block extends NodeFactory<BlockProperties>({
+    isVoid: false,
+    type: ''
+}) {
     get object(): 'block' {
         return 'block';
     }
@@ -66,9 +66,7 @@ class Block
     /*
      * Create a new `Block` from `attrs`.
      */
-    public static create(
-        attrs: string | Block | BlockPartialProps = {}
-    ): Block {
+    public static create(attrs: BlockCreateProps = {}): Block {
         if (Block.isBlock(attrs)) {
             return attrs;
         }
@@ -90,17 +88,27 @@ class Block
      * Create a list of `Blocks` from `attrs`.
      */
     public static createList(
-        attrs:
-            | Array<Block | BlockPartialProps | string>
-            | List<Block | BlockPartialProps | string> = []
+        attrs: BlockCreateProps[] | List<BlockCreateProps> = []
     ): List<Block> {
-        if (List.isList(attrs) || Array.isArray(attrs)) {
-            const list = new List(attrs.map(Block.create));
-            return list;
-        }
+        return List(attrs.map(Block.create));
+    }
 
-        throw new Error(
-            `\`Block.createList\` only accepts arrays or lists, but you passed it: ${attrs}`
+    /*
+     * Create a set of children nodes for a block.
+     */
+    public static createChildren(
+        elements:
+            | Array<BlockCreateProps | InlineCreateProps>
+            | List<BlockCreateProps | InlineCreateProps>
+    ): List<Block | Inline> {
+        return List(
+            elements.map(element => {
+                if (element.object === 'block') {
+                    return Block.create(element);
+                } else {
+                    return Inline.create(element);
+                }
+            })
         );
     }
 
@@ -142,6 +150,10 @@ class Block
         return List.isList(input) && input.every(item => Block.isBlock(item));
     }
 
+    // Record properties
+    public readonly isVoid: boolean;
+    public readonly type: string;
+
     /*
      * Return a JSON representation of the block.
      */
@@ -170,5 +182,7 @@ class Block
  * Attach a pseudo-symbol for type checking.
  */
 Block.prototype[MODEL_TYPES.BLOCK] = true;
+
+memoizeMethods(Block);
 
 export default Block;

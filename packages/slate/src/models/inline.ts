@@ -1,38 +1,39 @@
-import logger from '@gitbook/slate-dev-logger';
 import { List, Map, Record } from 'immutable';
 import isPlainObject from 'is-plain-object';
 
 import MODEL_TYPES, { isType } from '../constants/model-types';
 import generateKey from '../utils/generate-key';
-import { DataJSON, DataMap } from './data';
-import { TextJSON } from './text';
+import { DataJSON } from './data';
+import NodeFactory, { memoizeMethods, NodeDefaultProps } from './node-factory';
+import Text, { TextCreateProps, TextJSON } from './text';
 
 interface InlineProperties {
-    data: DataMap;
     isVoid: boolean;
-    key: string;
     type: string;
-    nodes: List<Node>;
 }
 
-interface InlineJSON {
-    key?: string;
+// JSON representation of an inline node
+export interface InlineJSON {
     object: 'inline';
+    key?: string;
     type: string;
     isVoid: boolean;
     data: DataJSON;
     nodes: Array<InlineJSON | TextJSON>;
 }
 
+// Argument to create an Inline
+export type InlineCreateProps =
+    | string
+    | Inline
+    | Partial<InlineProperties & NodeDefaultProps>;
+
 /*
  * Model for an inline node.
  */
-class Inline extends Record<InlineProperties>({
-    data: new Map(),
-    isVoid: false,
-    key: '',
-    nodes: new List(),
-    type: ''
+class Inline extends NodeFactory<InlineProperties>({
+    type: '',
+    isVoid: false
 }) {
     /*
      * Object.
@@ -75,11 +76,8 @@ class Inline extends Record<InlineProperties>({
 
     /*
      * Create a new `Inline` with `attrs`.
-     *
-     * @param {Object|String|Inline} attrs
-     * @return {Inline}
      */
-    public static create(attrs = {}): Inline {
+    public static create(attrs: InlineCreateProps = {}): Inline {
         if (Inline.isInline(attrs)) {
             return attrs;
         }
@@ -99,19 +97,29 @@ class Inline extends Record<InlineProperties>({
 
     /*
      * Create a list of `Inlines` from an array.
-     *
-     * @param {Array<Inline|Object>|List<Inline|Object>} elements
-     * @return {List<Inline>}
      */
+    public static createList(
+        elements: InlineCreateProps[] | List<InlineCreateProps> = []
+    ): List<Inline> {
+        return List(elements.map(Inline.create));
+    }
 
-    public static createList(elements = []): List<Inline> {
-        if (List.isList(elements) || Array.isArray(elements)) {
-            const list = new List(elements.map(Inline.create));
-            return list;
-        }
-
-        throw new Error(
-            `\`Inline.createList\` only accepts arrays or lists, but you passed it: ${elements}`
+    /*
+     * Create a set of children nodes for a block.
+     */
+    public static createChildren(
+        elements:
+            | Array<TextCreateProps | InlineCreateProps>
+            | List<TextCreateProps | InlineCreateProps>
+    ): List<Text | Inline> {
+        return List(
+            elements.map(element => {
+                if (element.object === 'text') {
+                    return Text.create(element);
+                } else {
+                    return Inline.create(element);
+                }
+            })
         );
     }
 
@@ -143,6 +151,9 @@ class Inline extends Record<InlineProperties>({
             nodes: Inline.createChildren(nodes)
         });
     }
+    // Record properties
+    public readonly type: string;
+    public readonly isVoid: boolean;
 
     /*
      * Return a JSON representation of the inline.
@@ -173,5 +184,7 @@ class Inline extends Record<InlineProperties>({
  */
 
 Inline.prototype[MODEL_TYPES.INLINE] = true;
+
+memoizeMethods(Inline);
 
 export default Inline;

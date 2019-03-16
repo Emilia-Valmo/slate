@@ -1,88 +1,59 @@
-/*
- * Dependencies.
- */
-
-import logger from '@gitbook/slate-dev-logger';
 import { List, Map, Record } from 'immutable';
 import isPlainObject from 'is-plain-object';
 
 import MODEL_TYPES, { isType } from '../constants/model-types';
 import generateKey from '../utils/generate-key';
+import Block, { BlockJSON, BlockCreateProps } from './block';
+import { DataJSON } from './data';
+import NodeFactory, { NodeDefaultProps, memoizeMethods } from './node-factory';
+
+// JSON representation of a document node
+export interface DocumentJSON {
+    key?: string;
+    object: 'document';
+    data: DataJSON;
+    nodes: BlockJSON[];
+}
+
+// Argument to create an Inline
+export type DocumentCreateProps =
+    | Document
+    | Partial<NodeDefaultProps>;
 
 /*
- * Default properties.
- *
- * @type {Object}
+ * Main node in an editor value.
  */
-
-const DEFAULTS = {
-    data: new Map(),
-    key: undefined,
-    nodes: new List()
-};
-
-/*
- * Document.
- *
- * @type {Document}
- */
-
-class Document extends Record(DEFAULTS) {
-    /*
-     * Object.
-     *
-     * @return {String}
-     */
-
-    get object() {
+class Document extends NodeFactory<{}>({}) {
+    get object(): 'document' {
         return 'document';
-    }
-
-    get kind() {
-        logger.deprecate(
-            'slate@0.32.0',
-            'The `kind` property of Slate objects has been renamed to `object`.'
-        );
-        return this.object;
     }
 
     /*
      * Check if the document is empty.
      * Returns true if all it's children nodes are empty.
-     *
-     * @return {Boolean}
      */
-
-    get isEmpty() {
+    get isEmpty(): boolean {
         return !this.nodes.some(child => !child.isEmpty);
     }
 
     /*
      * Get the concatenated text of all the document's children.
-     *
-     * @return {String}
      */
-
-    get text() {
+    get text(): string {
         return this.getText();
     }
 
     /*
-     * Check if `any` is a `Document`.
-     *
-     * @param {Any} any
-     * @return {Boolean}
+     * Check if `input` is a `Document`.
      */
+    public static isDocument(input: any): input is Document {
+        return isType('DOCUMENT', input);
+    }
 
-    public static isDocument = isType.bind(null, 'DOCUMENT');
     /*
      * Create a new `Document` with `attrs`.
-     *
-     * @param {Object|Array|List|Text} attrs
-     * @return {Document}
      */
-
-    public static create(attrs = {}) {
+    public static create(attrs: DocumentCreateProps = {}): Document {
         if (Document.isDocument(attrs)) {
             return attrs;
         }
@@ -102,47 +73,36 @@ class Document extends Record(DEFAULTS) {
 
     /*
      * Create a `Document` from a JSON `object`.
-     *
-     * @param {Object|Document} object
-     * @return {Document}
      */
-
-    public static fromJS(object) {
+    public static fromJS(object: Partial<DocumentJSON>): Document {
         if (Document.isDocument(object)) {
             return object;
         }
 
         const { data = {}, key = generateKey(), nodes = [] } = object;
 
-        const document = new Document({
+        return new Document({
             key,
-            data: new Map(data),
+            data: Map(data),
             nodes: Document.createChildren(nodes)
         });
-
-        return document;
     }
 
     /*
-     * Alias `fromJS`.
+     * Create a set of children nodes for a document.
      */
-
-    public static fromJSON(object) {
-        logger.deprecate(
-            'slate@0.35.0',
-            'fromJSON methods are deprecated, use fromJS instead'
-        );
-        return Document.fromJS(object);
+    public static createChildren(elements: BlockCreateProps[]): List<Block> {
+        return Block.createList(elements)
     }
 
     /*
      * Return a JSON representation of the document.
-     *
-     * @param {Object} options
-     * @return {Object}
      */
-
-    public toJS(options = {}) {
+    public toJS(
+        options: {
+            preserveKeys?: boolean;
+        } = {}
+    ): DocumentJSON {
         const object = {
             object: this.object,
             data: this.data.toJS(),
@@ -157,15 +117,84 @@ class Document extends Record(DEFAULTS) {
     }
 
     /*
-     * Alias `toJS`.
+     * Get a fragment of the node at a `range`.
      */
+    public getFragmentAtRange(range: Range): Document {
+        range = range.normalize(this);
+        if (range.isUnset) {
+            return Document.create();
+        }
 
-    public toJSON(options) {
-        logger.deprecate(
-            'slate@0.35.0',
-            'toJSON methods are deprecated, use toJS instead'
+        let node = this;
+
+        // Make sure the children exist.
+        const { startKey, startOffset, endKey, endOffset } = range;
+        const startText = node.assertDescendant(startKey);
+        const endText = node.assertDescendant(endKey);
+
+        // Split at the start and end.
+        let child = startText;
+        let previous;
+        let parent;
+
+        while (1) {
+            parent = node.getParent(child.key);
+            if (!parent) {
+                break;
+            }
+
+            const index = parent.nodes.indexOf(child);
+            const position =
+                child.object === 'text'
+                    ? startOffset
+                    : child.nodes.indexOf(previous);
+
+            parent = parent.splitNode(index, position);
+            node = node.updateNode(parent);
+            previous = parent.nodes.get(index + 1);
+            child = parent;
+        }
+
+        child = startKey === endKey ? node.getNextText(startKey) : endText;
+
+        while (1) {
+            parent = node.getParent(child.key);
+            if (!parent) {
+                break;
+            }
+            const index = parent.nodes.indexOf(child);
+            const position =
+                child.object === 'text'
+                    ? startKey === endKey
+                        ? endOffset - startOffset
+                        : endOffset
+                    : child.nodes.indexOf(previous);
+
+            parent = parent.splitNode(index, position);
+            node = node.updateNode(parent);
+            previous = parent.nodes.get(index + 1);
+            child = parent;
+        }
+
+        // Get the start and end nodes.
+        const startNode = node.getNextSibling(
+            node.getFurthestAncestor(startKey).key
         );
-        return this.toJS(options);
+        const endNode =
+            startKey === endKey
+                ? node.getNextSibling(
+                      node.getNextSibling(node.getFurthestAncestor(endKey).key)
+                          .key
+                  )
+                : node.getNextSibling(node.getFurthestAncestor(endKey).key);
+
+        // Get children range of nodes from start to end nodes
+        const startIndex = node.nodes.indexOf(startNode);
+        const endIndex = node.nodes.indexOf(endNode);
+        const nodes = node.nodes.slice(startIndex, endIndex);
+
+        // Return a new document fragment.
+        return Document.create({ nodes });
     }
 }
 
@@ -175,10 +204,6 @@ class Document extends Record(DEFAULTS) {
 
 Document.prototype[MODEL_TYPES.DOCUMENT] = true;
 
-/*
- * Export.
- *
- * @type {Document}
- */
+memoizeMethods(Document)
 
 export default Document;

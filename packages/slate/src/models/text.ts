@@ -6,13 +6,14 @@ import MODEL_TYPES, { isType } from '../constants/model-types';
 import generateKey from '../utils/generate-key';
 import Leaf, { LeafJSON } from './leaf';
 import Mark, { MarkProperties } from './mark';
+import Schema, { SchemaNormalizeFn } from './schema';
 
 interface TextProperties {
     key: string;
     leaves: List<Leaf>;
 }
 
-// JSON representation of a text
+// JSON representation of a text node
 export interface TextJSON {
     key?: string;
     object: 'text';
@@ -20,10 +21,13 @@ export interface TextJSON {
 }
 
 // Type of parameter to create a Text
-type MaybeText = Text | Partial<TextJSON & Partial<LeafJSON>> | string;
+export type TextCreateProps =
+    | Text
+    | Partial<TextJSON & Partial<LeafJSON>>
+    | string;
 
 /*
- * A node of text in the document
+ * Model for a text node.
  */
 class Text extends Record({
     leaves: List(),
@@ -64,7 +68,7 @@ class Text extends Record({
     /*
      * Create a new `Text` with `attrs`.
      */
-    public static create(attrs: MaybeText = ''): Text {
+    public static create(attrs: TextCreateProps = ''): Text {
         if (Text.isText(attrs)) {
             return attrs;
         }
@@ -128,6 +132,10 @@ class Text extends Record({
             leaves: Leaf.createLeaves(leaves),
             key
         });
+    }
+
+    public isText(): this is Text {
+        return true;
     }
 
     /*
@@ -682,24 +690,18 @@ class Text extends Record({
 
     /*
      * Validate the text node against a `schema`.
-     *
-     * @param {Schema} schema
-     * @return {Object|Void}
      */
 
-    public validate(schema) {
+    public validate(schema: Schema): SchemaNormalizeFn | null {
         return schema.validateNode(this);
     }
 
     /*
      * Get the first invalid descendant
      * PERF: Do not cache this method; because it can cause cycle reference
-     *
-     * @param {Schema} schema
-     * @returns {Text|Null}
      */
 
-    public getFirstInvalidDescendant(schema): Text | null {
+    public getFirstInvalidDescendant(schema: Schema): Text | null {
         return this.validate(schema) ? this : null;
     }
 

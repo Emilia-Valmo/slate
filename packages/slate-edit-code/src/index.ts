@@ -1,21 +1,28 @@
-import Options, { OptionsFormat } from './options'
-import { onKeyDown, onPaste } from './handlers'
-import core from './core'
+import { Schema } from '@gitbook/slate';
+import { Plugin } from '@gitbook/slate-react';
+
+import { createAPI } from './api';
+import Options, { OptionsFormat } from './options';
+import { createPlugin } from './plugin';
+import { createSchema } from './schema';
 
 /*
  * A Slate plugin to handle keyboard events in code blocks.
  */
+function EditCode(
+    optsParam: OptionsFormat = {}
+): {
+    plugin: Plugin;
+    schema: Schema;
+} {
+    const opts = new Options(optsParam);
+    const api = createAPI(opts);
 
-function EditCode(optsParam?: OptionsFormat = {}): Object {
-  const opts = new Options(optsParam)
-
-  const corePlugin = core(opts)
-  return {
-    ...corePlugin,
-
-    onKeyDown: onKeyDown.bind(null, opts),
-    onPaste: onPaste.bind(null, opts),
-  }
+    return {
+        ...api,
+        schema: createSchema(opts),
+        plugin: createPlugin(opts)
+    };
 }
 
-export default EditCode
+export default EditCode;

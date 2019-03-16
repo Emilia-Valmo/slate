@@ -1,7 +1,7 @@
 import { createEvent } from '@gitbook/slate-simulator';
 
 export default function(plugin, change) {
-    return plugin.onPaste(
+    return plugin.plugin.onPaste(
         createEvent({
             clipboardData: {
                 // Simulate a text data from IE

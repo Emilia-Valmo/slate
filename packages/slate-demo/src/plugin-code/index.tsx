@@ -7,8 +7,8 @@ import PluginEditCode from '@gitbook/slate-edit-code';
 
 import INITIAL_VALUE from './value';
 
-const plugin = PluginEditCode();
-const plugins = [plugin];
+const code = PluginEditCode();
+const plugins = [code.plugin];
 
 function renderNode(props) {
     const { node, children, attributes } = props;
@@ -29,7 +29,7 @@ function renderNode(props) {
 
 class CodeExample extends React.Component {
     public state = {
-        value: INITIAL_VALUE
+        value: INITIAL_VALUE.setSchema(code.schema)
     };
 
     public onChange = ({ value }) => {
@@ -42,7 +42,7 @@ class CodeExample extends React.Component {
         const { value } = this.state;
 
         this.onChange(
-            plugin.changes.toggleCodeBlock(value.change(), 'paragraph').focus()
+            code.changes.toggleCodeBlock(value.change(), 'paragraph').focus()
         );
     };
 
@@ -53,7 +53,7 @@ class CodeExample extends React.Component {
             <div>
                 <Toolbar>
                     <Button onClick={this.onToggleCode}>
-                        {plugin.utils.isInCodeBlock(value)
+                        {code.utils.isInCodeBlock(value)
                             ? 'Paragraph'
                             : 'Code Block'}
                     </Button>

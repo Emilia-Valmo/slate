@@ -1,24 +1,10 @@
-import Slate from '@gitbook/slate';
+import { resetKeyGenerator } from '@gitbook/slate';
 import hyperprint from '@gitbook/slate-hyperprint';
 import fs from 'fs';
 import path from 'path';
 import EditCode from '../src';
 
 const PLUGIN = EditCode();
-const SCHEMA = Slate.Schema.create({
-    plugins: [PLUGIN]
-});
-
-function deserializeValue(value) {
-    return Slate.Value.fromJS(
-        {
-            document: value.document,
-            selection: value.selection,
-            schema: SCHEMA
-        },
-        { normalize: false }
-    );
-}
 
 describe('slate-edit-code', () => {
     const tests = fs.readdirSync(__dirname);
@@ -29,7 +15,7 @@ describe('slate-edit-code', () => {
         }
 
         it(test, () => {
-            Slate.resetKeyGenerator();
+            resetKeyGenerator();
             const dir = path.resolve(__dirname, test);
             const input = require(path.resolve(dir, 'input')).default;
             const expectedPath = path.resolve(dir, 'expected');
@@ -38,7 +24,7 @@ describe('slate-edit-code', () => {
 
             const runChange = require(path.resolve(dir, 'change')).default;
 
-            const valueInput = deserializeValue(input);
+            const valueInput = input.setSchema(PLUGIN.schema);
 
             const newChange = runChange(PLUGIN, valueInput.change());
 

@@ -1,4 +1,4 @@
-import { Block, Change, Node } from '@gitbook/slate';
+import { Schema, Block, Change, Node } from '@gitbook/slate';
 import {
     CHILD_OBJECT_INVALID,
     CHILD_TYPE_INVALID,
@@ -12,7 +12,7 @@ import { deserializeCode } from '../utils';
 /*
  * Create a schema definition with rules to normalize code blocks
  */
-function schema(opts: Options): object {
+function createSchema(opts: Options): Schema {
     const baseSchema = {
         blocks: {
             [opts.containerType]: {
@@ -51,7 +51,7 @@ function schema(opts: Options): object {
         baseSchema.blocks[opts.lineType].marks = [];
     }
 
-    return baseSchema;
+    return new Schema(baseSchema);
 }
 
 /*
@@ -165,4 +165,4 @@ function noOrphanLine(opts: Options, change: Change, context: object): void {
     });
 }
 
-export default schema;
+export default createSchema;

@@ -10,7 +10,6 @@ import {
 import {StatsGraph} from '@helpscout/stats'
 
 import CheckLists from './check-lists';
-import CodeHighlighting from './code-highlighting';
 import Embeds from './embeds';
 import Emojis from './emojis';
 import ForcedLayout from './forced-layout';
@@ -27,7 +26,6 @@ import RichText from './rich-text';
 import RTL from './rtl';
 import SearchHighlighting from './search-highlighting';
 import SyncingOperations from './syncing-operations';
-import Tables from './tables';
 
 // Plugins
 import PluginAutoReplace from './plugin-auto-replace';

@@ -63,9 +63,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
          * order is depth-first, post-order.
          */
         public areDescendantsSorted(first: string, second: string): boolean {
-            first = assertKey(first);
-            second = assertKey(second);
-
             const keys = this.getKeysAsArray();
             const firstIndex = keys.indexOf(first);
             const secondIndex = keys.indexOf(second);
@@ -83,7 +80,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
             const child = this.getChild(key);
 
             if (!child) {
-                key = assertKey(key);
                 throw new Error(
                     `Could not find a child node with key "${key}".`
                 );
@@ -99,7 +95,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
             const descendant = this.getDescendant(key);
 
             if (!descendant) {
-                key = assertKey(key);
                 throw new Error(
                     `Could not find a descendant node with key "${key}".`
                 );
@@ -115,7 +110,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
             const node = this.getNode(key);
 
             if (!node) {
-                key = assertKey(key);
                 throw new Error(`Could not find a node with key "${key}".`);
             }
 
@@ -212,8 +206,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
          * Get the path of ancestors of a descendant node by `key`.
          */
         public getAncestors(key: string): List<AncestorNode> | null {
-            key = assertKey(key);
-
             if (key === this.key) {
                 return List();
             }
@@ -324,7 +316,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
          * Get a child node by `key`.
          */
         public getChild(key: string): ChildNode | null {
-            key = assertKey(key);
             return this.nodes.find(node => node.key === key) || null;
         }
 
@@ -339,7 +330,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
                 nodes: List<ChildNode>
             ) => boolean | void
         ): ChildNode | null {
-            key = assertKey(key);
             const ancestors = this.getAncestors(key);
 
             if (!ancestors) {
@@ -377,9 +367,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
          * Get the common ancestor of nodes `one` and `two` by keys.
          */
         public getCommonAncestor(one: string, two: string): ChildNode | null {
-            one = assertKey(one);
-            two = assertKey(two);
-
             if (one === this.key) {
                 return this;
             }
@@ -432,7 +419,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
          * Get a descendant node by `key`.
          */
         public getDescendant(key: string): ChildNode | null {
-            key = assertKey(key);
             let descendantFound = null;
 
             const found = this.nodes.find(node => {
@@ -499,7 +485,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
             const ancestors = this.getAncestors(key);
 
             if (!ancestors) {
-                key = assertKey(key);
                 throw new Error(
                     `Could not find a descendant node with key "${key}".`
                 );
@@ -527,7 +512,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
          * Get the furthest ancestor of a node by `key`.
          */
         public getFurthestAncestor(key: string): ChildNode | null {
-            key = assertKey(key);
             return this.nodes.find(node => {
                 if (node.key === key) {
                     return true;
@@ -546,7 +530,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
             const ancestors = this.getAncestors(key);
 
             if (!ancestors) {
-                key = assertKey(key);
                 throw new Error(
                     `Could not find a descendant node with key "${key}".`
                 );
@@ -961,8 +944,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
          * Get the node after a descendant by `key`.
          */
         public getNextSibling(key: string): ChildNode | null {
-            key = assertKey(key);
-
             const parent = this.getParent(key);
             const after = parent.nodes.skipUntil(child => child.key === key);
 
@@ -978,7 +959,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
          * Get the text node after a descendant text node by `key`.
          */
         public getNextText(key: string): Text | null {
-            key = assertKey(key);
             return this.getTexts()
                 .skipUntil(text => text.key === key)
                 .get(1);
@@ -988,7 +968,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
          * Get a node in the tree by `key`.
          */
         public getNode(key: string): ChildNode | null {
-            key = assertKey(key);
             return this.key === key ? this : this.getDescendant(key);
         }
 
@@ -1128,7 +1107,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
          * Get the node before a descendant node by `key`.
          */
         public getPreviousSibling(key: string): ChildNode | null {
-            key = assertKey(key);
             const parent = this.getParent(key);
             const before = parent.nodes.takeUntil(child => child.key === key);
 
@@ -1145,7 +1123,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
          * Get the text node before a descendant text node by `key`.
          */
         public getPreviousText(key: string): Text | null {
-            key = assertKey(key);
             return this.getTexts()
                 .takeUntil(text => text.key === key)
                 .last();
@@ -1562,8 +1539,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
          * Remove a `node` from the children node map.
          */
         public removeDescendant(key: string): this {
-            key = assertKey(key);
-
             let node = this;
             let parent = node.getParent(key);
             if (!parent) {
@@ -1721,18 +1696,6 @@ function memoizeMethods(C: any, methods: string[] = []) {
         'getFirstInvalidDescendant',
         ...methods
     ]);
-}
-
-/*
- * Assert a key `arg`.
- */
-function assertKey(arg: any): string {
-    if (typeof arg === 'string') {
-        return arg;
-    }
-    throw new Error(
-        `Invalid \`key\` argument! It must be a key string, but you passed: ${arg}`
-    );
 }
 
 export default NodeFactory;

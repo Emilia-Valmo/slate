@@ -1,4 +1,4 @@
-import { Change } from '@gitbook/slate';
+import { Change, Schema } from '@gitbook/slate';
 import PluginEditTable from '@gitbook/slate-edit-table';
 import { NODE_DATA_INVALID } from '@gitbook/slate-schema-violations';
 
@@ -31,7 +31,7 @@ function setColumnAlign(change: Change, align: string): Change {
 }
 
 const alignPlugin = {
-    schema: {
+    schema: Schema.create({
         blocks: {
             table_cell: {
                 data: {
@@ -47,7 +47,7 @@ const alignPlugin = {
                 }
             }
         }
-    },
+    }),
 
     changes: {
         setColumnAlign

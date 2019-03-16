@@ -122,7 +122,11 @@ class Schema extends Record({
     /*
      * Combine this schema with another one.
      */
-    public combineWith(schema: Schema): Schema {
+    public combineWith(schema: Schema | Schema[]): Schema {
+        if (Array.isArray(schema)) {
+            return schema.reduce((r, s) => r.combineWith(s), this);
+        }
+
         const newSchema = {
             validations: [...this.validations, ...schema.validations],
             document: { ...this.document },

@@ -489,9 +489,17 @@ class Value extends Record({
     /*
      * Create a new `Change` with the current value as a starting point.
      */
-
     public change(attrs = {}): Change {
         return new Change({ ...attrs, value: this });
+    }
+
+    /*
+     * Set the schema for this value.
+     */
+    public setSchema(schema: Schema | Schema[]): Value {
+        return this.merge({
+            schema: CORE_SCHEMA.combineWith(schema)
+        });
     }
 
     /*

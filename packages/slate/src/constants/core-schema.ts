@@ -1,17 +1,17 @@
 import { List } from 'immutable';
 
-import { SchemaRule } from '../models/schema';
+import Schema, { SchemaRule } from '../models/schema';
 import Text from '../models/text';
 
 /*
  * Define the core schema rules, order-sensitive.
  */
-const CORE_SCHEMA_RULES: SchemaRule[] = [
-    /*
-     * Only allow block nodes in documents.
-     */
-    {
-        validateNode(node) {
+const CORE_SCHEMA = Schema.create({
+    validations: [
+        /*
+         * Only allow block nodes in documents.
+         */
+        node => {
             if (node.object !== 'document') {
                 return;
             }
@@ -25,14 +25,12 @@ const CORE_SCHEMA_RULES: SchemaRule[] = [
                     change.removeNodeByKey(child.key, { normalize: false });
                 });
             };
-        }
-    },
+        },
 
-    /*
-     * Only allow block nodes or inline and text nodes in blocks.
-     */
-    {
-        validateNode(node) {
+        /*
+         * Only allow block nodes or inline and text nodes in blocks.
+         */
+        node => {
             if (node.object !== 'block') {
                 return;
             }
@@ -54,14 +52,12 @@ const CORE_SCHEMA_RULES: SchemaRule[] = [
                     change.removeNodeByKey(child.key, { normalize: false });
                 });
             };
-        }
-    },
+        },
 
-    /*
-     * Only allow inline and text nodes in inlines.
-     */
-    {
-        validateNode(node) {
+        /*
+         * Only allow inline and text nodes in inlines.
+         */
+        node => {
             if (node.object !== 'inline') {
                 return;
             }
@@ -77,14 +73,12 @@ const CORE_SCHEMA_RULES: SchemaRule[] = [
                     change.removeNodeByKey(child.key, { normalize: false });
                 });
             };
-        }
-    },
+        },
 
-    /*
-     * Ensure that block and inline nodes have at least one text child.
-     */
-    {
-        validateNode(node) {
+        /*
+         * Ensure that block and inline nodes have at least one text child.
+         */
+        node => {
             if (node.object !== 'block' && node.object !== 'inline') {
                 return;
             }
@@ -96,18 +90,16 @@ const CORE_SCHEMA_RULES: SchemaRule[] = [
                 const text = Text.create();
                 change.insertNodeByKey(node.key, 0, text, { normalize: false });
             };
-        }
-    },
+        },
 
-    /*
-     * Ensure that inline non-void nodes are never empty.
-     *
-     * This rule is applied to all blocks and inlines, because when they contain an empty
-     * inline, we need to remove the empty inline from that parent node. If `validate`
-     * was to be memoized, it should be against the parent node, not the empty inline itself.
-     */
-    {
-        validateNode(node) {
+        /*
+         * Ensure that inline non-void nodes are never empty.
+         *
+         * This rule is applied to all blocks and inlines, because when they contain an empty
+         * inline, we need to remove the empty inline from that parent node. If `validate`
+         * was to be memoized, it should be against the parent node, not the empty inline itself.
+         */
+        node => {
             if (node.object !== 'inline' && node.object !== 'block') {
                 return;
             }
@@ -134,15 +126,13 @@ const CORE_SCHEMA_RULES: SchemaRule[] = [
                     change.removeNodeByKey(child.key, { normalize: false });
                 });
             };
-        }
-    },
+        },
 
-    /*
-     * Ensure that inline void nodes are surrounded by text nodes, by adding extra
-     * blank text nodes if necessary.
-     */
-    {
-        validateNode(node) {
+        /*
+         * Ensure that inline void nodes are surrounded by text nodes, by adding extra
+         * blank text nodes if necessary.
+         */
+        node => {
             if (node.object !== 'block' && node.object !== 'inline') {
                 return;
             }
@@ -203,14 +193,12 @@ const CORE_SCHEMA_RULES: SchemaRule[] = [
                     }
                 });
             };
-        }
-    },
+        },
 
-    /*
-     * Merge adjacent text nodes.
-     */
-    {
-        validateNode(node) {
+        /*
+         * Merge adjacent text nodes.
+         */
+        node => {
             if (node.object !== 'block' && node.object !== 'inline') {
                 return;
             }
@@ -239,14 +227,12 @@ const CORE_SCHEMA_RULES: SchemaRule[] = [
                     change.mergeNodeByKey(n.key, { normalize: false });
                 });
             };
-        }
-    },
+        },
 
-    /*
-     * Prevent extra empty text nodes, except when adjacent to inline void nodes.
-     */
-    {
-        validateNode(node) {
+        /*
+         * Prevent extra empty text nodes, except when adjacent to inline void nodes.
+         */
+        node => {
             if (node.object !== 'block' && node.object !== 'inline') {
                 return;
             }
@@ -300,7 +286,7 @@ const CORE_SCHEMA_RULES: SchemaRule[] = [
                 });
             };
         }
-    }
-];
+    ]
+});
 
-export default CORE_SCHEMA_RULES;
+export default CORE_SCHEMA;

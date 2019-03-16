@@ -101,7 +101,7 @@ function normalizeNodeAndChildren(change, node, schema) {
  */
 
 function normalizeNode(change, node, schema) {
-    const max = schema.stack.plugins.length + 1;
+    const max = schema.validations.length + 1;
     let iterations = 0;
 
     function iterate(c, n) {

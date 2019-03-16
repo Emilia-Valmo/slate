@@ -1,46 +1,364 @@
-import logger from '@gitbook/slate-dev-logger';
 import { List, Map, Record, Set } from 'immutable';
 import isPlainObject from 'is-plain-object';
 
 import MODEL_TYPES from '../constants/model-types';
+import CORE_SCHEMA from '../constants/core-schema';
+import Block from './block';
 import Change from './change';
 import Data from './data';
 import Document from './document';
 import History from './history';
+import Inline from './inline';
 import Range from './range';
 import Schema from './schema';
+import Text from './text';
 
 /*
- * Default properties.
- *
- * @type {Object}
+ * Immutable state representing the value of the editor.
  */
-
-const DEFAULTS = {
+class Value extends Record({
     data: new Map(),
     decorations: null,
     document: Document.create(),
     history: History.create(),
     schema: Schema.create(),
     selection: Range.create()
-};
-
-/*
- * Value.
- *
- * @type {Value}
- */
-
-class Value extends Record(DEFAULTS) {
+}) {
     /*
-     * Create a new `Value` with `attrs`.
-     *
-     * @param {Object|Value} attrs
-     * @param {Object} options
-     * @return {Value}
+     * Object.
      */
 
-    public static create(attrs = {}, options = {}) {
+    get object(): 'value' {
+        return 'value';
+    }
+
+    /*
+     * Are there undoable events?
+     */
+
+    get hasUndos(): boolean {
+        return this.history.undos.size > 0;
+    }
+
+    /*
+     * Are there redoable events?
+     */
+
+    get hasRedos(): boolean {
+        return this.history.redos.size > 0;
+    }
+
+    /*
+     * Is the current selection blurred?
+     */
+
+    get isBlurred(): boolean {
+        return this.selection.isBlurred;
+    }
+
+    /*
+     * Is the current selection focused?
+     */
+    get isFocused(): boolean {
+        return this.selection.isFocused;
+    }
+
+    /*
+     * Is the current selection collapsed?
+     */
+    get isCollapsed(): boolean {
+        return this.selection.isCollapsed;
+    }
+
+    /*
+     * Is the current selection expanded?
+     */
+
+    get isExpanded(): boolean {
+        return this.selection.isExpanded;
+    }
+
+    /*
+     * Is the current selection backward?
+     */
+    get isBackward(): boolean {
+        return this.selection.isBackward;
+    }
+
+    /*
+     * Is the current selection forward?
+     */
+    get isForward(): boolean {
+        return this.selection.isForward;
+    }
+
+    /*
+     * Get the current start key.
+     */
+    get startKey(): string {
+        return this.selection.startKey;
+    }
+
+    /*
+     * Get the current end key.
+     */
+    get endKey(): string {
+        return this.selection.endKey;
+    }
+
+    /*
+     * Get the current start offset.
+     */
+    get startOffset(): number {
+        return this.selection.startOffset;
+    }
+
+    /*
+     * Get the current end offset.
+     */
+    get endOffset(): number {
+        return this.selection.endOffset;
+    }
+
+    /*
+     * Get the current anchor key.
+     */
+    get anchorKey(): string {
+        return this.selection.anchorKey;
+    }
+
+    /*
+     * Get the current focus key.
+     */
+    get focusKey(): string {
+        return this.selection.focusKey;
+    }
+
+    /*
+     * Get the current anchor offset.
+     */
+    get anchorOffset(): number {
+        return this.selection.anchorOffset;
+    }
+
+    /*
+     * Get the current focus offset.
+     */
+    get focusOffset(): number {
+        return this.selection.focusOffset;
+    }
+
+    /*
+     * Get the current start text node's closest block parent.
+     */
+    get startBlock(): Block | null {
+        return this.startKey && this.document.getClosestBlock(this.startKey);
+    }
+
+    /*
+     * Get the current end text node's closest block parent.
+     */
+    get endBlock(): Block | null {
+        return this.endKey && this.document.getClosestBlock(this.endKey);
+    }
+
+    /*
+     * Get the current anchor text node's closest block parent.
+     */
+    get anchorBlock(): Block | null {
+        return this.anchorKey && this.document.getClosestBlock(this.anchorKey);
+    }
+
+    /*
+     * Get the current focus text node's closest block parent.
+     */
+    get focusBlock(): Block | null {
+        return this.focusKey && this.document.getClosestBlock(this.focusKey);
+    }
+
+    /*
+     * Get the current start text node's closest inline parent.
+     */
+    get startInline(): Inline | null {
+        return this.startKey && this.document.getClosestInline(this.startKey);
+    }
+
+    /*
+     * Get the current end text node's closest inline parent.
+     */
+    get endInline(): Inline | null {
+        return this.endKey && this.document.getClosestInline(this.endKey);
+    }
+
+    /*
+     * Get the current anchor text node's closest inline parent.
+     */
+
+    get anchorInline(): Inline | null {
+        return this.anchorKey && this.document.getClosestInline(this.anchorKey);
+    }
+
+    /*
+     * Get the current focus text node's closest inline parent.
+     */
+    get focusInline(): Inline | null {
+        return this.focusKey && this.document.getClosestInline(this.focusKey);
+    }
+
+    /*
+     * Get the current start text node.
+     */
+    get startText(): Text | null {
+        return this.startKey && this.document.getDescendant(this.startKey);
+    }
+
+    /*
+     * Get the current end node.
+     */
+    get endText(): Text | null {
+        return this.endKey && this.document.getDescendant(this.endKey);
+    }
+
+    /*
+     * Get the current anchor node.
+     */
+    get anchorText(): Text | null {
+        return this.anchorKey && this.document.getDescendant(this.anchorKey);
+    }
+
+    /*
+     * Get the current focus node.
+     */
+    get focusText(): Text | null {
+        return this.focusKey && this.document.getDescendant(this.focusKey);
+    }
+
+    /*
+     * Get the next block node.
+     */
+    get nextBlock(): Text | null {
+        return this.endKey && this.document.getNextBlock(this.endKey);
+    }
+
+    /*
+     * Get the previous block node.
+     */
+    get previousBlock(): Text | null {
+        return this.startKey && this.document.getPreviousBlock(this.startKey);
+    }
+
+    /*
+     * Get the next inline node.
+     */
+    get nextInline(): Inline | null {
+        return this.endKey && this.document.getNextInline(this.endKey);
+    }
+
+    /*
+     * Get the previous inline node.
+     */
+    get previousInline(): Inline | null {
+        return this.startKey && this.document.getPreviousInline(this.startKey);
+    }
+
+    /*
+     * Get the next text node.
+     */
+
+    get nextText(): Text | null {
+        return this.endKey && this.document.getNextText(this.endKey);
+    }
+
+    /*
+     * Get the previous text node.
+     */
+    get previousText(): Text | null {
+        return this.startKey && this.document.getPreviousText(this.startKey);
+    }
+
+    /*
+     * Get the marks of the current selection.
+     */
+    get marks(): Set<Mark> {
+        return this.selection.isUnset
+            ? new Set()
+            : this.selection.marks ||
+                  this.document.getMarksAtRange(this.selection);
+    }
+
+    /*
+     * Get the active marks of the current selection.
+     */
+    get activeMarks(): Set<Mark> {
+        return this.selection.isUnset
+            ? new Set()
+            : this.selection.marks ||
+                  this.document.getActiveMarksAtRange(this.selection);
+    }
+
+    /*
+     * Get the block nodes in the current selection.
+     */
+    get blocks(): List<Block> {
+        return this.selection.isUnset
+            ? new List()
+            : this.document.getBlocksAtRange(this.selection);
+    }
+
+    /*
+     * Get the fragment of the current selection.
+     */
+    get fragment(): Document {
+        return this.selection.isUnset
+            ? Document.create()
+            : this.document.getFragmentAtRange(this.selection);
+    }
+
+    /*
+     * Get the inline nodes in the current selection.
+     */
+    get inlines(): List<Inline> {
+        return this.selection.isUnset
+            ? new List()
+            : this.document.getInlinesAtRange(this.selection);
+    }
+
+    /*
+     * Get the text nodes in the current selection.
+     */
+    get texts(): List<Text> {
+        return this.selection.isUnset
+            ? new List()
+            : this.document.getTextsAtRange(this.selection);
+    }
+
+    /*
+     * Check whether the selection is empty.
+     */
+    get isEmpty(): boolean {
+        if (this.isCollapsed) {
+            return true;
+        }
+        if (this.endOffset !== 0 && this.startOffset !== 0) {
+            return false;
+        }
+        return this.fragment.isEmpty;
+    }
+
+    /*
+     * Check whether the selection is collapsed in a void node.
+     */
+    get isInVoid(): boolean {
+        if (this.isExpanded) {
+            return false;
+        }
+        return this.document.hasVoidParent(this.startKey);
+    }
+
+    /*
+     * Create a new `Value` with `attrs`.
+     */
+    public static create(attrs = {}, options = {}): Value {
         if (Value.isValue(attrs)) {
             return attrs;
         }
@@ -79,7 +397,7 @@ class Value extends Record(DEFAULTS) {
                 props.decorations = Range.createList(attrs.decorations);
             }
             if ('schema' in attrs) {
-                props.schema = Schema.create(attrs.schema);
+                props.schema = CORE_SCHEMA.combineWith(Schema.create(attrs.schema));
             }
             return props;
         }
@@ -99,7 +417,7 @@ class Value extends Record(DEFAULTS) {
      * @return {Value}
      */
 
-    public static fromJS(object, options = {}) {
+    public static fromJS(object, options = {}): Value {
         let {
             document = {},
             selection = {},
@@ -123,17 +441,8 @@ class Value extends Record(DEFAULTS) {
         }
 
         selection = Range.fromJS(selection);
-        schema = Schema.fromJS(schema);
+        schema = Schema.create(schema);
         history = History.fromJS(history);
-
-        // Allow plugins to set a default value for `data`.
-        if (options.plugins) {
-            for (const plugin of options.plugins) {
-                if (plugin.data) {
-                    data = data.merge(plugin.data);
-                }
-            }
-        }
 
         // Then merge in the `data` provided.
         if ('data' in object) {
@@ -151,7 +460,8 @@ class Value extends Record(DEFAULTS) {
             data,
             document,
             selection,
-            schema,
+            // Combine the core schema with the custom one
+            schema: CORE_SCHEMA.combineWith(schema),
             history
         });
 
@@ -163,509 +473,24 @@ class Value extends Record(DEFAULTS) {
     }
 
     /*
-     * Alias `fromJS`.
-     */
-
-    public static fromJSON(object) {
-        logger.deprecate(
-            'slate@0.35.0',
-            'fromJSON methods are deprecated, use fromJS instead'
-        );
-        return Value.fromJS(object);
-    }
-
-    /*
      * Check if a `value` is a `Value`.
-     *
-     * @param {Any} value
-     * @return {Boolean}
      */
-
-    public static isValue(value) {
+    public static isValue(value: any): value is Value {
         return !!(value && value[MODEL_TYPES.VALUE]);
     }
 
-    /*
-     * Object.
-     *
-     * @return {String}
-     */
-
-    get object() {
-        return 'value';
-    }
-
-    get kind() {
-        logger.deprecate(
-            'slate@0.32.0',
-            'The `kind` property of Slate objects has been renamed to `object`.'
-        );
-        return this.object;
-    }
-
-    /*
-     * Are there undoable events?
-     *
-     * @return {Boolean}
-     */
-
-    get hasUndos() {
-        return this.history.undos.size > 0;
-    }
-
-    /*
-     * Are there redoable events?
-     *
-     * @return {Boolean}
-     */
-
-    get hasRedos() {
-        return this.history.redos.size > 0;
-    }
-
-    /*
-     * Is the current selection blurred?
-     *
-     * @return {Boolean}
-     */
-
-    get isBlurred() {
-        return this.selection.isBlurred;
-    }
-
-    /*
-     * Is the current selection focused?
-     *
-     * @return {Boolean}
-     */
-
-    get isFocused() {
-        return this.selection.isFocused;
-    }
-
-    /*
-     * Is the current selection collapsed?
-     *
-     * @return {Boolean}
-     */
-
-    get isCollapsed() {
-        return this.selection.isCollapsed;
-    }
-
-    /*
-     * Is the current selection expanded?
-     *
-     * @return {Boolean}
-     */
-
-    get isExpanded() {
-        return this.selection.isExpanded;
-    }
-
-    /*
-     * Is the current selection backward?
-     *
-     * @return {Boolean} isBackward
-     */
-
-    get isBackward() {
-        return this.selection.isBackward;
-    }
-
-    /*
-     * Is the current selection forward?
-     *
-     * @return {Boolean}
-     */
-
-    get isForward() {
-        return this.selection.isForward;
-    }
-
-    /*
-     * Get the current start key.
-     *
-     * @return {String}
-     */
-
-    get startKey() {
-        return this.selection.startKey;
-    }
-
-    /*
-     * Get the current end key.
-     *
-     * @return {String}
-     */
-
-    get endKey() {
-        return this.selection.endKey;
-    }
-
-    /*
-     * Get the current start offset.
-     *
-     * @return {String}
-     */
-
-    get startOffset() {
-        return this.selection.startOffset;
-    }
-
-    /*
-     * Get the current end offset.
-     *
-     * @return {String}
-     */
-
-    get endOffset() {
-        return this.selection.endOffset;
-    }
-
-    /*
-     * Get the current anchor key.
-     *
-     * @return {String}
-     */
-
-    get anchorKey() {
-        return this.selection.anchorKey;
-    }
-
-    /*
-     * Get the current focus key.
-     *
-     * @return {String}
-     */
-
-    get focusKey() {
-        return this.selection.focusKey;
-    }
-
-    /*
-     * Get the current anchor offset.
-     *
-     * @return {String}
-     */
-
-    get anchorOffset() {
-        return this.selection.anchorOffset;
-    }
-
-    /*
-     * Get the current focus offset.
-     *
-     * @return {String}
-     */
-
-    get focusOffset() {
-        return this.selection.focusOffset;
-    }
-
-    /*
-     * Get the current start text node's closest block parent.
-     *
-     * @return {Block}
-     */
-
-    get startBlock() {
-        return this.startKey && this.document.getClosestBlock(this.startKey);
-    }
-
-    /*
-     * Get the current end text node's closest block parent.
-     *
-     * @return {Block}
-     */
-
-    get endBlock() {
-        return this.endKey && this.document.getClosestBlock(this.endKey);
-    }
-
-    /*
-     * Get the current anchor text node's closest block parent.
-     *
-     * @return {Block}
-     */
-
-    get anchorBlock() {
-        return this.anchorKey && this.document.getClosestBlock(this.anchorKey);
-    }
-
-    /*
-     * Get the current focus text node's closest block parent.
-     *
-     * @return {Block}
-     */
-
-    get focusBlock() {
-        return this.focusKey && this.document.getClosestBlock(this.focusKey);
-    }
-
-    /*
-     * Get the current start text node's closest inline parent.
-     *
-     * @return {Inline}
-     */
-
-    get startInline() {
-        return this.startKey && this.document.getClosestInline(this.startKey);
-    }
-
-    /*
-     * Get the current end text node's closest inline parent.
-     *
-     * @return {Inline}
-     */
-
-    get endInline() {
-        return this.endKey && this.document.getClosestInline(this.endKey);
-    }
-
-    /*
-     * Get the current anchor text node's closest inline parent.
-     *
-     * @return {Inline}
-     */
-
-    get anchorInline() {
-        return this.anchorKey && this.document.getClosestInline(this.anchorKey);
-    }
-
-    /*
-     * Get the current focus text node's closest inline parent.
-     *
-     * @return {Inline}
-     */
-
-    get focusInline() {
-        return this.focusKey && this.document.getClosestInline(this.focusKey);
-    }
-
-    /*
-     * Get the current start text node.
-     *
-     * @return {Text}
-     */
-
-    get startText() {
-        return this.startKey && this.document.getDescendant(this.startKey);
-    }
-
-    /*
-     * Get the current end node.
-     *
-     * @return {Text}
-     */
-
-    get endText() {
-        return this.endKey && this.document.getDescendant(this.endKey);
-    }
-
-    /*
-     * Get the current anchor node.
-     *
-     * @return {Text}
-     */
-
-    get anchorText() {
-        return this.anchorKey && this.document.getDescendant(this.anchorKey);
-    }
-
-    /*
-     * Get the current focus node.
-     *
-     * @return {Text}
-     */
-
-    get focusText() {
-        return this.focusKey && this.document.getDescendant(this.focusKey);
-    }
-
-    /*
-     * Get the next block node.
-     *
-     * @return {Block}
-     */
-
-    get nextBlock() {
-        return this.endKey && this.document.getNextBlock(this.endKey);
-    }
-
-    /*
-     * Get the previous block node.
-     *
-     * @return {Block}
-     */
-
-    get previousBlock() {
-        return this.startKey && this.document.getPreviousBlock(this.startKey);
-    }
-
-    /*
-     * Get the next inline node.
-     *
-     * @return {Inline}
-     */
-
-    get nextInline() {
-        return this.endKey && this.document.getNextInline(this.endKey);
-    }
-
-    /*
-     * Get the previous inline node.
-     *
-     * @return {Inline}
-     */
-
-    get previousInline() {
-        return this.startKey && this.document.getPreviousInline(this.startKey);
-    }
-
-    /*
-     * Get the next text node.
-     *
-     * @return {Text}
-     */
-
-    get nextText() {
-        return this.endKey && this.document.getNextText(this.endKey);
-    }
-
-    /*
-     * Get the previous text node.
-     *
-     * @return {Text}
-     */
-
-    get previousText() {
-        return this.startKey && this.document.getPreviousText(this.startKey);
-    }
-
-    /*
-     * Get the characters in the current selection.
-     *
-     * @return {List<Character>}
-     */
-
-    get characters() {
-        return this.selection.isUnset
-            ? new List()
-            : this.document.getCharactersAtRange(this.selection);
-    }
-
-    /*
-     * Get the marks of the current selection.
-     *
-     * @return {Set<Mark>}
-     */
-
-    get marks() {
-        return this.selection.isUnset
-            ? new Set()
-            : this.selection.marks ||
-                  this.document.getMarksAtRange(this.selection);
-    }
-
-    /*
-     * Get the active marks of the current selection.
-     *
-     * @return {Set<Mark>}
-     */
-
-    get activeMarks() {
-        return this.selection.isUnset
-            ? new Set()
-            : this.selection.marks ||
-                  this.document.getActiveMarksAtRange(this.selection);
-    }
-
-    /*
-     * Get the block nodes in the current selection.
-     *
-     * @return {List<Block>}
-     */
-
-    get blocks() {
-        return this.selection.isUnset
-            ? new List()
-            : this.document.getBlocksAtRange(this.selection);
-    }
-
-    /*
-     * Get the fragment of the current selection.
-     *
-     * @return {Document}
-     */
-
-    get fragment() {
-        return this.selection.isUnset
-            ? Document.create()
-            : this.document.getFragmentAtRange(this.selection);
-    }
-
-    /*
-     * Get the inline nodes in the current selection.
-     *
-     * @return {List<Inline>}
-     */
-
-    get inlines() {
-        return this.selection.isUnset
-            ? new List()
-            : this.document.getInlinesAtRange(this.selection);
-    }
-
-    /*
-     * Get the text nodes in the current selection.
-     *
-     * @return {List<Text>}
-     */
-
-    get texts() {
-        return this.selection.isUnset
-            ? new List()
-            : this.document.getTextsAtRange(this.selection);
-    }
-
-    /*
-     * Check whether the selection is empty.
-     *
-     * @return {Boolean}
-     */
-
-    get isEmpty() {
-        if (this.isCollapsed) {
-            return true;
-        }
-        if (this.endOffset !== 0 && this.startOffset !== 0) {
-            return false;
-        }
-        return this.fragment.isEmpty;
-    }
-
-    /*
-     * Check whether the selection is collapsed in a void node.
-     *
-     * @return {Boolean}
-     */
-
-    get isInVoid() {
-        if (this.isExpanded) {
-            return false;
-        }
-        return this.document.hasVoidParent(this.startKey);
-    }
+    // Record properties
+    public readonly data: Map;
+    public readonly schema: Schema;
+    public readonly selection: Range;
+    public readonly history: History;
+    public readonly document: Document;
 
     /*
      * Create a new `Change` with the current value as a starting point.
-     *
-     * @param {Object} attrs
-     * @return {Change}
      */
 
-    public change(attrs = {}) {
+    public change(attrs = {}): Change {
         return new Change({ ...attrs, value: this });
     }
 
@@ -740,18 +565,6 @@ class Value extends Record(DEFAULTS) {
 
         return object;
     }
-
-    /*
-     * Alias `toJS`.
-     */
-
-    public toJSON(options) {
-        logger.deprecate(
-            'slate@0.35.0',
-            'toJSON methods are deprecated, use toJS instead'
-        );
-        return this.toJS(options);
-    }
 }
 
 /*
@@ -759,9 +572,5 @@ class Value extends Record(DEFAULTS) {
  */
 
 Value.prototype[MODEL_TYPES.VALUE] = true;
-
-/*
- * Export.
- */
 
 export default Value;

@@ -6,7 +6,6 @@ import MODEL_TYPES, { isType } from '../constants/model-types';
 import generateKey from '../utils/generate-key';
 import Leaf, { LeafJSON } from './leaf';
 import Mark, { MarkProperties } from './mark';
-import Schema, { SchemaNormalizeFn } from './schema';
 
 // JSON representation of a text node
 export interface TextJSON {
@@ -220,17 +219,6 @@ class Text extends Record({
         return this.setLeaves(
             before.concat(middle.map(x => x.addMarks(set)), after)
         );
-    }
-
-    /*
-     * Get the decorations for the node from a `schema`.
-     *
-     * @param {Schema} schema
-     * @return {Array}
-     */
-
-    public getDecorations(schema) {
-        return schema.__getDecorations(this);
     }
 
     /*
@@ -684,23 +672,6 @@ class Text extends Record({
     }
 
     /*
-     * Validate the text node against a `schema`.
-     */
-
-    public validate(schema: Schema): SchemaNormalizeFn | null {
-        return schema.validateNode(this);
-    }
-
-    /*
-     * Get the first invalid descendant
-     * PERF: Do not cache this method; because it can cause cycle reference
-     */
-
-    public getFirstInvalidDescendant(schema: Schema): Text | null {
-        return this.validate(schema) ? this : null;
-    }
-
-    /*
      * Set leaves with normalized `leaves`.
      */
     public setLeaves(leaves: List<Leaf>): Text {
@@ -731,11 +702,9 @@ Text.prototype[MODEL_TYPES.TEXT] = true;
  */
 
 memoize(Text.prototype, [
-    'getDecorations',
     'getActiveMarks',
     'getMarks',
     'getMarksAsArray',
-    'validate',
     'getString'
 ]);
 

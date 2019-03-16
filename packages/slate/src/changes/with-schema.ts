@@ -70,7 +70,7 @@ function normalizeNodeAndChildren(change, node, schema) {
         return;
     }
 
-    let child = node.getFirstInvalidDescendant(schema);
+    let child = schema.getFirstInvalidNode(node);
     let path = change.value.document.getPath(node.key);
 
     while (node && child) {
@@ -82,7 +82,7 @@ function normalizeNodeAndChildren(change, node, schema) {
             child = null;
         } else {
             path = change.value.document.refindPath(path, node.key);
-            child = node.getFirstInvalidDescendant(schema);
+            child = schema.getFirstInvalidNode(node);
         }
     }
 
@@ -105,7 +105,7 @@ function normalizeNode(change, node, schema) {
     let iterations = 0;
 
     function iterate(c, n) {
-        const normalize = n.validate(schema);
+        const normalize = schema.validateNode(n);
         if (!normalize) {
             return;
         }

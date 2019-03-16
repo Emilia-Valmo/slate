@@ -1,20 +1,15 @@
 import { List } from 'immutable';
 
+import { SchemaRule } from '../models/schema';
 import Text from '../models/text';
 
 /*
  * Define the core schema rules, order-sensitive.
- *
- * @type {Array}
  */
-
-const CORE_SCHEMA_RULES = [
+const CORE_SCHEMA_RULES: SchemaRule[] = [
     /*
      * Only allow block nodes in documents.
-     *
-     * @type {Object}
      */
-
     {
         validateNode(node) {
             if (node.object !== 'document') {
@@ -35,10 +30,7 @@ const CORE_SCHEMA_RULES = [
 
     /*
      * Only allow block nodes or inline and text nodes in blocks.
-     *
-     * @type {Object}
      */
-
     {
         validateNode(node) {
             if (node.object !== 'block') {
@@ -67,10 +59,7 @@ const CORE_SCHEMA_RULES = [
 
     /*
      * Only allow inline and text nodes in inlines.
-     *
-     * @type {Object}
      */
-
     {
         validateNode(node) {
             if (node.object !== 'inline') {
@@ -93,10 +82,7 @@ const CORE_SCHEMA_RULES = [
 
     /*
      * Ensure that block and inline nodes have at least one text child.
-     *
-     * @type {Object}
      */
-
     {
         validateNode(node) {
             if (node.object !== 'block' && node.object !== 'inline') {
@@ -119,10 +105,7 @@ const CORE_SCHEMA_RULES = [
      * This rule is applied to all blocks and inlines, because when they contain an empty
      * inline, we need to remove the empty inline from that parent node. If `validate`
      * was to be memoized, it should be against the parent node, not the empty inline itself.
-     *
-     * @type {Object}
      */
-
     {
         validateNode(node) {
             if (node.object !== 'inline' && node.object !== 'block') {
@@ -157,10 +140,7 @@ const CORE_SCHEMA_RULES = [
     /*
      * Ensure that inline void nodes are surrounded by text nodes, by adding extra
      * blank text nodes if necessary.
-     *
-     * @type {Object}
      */
-
     {
         validateNode(node) {
             if (node.object !== 'block' && node.object !== 'inline') {
@@ -228,10 +208,7 @@ const CORE_SCHEMA_RULES = [
 
     /*
      * Merge adjacent text nodes.
-     *
-     * @type {Object}
      */
-
     {
         validateNode(node) {
             if (node.object !== 'block' && node.object !== 'inline') {
@@ -267,10 +244,7 @@ const CORE_SCHEMA_RULES = [
 
     /*
      * Prevent extra empty text nodes, except when adjacent to inline void nodes.
-     *
-     * @type {Object}
      */
-
     {
         validateNode(node) {
             if (node.object !== 'block' && node.object !== 'inline') {
@@ -328,11 +302,5 @@ const CORE_SCHEMA_RULES = [
         }
     }
 ];
-
-/*
- * Export.
- *
- * @type {Array}
- */
 
 export default CORE_SCHEMA_RULES;

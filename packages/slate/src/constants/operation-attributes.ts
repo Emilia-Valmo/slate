@@ -1,7 +1,5 @@
 /*
  * Slate operation attributes.
- *
- * @type {Array}
  */
 
 const OPERATION_ATTRIBUTES = {
@@ -19,11 +17,5 @@ const OPERATION_ATTRIBUTES = {
     set_value: ['value', 'properties'],
     split_node: ['value', 'path', 'position', 'properties', 'target']
 };
-
-/*
- * Export.
- *
- * @type {Object}
- */
 
 export default OPERATION_ATTRIBUTES;

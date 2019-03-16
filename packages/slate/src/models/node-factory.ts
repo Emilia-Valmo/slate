@@ -1615,27 +1615,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
             return node;
         }
 
-        /*
-         * Validate the node against a `schema`.
-         */
-        public validate(schema: Schema): SchemaNormalizeFn<this> | null {
-            return schema.validateNode(this);
-        }
-
-        /*
-         * Get the first invalid descendant
-         */
-        public getFirstInvalidDescendant(schema: Schema): ChildNode | null {
-            let result = null;
-
-            this.nodes.find(n => {
-                result = n.validate(schema)
-                    ? n
-                    : n.getFirstInvalidDescendant(schema);
-                return result;
-            });
-            return result;
-        }
     };
 }
 
@@ -1692,8 +1671,6 @@ function memoizeMethods(C: any, methods: string[] = []) {
         'getTextsBetweenPositionsAsArray',
         'isLeafBlock',
         'isLeafInline',
-        'validate',
-        'getFirstInvalidDescendant',
         ...methods
     ]);
 }

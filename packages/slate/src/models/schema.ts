@@ -1,4 +1,3 @@
-import logger from '@gitbook/slate-dev-logger';
 import Debug from 'debug';
 import { Record } from 'immutable';
 import memoize from 'immutablejs-record-memoize';
@@ -19,52 +18,59 @@ import {
     NODE_MARK_INVALID,
     NODE_TEXT_INVALID,
     PARENT_OBJECT_INVALID,
-    PARENT_TYPE_INVALID
+    PARENT_TYPE_INVALID,
+    SchemaViolation
 } from '@gitbook/slate-schema-violations';
 
 import CORE_SCHEMA_RULES from '../constants/core-schema-rules';
 import MODEL_TYPES from '../constants/model-types';
+import Block from './block';
+import Change from './change';
+import Document from './document';
+import Inline from './inline';
 import Stack from './stack';
+import Text from './text';
 
-// TODO
-export type SchemaNormalizeFn = () => void;
+type AnyNode = Block | Inline | Text | Document;
 
-/*
- * Debug.
- *
- * @type {Function}
- */
+// Callback when running a normalization
+export type SchemaNormalizeFn = (change: Change) => void;
+
+// Context when normalizing a node (it depends on the violation)
+export interface SchemaNormalizeContext {
+    node: AnyNode;
+    child: AnyNode;
+}
+
+export type SchemaRule =
+    | {
+          validateNode: (node: AnyNode) => null | undefined | SchemaNormalizeFn;
+      }
+    | {};
 
 const debug = Debug('slate:schema');
 
 /*
- * Default properties.
- *
- * @type {Object}
+ * Immutable model to represent a schema.
  */
-
-const DEFAULTS = {
+class Schema extends Record({
     stack: Stack.create(),
     document: {},
     blocks: {},
     inlines: {}
-};
-
-/*
- * Schema.
- *
- * @type {Schema}
- */
-
-class Schema extends Record(DEFAULTS) {
+}) {
     /*
-     * Create a new `Schema` with `attrs`.
-     *
-     * @param {Object|Schema} attrs
-     * @return {Schema}
+     * Object.
      */
 
-    public static create(attrs = {}) {
+    get object(): 'schema' {
+        return 'schema';
+    }
+
+    /*
+     * Create a new `Schema` with `attrs`.
+     */
+    public static create(attrs: any = {}): Schema {
         if (Schema.isSchema(attrs)) {
             return attrs;
         }
@@ -80,12 +86,8 @@ class Schema extends Record(DEFAULTS) {
 
     /*
      * Create a `Schema` from a JSON `object`.
-     *
-     * @param {Object} object
-     * @return {Schema}
      */
-
-    public static fromJS(object) {
+    public static fromJS(object: any): Schema {
         if (Schema.isSchema(object)) {
             return object;
         }
@@ -117,69 +119,55 @@ class Schema extends Record(DEFAULTS) {
     }
 
     /*
-     * Alias `fromJS`.
-     */
-
-    public static fromJSON(input) {
-        logger.deprecate(
-            'slate@0.35.0',
-            'fromJSON methods are deprecated, use fromJS instead'
-        );
-        return Schema.fromJS(input);
-    }
-
-    /*
      * Check if `any` is a `Schema`.
-     *
-     * @param {Any} any
-     * @return {Boolean}
      */
-
-    public static isSchema(input: any): boolean {
+    public static isSchema(input: any): input is Schema {
         return !!(input && input[MODEL_TYPES.SCHEMA]);
     }
 
-    /*
-     * Object.
-     */
-
-    get object(): 'schema' {
-        return 'schema';
-    }
-
-    get kind(): 'schema' {
-        logger.deprecate(
-            'slate@0.32.0',
-            'The `kind` property of Slate objects has been renamed to `object`.'
-        );
-        return this.object;
-    }
+    // Properties
+    public readonly stack: Stack;
+    public readonly document: SchemaRule;
+    public readonly blocks: { [type: string]: SchemaRule };
+    public readonly inlines: { [type: string]: SchemaRule };
 
     /*
-     * Get the rule for an `object`.
-     *
-     * @param {Mixed} object
-     * @return {Object}
+     * Get the first invalid node.
      */
+    public getFirstInvalidNode(node: AnyNode): AnyNode | null {
+        if (Text.isText(node)) {
+            return this.validateNode(node) ? node : null;
+        }
 
-    public getRule(object) {
-        switch (object.object) {
+        let result = null;
+
+        node.nodes.find(child => {
+            result = this.validateNode(child)
+                ? child
+                : this.getFirstInvalidNode(child);
+            return result;
+        });
+        return result;
+    }
+
+    /*
+     * Get the rule for a node.
+     */
+    public getRule(node: AnyNode): SchemaRule | undefined {
+        switch (node.object) {
             case 'document':
                 return this.document;
             case 'block':
-                return this.blocks[object.type];
+                return this.blocks[node.type];
             case 'inline':
-                return this.inlines[object.type];
+                return this.inlines[node.type];
         }
     }
 
     /*
      * Get a dictionary of the parent rule validations by child type.
-     *
-     * @return {Object|Null}
      */
-
-    public getParentRules() {
+    public getParentRules(): { [type: string]: SchemaRule } {
         const { blocks, inlines } = this;
         const parents = {};
 
@@ -204,14 +192,12 @@ class Schema extends Record(DEFAULTS) {
 
     /*
      * Fail validation by returning a normalizing change function.
-     *
-     * @param {String} violation
-     * @param {Object} context
-     * @return {Function}
      */
-
-    public fail(violation, context) {
-        return change => {
+    public fail(
+        violation: SchemaViolation,
+        context: SchemaNormalizeContext
+    ): SchemaNormalizeFn {
+        return (change: Change) => {
             debug(`normalizing`, { violation, context });
             const { rule } = context;
             const { size } = change.operations;
@@ -227,13 +213,12 @@ class Schema extends Record(DEFAULTS) {
 
     /*
      * Normalize an invalid value with `violation` and `context`.
-     *
-     * @param {Change} change
-     * @param {String} violation
-     * @param {Mixed} context
      */
-
-    public normalize(change, violation, context) {
+    public normalize(
+        change: Change,
+        violation: SchemaViolation,
+        context: SchemaNormalizeContext
+    ) {
         switch (violation) {
             case CHILD_OBJECT_INVALID:
             case CHILD_TYPE_INVALID:
@@ -291,12 +276,8 @@ class Schema extends Record(DEFAULTS) {
     /*
      * Validate a `node` with the schema, returning a function that will fix the
      * invalid node, or void if the node is valid.
-     *
-     * @param {Node} node
-     * @return {Function|Void}
      */
-
-    public validateNode(node) {
+    public validateNode(node: AnyNode): SchemaNormalizeFn | undefined {
         const ret = this.stack.find('validateNode', node);
         if (ret) {
             return ret;
@@ -492,10 +473,7 @@ class Schema extends Record(DEFAULTS) {
 
     /*
      * Return a JSON representation of the schema.
-     *
-     * @return {Object}
      */
-
     public toJS() {
         const object = {
             object: this.object,
@@ -506,18 +484,6 @@ class Schema extends Record(DEFAULTS) {
 
         return object;
     }
-
-    /*
-     * Alias `toJS`.
-     */
-
-    public toJSON() {
-        logger.deprecate(
-            'slate@0.35.0',
-            'toJSON methods are deprecated, use toJS instead'
-        );
-        return this.toJS();
-    }
 }
 
 /*
@@ -526,7 +492,6 @@ class Schema extends Record(DEFAULTS) {
  * @param {Array} plugins
  * @return {Object}
  */
-
 function resolveSchema(plugins = []) {
     const schema = {
         document: {},
@@ -620,7 +585,6 @@ function resolveNodeRule(object, type, obj) {
  * @param {Mixed} source
  * @return {Array|Void}
  */
-
 function customizer(target, source, key) {
     if (key === 'objects' || key === 'types' || key === 'marks') {
         return target == null ? source : target.concat(source);
@@ -639,12 +603,10 @@ Schema.prototype[MODEL_TYPES.SCHEMA] = true;
  * Memoize read methods.
  */
 
-memoize(Schema.prototype, ['getParentRules']);
-
-/*
- * Export.
- *
- * @type {Schema}
- */
+memoize(Schema.prototype, [
+    'getParentRules',
+    'getFirstInvalidNode',
+    'validateNode'
+]);
 
 export default Schema;

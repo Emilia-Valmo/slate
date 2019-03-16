@@ -22,7 +22,7 @@ describe('plugins', () => {
                 const testDir = resolve(dir, event);
                 const tests = fs
                     .readdirSync(testDir)
-                    .filter(t => t[0] !== '.' && !!~t.indexOf('.tsx'))
+                    .filter(t => t[0] !== '.' && t.endsWith('.tsx'))
                     .map(t => basename(t, extname(t)));
 
                 for (const test of tests) {

@@ -15,7 +15,7 @@ interface TextRendererProps {
 /*
  * Component to render a text node and all its leaves.
  */
-const TextRenderer = React.memo(function TextRenderer(
+const PureTextRenderer = React.memo(function TextRenderer(
     props: TextRendererProps
 ): React.Node {
     const { block, decorations, editor, node, parent } = props;
@@ -95,4 +95,4 @@ function areEqual(p: TextRendererProps, n: TextRendererProps): boolean {
     return true;
 }
 
-export default TextRenderer;
+export default PureTextRenderer;

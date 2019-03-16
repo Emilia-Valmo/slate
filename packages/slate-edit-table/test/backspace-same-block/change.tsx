@@ -1,3 +1,5 @@
+import { createEvent } from '@gitbook/slate-simulator';
+
 export default function(plugin, change) {
     const { value } = change;
     const blockStart = value.document.getDescendant('anchor');
@@ -8,11 +10,9 @@ export default function(plugin, change) {
         .extendToEndOf(blockEnd);
 
     const result = plugin.onKeyDown(
-        {
-            key: 'Backspace',
-            preventDefault() {},
-            stopPropagation() {}
-        },
+        createEvent({
+            key: 'Backspace'
+        }),
         withCursor
     );
 

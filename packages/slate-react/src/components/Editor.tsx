@@ -45,7 +45,7 @@ interface EditorProps {
     spellCheck?: boolean;
     tabIndex?: number;
     role?: string;
-    style?: Object;
+    style?: React.CSS.Properties;
     plugins?: Plugin[];
     renderNode: (node: Block | Inline) => React.Node;
     renderMark: (mark: Mark) => React.Node;

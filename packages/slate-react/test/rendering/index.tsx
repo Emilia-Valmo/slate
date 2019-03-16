@@ -1,6 +1,6 @@
 import { Editor } from '@gitbook/slate-react';
 import assert from 'assert';
-import fs from 'fs-promise';
+import fs from 'fs';
 import { JSDOM } from 'jsdom';
 import { basename, extname, resolve } from 'path';
 import React from 'react';
@@ -15,7 +15,7 @@ describe('rendering', () => {
     const dir = resolve(__dirname, './fixtures');
     const tests = fs
         .readdirSync(dir)
-        .filter(t => t[0] !== '.' && !!~t.indexOf('.tsx'))
+        .filter(t => t[0] !== '.' && t.endsWith('.tsx'))
         .map(t => basename(t, extname(t)));
 
     for (const test of tests) {
@@ -24,7 +24,9 @@ describe('rendering', () => {
             const { value, output, props } = module;
             const p = {
                 value,
-                onChange() {},
+                onChange() {
+                    // Do nothing
+                },
                 ...(props || {})
             };
 

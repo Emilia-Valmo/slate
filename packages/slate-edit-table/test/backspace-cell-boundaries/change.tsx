@@ -1,10 +1,10 @@
+import { createEvent } from '@gitbook/slate-simulator';
+
 export default function(plugin, change) {
     return plugin.onKeyDown(
-        {
-            key: 'Backspace',
-            preventDefault() {},
-            stopPropagation() {}
-        },
+        createEvent({
+            key: 'Backspace'
+        }),
         change
     );
 }

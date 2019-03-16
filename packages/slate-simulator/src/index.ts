@@ -1,11 +1,8 @@
-import { Stack } from '@gitbook/slate'
+import { Stack, Value, EditorContainer } from '@gitbook/slate';
 
 /*
  * Event handlers that can be simulated.
- *
- * @type {Array}
  */
-
 const EVENT_HANDLERS = [
   'onBeforeInput',
   'onBlur',
@@ -20,21 +17,23 @@ const EVENT_HANDLERS = [
 ]
 
 /*
- * Simulator.
- *
- * @type {Simulator}
+ * Simulator to run tests on Slate plugins.
  */
-
 class Simulator {
+  value: Value;
+  stack: Stack;
+  props: object;
+
   /*
    * Create a new `Simulator` with `plugins` and an initial `value`.
-   *
-   * @param {Object} attrs
    */
-
-  constructor(props) {
+  constructor(props: {
+    plugins: any[],
+    value: Value
+  }) {
     const { plugins, value } = props
     const stack = new Stack({ plugins })
+
     this.props = props
     this.stack = stack
     this.value = value
@@ -66,34 +65,20 @@ EVENT_HANDLERS.forEach(handler => {
 
 /*
  * Get the method name from a `handler` name.
- *
- * @param {String} handler
- * @return {String}
  */
-
-function getMethodName(handler) {
+function getMethodName(handler: string): string {
   return handler.charAt(2).toLowerCase() + handler.slice(3)
 }
 
 /*
  * Create a fake editor from a `stack` and `value`.
- *
- * @param {Stack} stack
- * @param {Value} value
+ * TODO
  */
-
-function createEditor({ stack, value, props }) {
+function createEditor(simulator: Simulator): EditorContainer {
   const editor = {
-    getSchema: () => stack.schema,
-    getState: () => value,
-    props: {
-      autoCorrect: true,
-      autoFocus: false,
-      onChange: () => {},
-      readOnly: false,
-      spellCheck: true,
-      ...props,
-    },
+    getSchema: () => simulator.stack.schema,
+    getState: () => simulator.value,
+    readOnly: false
   }
 
   return editor
@@ -101,12 +86,8 @@ function createEditor({ stack, value, props }) {
 
 /*
  * Create a fake event with `attributes`.
- *
- * @param {Object} attributes
- * @return {Object}
  */
-
-function createEvent(attributes) {
+function createEvent(attributes: object): object {
   const event = {
     preventDefault: () => (event.isDefaultPrevented = true),
     stopPropagation: () => (event.isPropagationStopped = true),
@@ -118,10 +99,8 @@ function createEvent(attributes) {
   return event
 }
 
-/*
- * Export.
- *
- * @type {Object}
- */
 
 export default Simulator
+export {
+  createEditor, createEvent
+}

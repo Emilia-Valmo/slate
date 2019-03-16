@@ -17,7 +17,7 @@ describe('history', async () => {
             const testDir = resolve(dir, method);
             const tests = fs
                 .readdirSync(testDir)
-                .filter(f => f[0] !== '.' && !!~f.indexOf('.tsx'))
+                .filter(f => f[0] !== '.' && f.endsWith('.tsx'))
                 .map(f => basename(f, extname(f)));
 
             for (const test of tests) {

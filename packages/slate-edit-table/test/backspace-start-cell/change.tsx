@@ -1,22 +1,18 @@
+import { createEvent } from '@gitbook/slate-simulator';
+
 export default function(plugin, change) {
     const { value } = change;
     const blockStart = value.document.getDescendant('anchor');
     const withCursor = change.collapseToStartOf(blockStart);
 
-    let isDefaultPrevented = false;
-    const result = plugin.onKeyDown(
-        {
-            key: 'Backspace',
-            preventDefault() {
-                isDefaultPrevented = true;
-            },
-            stopPropagation() {}
-        },
-        withCursor
-    );
+    const event = createEvent({
+        key: 'Backspace'
+    });
+
+    const result = plugin.onKeyDown(event, withCursor);
 
     // It should have prevented the default behavior...
-    expect(isDefaultPrevented).toBe(true);
+    expect(event.isDefaultPrevented).toBe(true);
 
     // ...and left the change unchanged
     expect(result).toBe(change);

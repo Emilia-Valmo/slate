@@ -1,13 +1,13 @@
+import { createEvent } from '@gitbook/slate-simulator';
+
 export default function(plugin, change) {
     const blockStart = change.value.document.getDescendant('anchor');
     const withCursor = change.collapseToEndOf(blockStart);
 
     const result = plugin.onKeyDown(
-        {
-            key: 'Enter',
-            preventDefault() {},
-            stopPropagation() {}
-        },
+        createEvent({
+            key: 'Enter'
+        }),
         withCursor
     );
 

@@ -27,7 +27,7 @@ interface LeafRendererProps {
 /*
  * Render a leaf of text with all of its marks.
  */
-const LeafRenderer = React.memo(function LeafRenderer(
+const PureLeafRenderer = React.memo(function LeafRenderer(
     props: LeafRendererProps
 ): React.Node {
     const { marks, node, index, offset, text, editor } = props;
@@ -126,4 +126,4 @@ function areEqual(
     return true;
 }
 
-export default LeafRenderer;
+export default PureLeafRenderer;

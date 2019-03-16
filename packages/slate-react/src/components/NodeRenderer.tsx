@@ -89,7 +89,7 @@ function areEqual(
 /*
  * Component to render a node (block or inline).
  */
-const NodeRenderer = React.memo(function NodeRenderer(
+const PureNodeRenderer = React.memo(function NodeRenderer(
     props: NodeRendererProps
 ): React.Node {
     const {
@@ -170,4 +170,4 @@ const NodeRenderer = React.memo(function NodeRenderer(
 },
 areEqual);
 
-export default NodeRenderer;
+export default PureNodeRenderer;

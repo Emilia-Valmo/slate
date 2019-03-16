@@ -5,7 +5,6 @@ import memoize from 'immutablejs-record-memoize';
 import generateKey from '../utils/generate-key';
 import { DataMap } from './data';
 import Range from './range';
-import Stack from './stack';
 import Text from './text';
 
 // Types only
@@ -392,15 +391,6 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
             }
 
             return null;
-        }
-
-        /*
-         * Get the decorations for the node from a `stack`.
-         */
-        public getDecorations(stack: Stack): List<Range> {
-            const decorations = stack.find('decorateNode', this);
-            const list = Range.createList(decorations || []);
-            return list;
         }
 
         /*
@@ -1631,7 +1621,6 @@ function memoizeMethods(C: any, methods: string[] = []) {
         'getClosestInline',
         'getClosestVoid',
         'getCommonAncestor',
-        'getDecorations',
         'getDepth',
         'getDescendant',
         'getDescendantAtPath',

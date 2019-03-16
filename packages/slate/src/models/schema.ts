@@ -28,7 +28,6 @@ import Block from './block';
 import Change from './change';
 import Document from './document';
 import Inline from './inline';
-import Stack from './stack';
 import Text from './text';
 
 type AnyNode = Block | Inline | Text | Document;
@@ -54,7 +53,6 @@ const debug = Debug('slate:schema');
  * Immutable model to represent a schema.
  */
 class Schema extends Record({
-    stack: Stack.create(),
     document: {},
     blocks: {},
     inlines: {}
@@ -126,7 +124,6 @@ class Schema extends Record({
     }
 
     // Properties
-    public readonly stack: Stack;
     public readonly document: SchemaRule;
     public readonly blocks: { [type: string]: SchemaRule };
     public readonly inlines: { [type: string]: SchemaRule };
@@ -278,10 +275,10 @@ class Schema extends Record({
      * invalid node, or void if the node is valid.
      */
     public validateNode(node: AnyNode): SchemaNormalizeFn | undefined {
-        const ret = this.stack.find('validateNode', node);
+        /*const ret = this.stack.find('validateNode', node);
         if (ret) {
             return ret;
-        }
+        }*/
 
         if (node.object === 'text') {
             return;

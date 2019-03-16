@@ -1,8 +1,8 @@
-import logger from '@gitbook/slate-dev-logger';
+import { Block, Inline, Range } from '@gitbook/slate';
 import { Record } from 'immutable';
 import memoize from 'immutablejs-record-memoize';
 
-import MODEL_TYPES from '../constants/model-types';
+import { Plugin } from './plugin';
 
 /*
  * Stack of plugins passed when rendering the editor.
@@ -10,31 +10,30 @@ import MODEL_TYPES from '../constants/model-types';
 class PluginsStack extends Record({
     plugins: []
 }) {
+    public static create(plugins: Plugin[]): PluginsStack {
+        return new PluginsStack({ plugins });
+    }
+    public readonly plugins: Plugin[];
 
-    public static create(attrs = {}): PluginsStack {
-        const { plugins = [] } = attrs;
-        const stack = new PluginsStack({ plugins });
-        return stack;
+    /*
+     * Get the decorations for the node from a `stack`.
+     */
+    public getDecorations(node: Block | Inline): List<Range> {
+        const decorations = this.find('decorateNode', node);
+        const list = Range.createList(decorations || []);
+        return list;
     }
 
     /*
      * Get all plugins with `property`.
-     *
-     * @param {String} property
-     * @return {Array}
      */
-
-    public getPluginsWith(property) {
+    public getPluginsWith(property: keyof Plugin): Plugin[] {
         return this.plugins.filter(plugin => plugin[property] != null);
     }
 
     /*
      * Iterate the plugins with `property`, returning the first non-null value.
-     *
-     * @param {String} property
-     * @param {Any} ...args
      */
-
     public find(property, ...args) {
         const plugins = this.getPluginsWith(property);
 
@@ -48,12 +47,7 @@ class PluginsStack extends Record({
 
     /*
      * Iterate the plugins with `property`, returning all the non-null values.
-     *
-     * @param {String} property
-     * @param {Any} ...args
-     * @return {Array}
      */
-
     public map(property, ...args) {
         const plugins = this.getPluginsWith(property);
         const array = [];
@@ -70,12 +64,8 @@ class PluginsStack extends Record({
 
     /*
      * Iterate the plugins with `property`, breaking on any a non-null values.
-     *
-     * @param {String} property
-     * @param {Any} ...args
      */
-
-    public run(property, ...args) {
+    public run(property: keyof Plugin, ...args: any[]): void {
         const plugins = this.getPluginsWith(property);
 
         for (const plugin of plugins) {
@@ -85,39 +75,12 @@ class PluginsStack extends Record({
             }
         }
     }
-
-    /*
-     * Iterate the plugins with `property`, reducing to a set of React children.
-     *
-     * @param {String} property
-     * @param {Object} props
-     * @param {Any} ...args
-     */
-
-    public render(property, props, ...args) {
-        const plugins = this.getPluginsWith(property);
-        return plugins.reduceRight(
-            (children, plugin) => {
-                if (!plugin[property]) {
-                    return children;
-                }
-                const ret = plugin[property](props, ...args);
-                if (ret == null) {
-                    return children;
-                }
-                props.children = ret;
-                return ret;
-            },
-            props.children === undefined ? null : props.children
-        );
-    }
 }
 
 /*
  * Memoize read methods.
  */
 
-memoize(Stack.prototype, ['getPluginsWith']);
+memoize(PluginsStack.prototype, ['getPluginsWith', 'getDecorations']);
 
-
-export default Stack;
+export default PluginsStack;

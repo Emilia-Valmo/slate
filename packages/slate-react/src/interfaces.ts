@@ -1,4 +1,4 @@
-import { Block, EditorContainer, Inline, Mark, Value, Schema, Change } from '@gitbook/slate';
+import { Block, EditorContainer, Inline, Mark, Value, Change } from '@gitbook/slate';
 import { Set } from 'immutable';
 import * as React from 'react';
 
@@ -20,7 +20,6 @@ export interface EditorContainer {
     readOnly: boolean;
     value: Value;
     stack: PluginsStack;
-    schema: Schema;
     element: HTMLElement;
     onChange: (change: Change) => void;
     change: (fn: (change: Change) => Change) => void;

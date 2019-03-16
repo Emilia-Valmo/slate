@@ -1,4 +1,5 @@
-import { Block, Change, Inline } from '@gitbook/slate';
+import { Block, Change, Inline, Range } from '@gitbook/slate';
+import { List } from 'immutable';
 import * as React from 'react';
 import { EditorContainer, MarkProps, NodeProps } from '../interfaces';
 
@@ -34,4 +35,6 @@ export interface Plugin {
     renderNode?: (props: NodeProps<Block | Inline>) => React.Node;
     /** Function called when rendering a mark */
     renderMark?: (props: MarkProps) => React.Node;
+    /** Decorate a node with range of marks */
+    decorateNode?: (node: Block | Inline) => Range[] | List<Range> | void;
 }

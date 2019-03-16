@@ -1357,8 +1357,7 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
         public hasInlines(key: string): boolean {
             const node = this.assertNode(key);
             return !!(
-                node.nodes &&
-                node.nodes.find(n => n.isInline || n.isText)
+                node.nodes && node.nodes.find(n => n.isInline || n.isText)
             );
         }
 

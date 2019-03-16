@@ -27,7 +27,7 @@ import MODEL_TYPES from '../constants/model-types';
 import Stack from './stack';
 
 // TODO
-export type SchemaNormalizeFn = () => void
+export type SchemaNormalizeFn = () => void;
 
 /*
  * Debug.

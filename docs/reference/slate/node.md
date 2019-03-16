@@ -60,12 +60,6 @@ Get all of the bottom-most [`Block`](./block.md) nodes in a `range`.
 
 Get all of the bottom-most [`Block`](./block.md) node descendants.
 
-### `getCharactersAtRange`
-
-`getCharactersAtRange(range: Range) => List`
-
-Get a list of all of the [`Characters`](./character.md) in a `range`.
-
 ### `getChild`
 
 `getChild(key: String || Node) => Node || Void`

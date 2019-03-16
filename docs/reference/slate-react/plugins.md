@@ -132,11 +132,8 @@ If this function returns `true`, it can force updating the editor where otherwis
 
 ```js
 {
-  renderEditor: Function,
   renderMark: Function,
   renderNode: Function,
-  renderPlaceholder: Function,
-  renderPortal: Function,
 }
 ```
 
@@ -159,20 +156,6 @@ Render a `Mark`.
 `Function renderNode({ key, editor, isFocused, isSelected, node, parent, readOnly, children, attributes }) => ReactNode || Void`
 
 Render a `Node`.
-
-### `renderPlaceholder`
-
-`Function renderPlaceholder({ editor, mark, marks, node, offset, text, children, attributes }) => ReactNode || Void`
-
-Render the placeholder that is shown when the editor has no `value`.
-
-The `placeholder` prop that was passed to the editor can be found at `editor.props.placeholder`.
-
-### `renderPortal`
-
-`Function renderPortal(value: Value, editor: Editor) => ReactNode || Void`
-
-Unlike the other renderProps, this one is mapped, so each plugin that returns something gets its own Portal. The return value is given as `children` to a `react-portal` `<Portal/>`.
 
 ## Other Properties
 

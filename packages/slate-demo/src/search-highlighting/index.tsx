@@ -6,12 +6,6 @@ import styled from 'react-emotion';
 import { Toolbar } from '../components';
 import initialValue from './value.json';
 
-/*
- * Some styled components for the search box.
- *
- * @type {Component}
- */
-
 const SearchWrapper = styled('div')`
     position: relative;
 `;
@@ -27,12 +21,6 @@ const SearchInput = styled('input')`
     padding-left: 2em;
     width: 100%;
 `;
-
-/*
- * The search highlighting example.
- *
- * @type {Component}
- */
 
 class SearchHighlighting extends React.Component {
     /*
@@ -116,20 +104,20 @@ class SearchHighlighting extends React.Component {
 
     public onInputChange = event => {
         const { value } = this.state;
-        const string = event.target.value;
+        const content = event.target.value;
         const texts = value.document.getTexts();
         const decorations = [];
 
         texts.forEach(node => {
             const { key, text } = node;
-            const parts = text.split(string);
+            const parts = text.split(content);
             let offset = 0;
 
             parts.forEach((part, i) => {
                 if (i !== 0) {
                     decorations.push({
                         anchorKey: key,
-                        anchorOffset: offset - string.length,
+                        anchorOffset: offset - content.length,
                         focusKey: key,
                         focusOffset: offset,
                         marks: [{ type: 'highlight' }],
@@ -137,7 +125,7 @@ class SearchHighlighting extends React.Component {
                     });
                 }
 
-                offset = offset + part.length + string.length;
+                offset = offset + part.length + content.length;
             });
         });
 
@@ -153,9 +141,5 @@ class SearchHighlighting extends React.Component {
         this.onChange(change);
     };
 }
-
-/*
- * Export.
- */
 
 export default SearchHighlighting;

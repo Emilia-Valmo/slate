@@ -7,11 +7,7 @@ import initialValue from './value.json';
 
 /*
  * Define our code components.
- *
- * @param {Object} props
- * @return {Element}
  */
-
 function CodeBlock(props) {
     const { editor, node } = props;
     const language = node.data.get('language');
@@ -64,8 +60,6 @@ function getContent(token) {
 
 /*
  * The code highlighting example.
- *
- * @type {Component}
  */
 
 class CodeHighlighting extends React.Component {
@@ -201,9 +195,9 @@ class CodeHighlighting extends React.Component {
 
         const language = node.data.get('language');
         const texts = node.getTexts().toArray();
-        const string = texts.map(t => t.text).join('\n');
+        const textContent = texts.map(t => t.text).join('\n');
         const grammar = Prism.languages[language];
-        const tokens = Prism.tokenize(string, grammar);
+        const tokens = Prism.tokenize(textContent, grammar);
         const decorations = [];
         let startText = texts.shift();
         let endText = startText;
@@ -250,9 +244,5 @@ class CodeHighlighting extends React.Component {
         return decorations;
     };
 }
-
-/*
- * Export.
- */
 
 export default CodeHighlighting;

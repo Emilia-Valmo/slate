@@ -38,7 +38,7 @@ const alignPlugin = {
                     // Make sure cells have an alignment
                     align: align => ['left', 'center', 'right'].includes(align)
                 },
-                normalize(change: Change, violation: string, context: Object) {
+                normalize(change: Change, violation: string, context: object) {
                     if (violation === NODE_DATA_INVALID) {
                         change.setNodeByKey(context.node.key, {
                             data: context.node.data.set('align', 'left')

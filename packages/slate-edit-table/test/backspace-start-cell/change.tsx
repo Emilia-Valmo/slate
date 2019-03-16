@@ -9,7 +9,7 @@ export default function(plugin, change) {
         key: 'Backspace'
     });
 
-    const result = plugin.onKeyDown(event, withCursor);
+    const result = plugin.plugin.onKeyDown(event, withCursor);
 
     // It should have prevented the default behavior...
     expect(event.isDefaultPrevented).toBe(true);

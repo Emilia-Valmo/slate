@@ -1,18 +1,20 @@
-import { Block, Change } from '@gitbook/slate';
+import { Block, Change, Schema } from '@gitbook/slate';
 import {
     CHILD_OBJECT_INVALID,
     CHILD_TYPE_INVALID,
     PARENT_TYPE_INVALID
 } from '@gitbook/slate-schema-violations';
+
 import Options from '../options';
 import { createCell } from '../utils';
+import createValidateNode from './validateNode';
 
 /*
  * Returns a schema definition for the plugin
  */
-
-function schema(opts: Options): object {
-    return {
+function createSchema(opts: Options): Schema {
+    return Schema.create({
+        validations: [createValidateNode(opts)],
         blocks: {
             [opts.typeTable]: {
                 nodes: [{ types: [opts.typeRow] }]
@@ -46,14 +48,13 @@ function schema(opts: Options): object {
                 }
             }
         }
-    };
+    });
 }
 
 /*
  * A row's children must be cells.
  * If they're not then we wrap them within a cell.
  */
-
 function onlyCellsInRow(opts: Options, change: Change, context: object) {
     const cell = createCell(opts, []);
     const index = context.node.nodes.findIndex(
@@ -66,7 +67,6 @@ function onlyCellsInRow(opts: Options, change: Change, context: object) {
 /*
  * Rows can't live outside a table, if one is found then we wrap it within a table.
  */
-
 function rowOnlyInTable(opts: Options, change: Change, context: object) {
     return change.wrapBlockByKey(context.node.key, opts.typeTable);
 }
@@ -75,7 +75,6 @@ function rowOnlyInTable(opts: Options, change: Change, context: object) {
  * A cell's children must be "block"s.
  * If they're not then we wrap them within a block with aof opts.typeContent
  */
-
 function onlyBlocksInCell(opts: Options, change: Change, context: object) {
     const block = Block.create({
         type: opts.typeContent
@@ -94,9 +93,8 @@ function onlyBlocksInCell(opts: Options, change: Change, context: object) {
 /*
  * Cells can't live outside a row, if one is found then we wrap it within a row.
  */
-
 function cellOnlyInRow(opts: Options, change: Change, context: object) {
     return change.wrapBlockByKey(context.node.key, opts.typeRow);
 }
 
-export default schema;
+export default createSchema;

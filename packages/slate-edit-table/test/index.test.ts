@@ -5,15 +5,12 @@ import path from 'path';
 import EditTable from '../src';
 
 const PLUGIN = EditTable();
-const SCHEMA = Schema.create({
-    plugins: [PLUGIN]
-});
 
 function deserializeValue(value) {
     return Value.fromJS(
         {
             document: value.document,
-            schema: SCHEMA,
+            schema: PLUGIN.schema,
             selection: value.selection
         },
         { normalize: false }

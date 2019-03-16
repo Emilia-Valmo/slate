@@ -18,5 +18,6 @@ module.exports = {
         "jsx",
         "json",
         "node"
-    ]
+    ],
+    testEnvironment: 'node'
 };

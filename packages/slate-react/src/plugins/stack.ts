@@ -25,20 +25,17 @@ class PluginsStack extends Record({
     }
 
     /*
-     * Get all plugins with `property`.
-     */
-    public getPluginsWith(property: keyof Plugin): Plugin[] {
-        return this.plugins.filter(plugin => plugin[property] != null);
-    }
-
-    /*
      * Iterate the plugins with `property`, returning the first non-null value.
      */
     public find(property, ...args) {
-        const plugins = this.getPluginsWith(property);
-
+        const { plugins } = this;
         for (const plugin of plugins) {
-            const ret = plugin[property](...args);
+            const fn = plugin[property];
+            if (!fn) {
+                continue;
+            }
+
+            const ret = fn(...args);
             if (ret != null) {
                 return ret;
             }
@@ -46,30 +43,17 @@ class PluginsStack extends Record({
     }
 
     /*
-     * Iterate the plugins with `property`, returning all the non-null values.
-     */
-    public map(property, ...args) {
-        const plugins = this.getPluginsWith(property);
-        const array = [];
-
-        for (const plugin of plugins) {
-            const ret = plugin[property](...args);
-            if (ret != null) {
-                array.push(ret);
-            }
-        }
-
-        return array;
-    }
-
-    /*
      * Iterate the plugins with `property`, breaking on any a non-null values.
      */
     public run(property: keyof Plugin, ...args: any[]): void {
-        const plugins = this.getPluginsWith(property);
-
+        const { plugins } = this;
         for (const plugin of plugins) {
-            const ret = plugin[property](...args);
+            const fn = plugin[property];
+            if (!fn) {
+                continue;
+            }
+
+            const ret = fn(...args);
             if (ret != null) {
                 return;
             }

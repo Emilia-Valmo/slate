@@ -1,17 +1,37 @@
 import logger from '@gitbook/slate-dev-logger';
-import { List, Record } from 'immutable';
+import { List, Record, Set } from 'immutable';
 import isPlainObject from 'is-plain-object';
 
 import MODEL_TYPES from '../constants/model-types';
-import Mark from './mark';
+import Mark, { MarkJSON } from './mark';
+
+// Types only
+import Text from './block';
+import Block from './block';
+import Document from './document';
+import Inline from './inline';
+
+type AnyNode = Block | Inline | Document | Text;
+
+// JSON representation of a range
+export interface RangeJSON {
+    anchorKey: string | null;
+    anchorOffset: number;
+    focusKey: string | null;
+    focusOffset: number;
+    isBackward: boolean | null;
+    isFocused: boolean;
+    marks: MarkJSON[] | null;
+    isAtomic: boolean;
+}
+
+// Argument to create a Range
+export type RangeCreateProps = Range | Partial<{}>;
 
 /*
- * Default properties.
- *
- * @type {Object}
+ * Range in the document (used for selection, decoration with marks, etc)
  */
-
-const DEFAULTS = {
+class Range extends Record({
     anchorKey: null,
     anchorOffset: 0,
     focusKey: null,
@@ -20,23 +40,93 @@ const DEFAULTS = {
     isFocused: false,
     marks: null,
     isAtomic: false
-};
-
-/*
- * Range.
- *
- * @type {Range}
- */
-
-class Range extends Record(DEFAULTS) {
+}) {
     /*
-     * Create a new `Range` with `attrs`.
-     *
-     * @param {Object|Range} attrs
-     * @return {Range}
+     * Object.
      */
 
-    public static create(attrs = {}) {
+    get object(): 'range' {
+        return 'range';
+    }
+
+    /*
+     * Check whether the range is blurred.
+     */
+    get isBlurred(): boolean {
+        return !this.isFocused;
+    }
+
+    /*
+     * Check whether the range is collapsed.
+     */
+    get isCollapsed(): boolean {
+        return (
+            this.anchorKey === this.focusKey &&
+            this.anchorOffset === this.focusOffset
+        );
+    }
+
+    /*
+     * Check whether the range is expanded.
+     */
+    get isExpanded(): boolean {
+        return !this.isCollapsed;
+    }
+
+    /*
+     * Check whether the range is forward.
+     */
+    get isForward(): boolean {
+        return this.isBackward == null ? null : !this.isBackward;
+    }
+
+    /*
+     * Check whether the range's keys are set.
+     */
+    get isSet(): boolean {
+        return this.anchorKey != null && this.focusKey != null;
+    }
+
+    /*
+     * Check whether the range's keys are not set.
+     */
+    get isUnset(): boolean {
+        return !this.isSet;
+    }
+
+    /*
+     * Get the start key.
+     */
+    get startKey(): string | null {
+        return this.isBackward ? this.focusKey : this.anchorKey;
+    }
+
+    /*
+     * Get the start offset.
+     */
+    get startOffset(): number {
+        return this.isBackward ? this.focusOffset : this.anchorOffset;
+    }
+
+    /*
+     * Get the end key.
+     */
+
+    get endKey(): string | null {
+        return this.isBackward ? this.anchorKey : this.focusKey;
+    }
+
+    /*
+     * Get the end offset.
+     */
+    get endOffset(): number {
+        return this.isBackward ? this.anchorOffset : this.focusOffset;
+    }
+
+    /*
+     * Create a new `Range` with `attrs`.
+     */
+    public static create(attrs: RangeCreateProps = {}): Range {
         if (Range.isRange(attrs)) {
             return attrs;
         }
@@ -132,12 +222,8 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Create a `Range` from a JSON `object`.
-     *
-     * @param {Object} object
-     * @return {Range}
      */
-
-    public static fromJS(object) {
+    public static fromJS(object: Partial<RangeJSON>): Range {
         const {
             anchorKey = null,
             anchorOffset = 0,
@@ -164,157 +250,26 @@ class Range extends Record(DEFAULTS) {
     }
 
     /*
-     * Alias `fromJS`.
-     */
-
-    public static fromJSON(object) {
-        logger.deprecate(
-            'slate@0.35.0',
-            'fromJSON methods are deprecated, use fromJS instead'
-        );
-        return Range.fromJS(object);
-    }
-
-    /*
      * Check if an `obj` is a `Range`.
-     *
-     * @param {Any} obj
-     * @return {Boolean}
      */
-
-    public static isRange(obj) {
+    public static isRange(obj: any): obj is Range {
         return !!(obj && obj[MODEL_TYPES.RANGE]);
     }
 
-    /*
-     * Object.
-     *
-     * @return {String}
-     */
-
-    get object() {
-        return 'range';
-    }
-
-    get kind() {
-        logger.deprecate(
-            'slate@0.32.0',
-            'The `kind` property of Slate objects has been renamed to `object`.'
-        );
-        return this.object;
-    }
-
-    /*
-     * Check whether the range is blurred.
-     *
-     * @return {Boolean}
-     */
-
-    get isBlurred() {
-        return !this.isFocused;
-    }
-
-    /*
-     * Check whether the range is collapsed.
-     *
-     * @return {Boolean}
-     */
-
-    get isCollapsed() {
-        return (
-            this.anchorKey === this.focusKey &&
-            this.anchorOffset === this.focusOffset
-        );
-    }
-
-    /*
-     * Check whether the range is expanded.
-     *
-     * @return {Boolean}
-     */
-
-    get isExpanded() {
-        return !this.isCollapsed;
-    }
-
-    /*
-     * Check whether the range is forward.
-     *
-     * @return {Boolean}
-     */
-
-    get isForward() {
-        return this.isBackward == null ? null : !this.isBackward;
-    }
-
-    /*
-     * Check whether the range's keys are set.
-     *
-     * @return {Boolean}
-     */
-
-    get isSet() {
-        return this.anchorKey != null && this.focusKey != null;
-    }
-
-    /*
-     * Check whether the range's keys are not set.
-     *
-     * @return {Boolean}
-     */
-
-    get isUnset() {
-        return !this.isSet;
-    }
-
-    /*
-     * Get the start key.
-     *
-     * @return {String}
-     */
-
-    get startKey() {
-        return this.isBackward ? this.focusKey : this.anchorKey;
-    }
-
-    /*
-     * Get the start offset.
-     *
-     * @return {String}
-     */
-
-    get startOffset() {
-        return this.isBackward ? this.focusOffset : this.anchorOffset;
-    }
-
-    /*
-     * Get the end key.
-     *
-     * @return {String}
-     */
-
-    get endKey() {
-        return this.isBackward ? this.anchorKey : this.focusKey;
-    }
-
-    /*
-     * Get the end offset.
-     *
-     * @return {String}
-     */
-
-    get endOffset() {
-        return this.isBackward ? this.anchorOffset : this.focusOffset;
-    }
+    // Record properties
+    public readonly anchorKey: string | null;
+    public readonly anchorOffset: number;
+    public readonly focusKey: string | null;
+    public readonly focusOffset: number;
+    public readonly isBackward: boolean | null;
+    public readonly isFocused: boolean | null;
+    public readonly marks: Set<Mark> | null;
+    public readonly isAtomic: boolean;
 
     /*
      * Check whether anchor point of the range is at the start of a `node`.
-     *
-     * @param {Node} node
-     * @return {Boolean}
      */
-
-    public hasAnchorAtStartOf(node) {
+    public hasAnchorAtStartOf(node: AnyNode): boolean {
         // PERF: Do a check for a `0` offset first since it's quickest.
         if (this.anchorOffset !== 0) {
             return false;
@@ -325,12 +280,8 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Check whether anchor point of the range is at the end of a `node`.
-     *
-     * @param {Node} node
-     * @return {Boolean}
      */
-
-    public hasAnchorAtEndOf(node) {
+    public hasAnchorAtEndOf(node: AnyNode): boolean {
         const last = getLast(node);
         return (
             this.anchorKey === last.key &&
@@ -341,14 +292,8 @@ class Range extends Record(DEFAULTS) {
     /*
      * Check whether the anchor edge of a range is in a `node` and at an
      * offset between `start` and `end`.
-     *
-     * @param {Node} node
-     * @param {Number} start
-     * @param {Number} end
-     * @return {Boolean}
      */
-
-    public hasAnchorBetween(node, start, end) {
+    public hasAnchorBetween(node: AnyNode, start: number, end: number): boolean {
         return (
             this.anchorOffset <= end &&
             start <= this.anchorOffset &&
@@ -358,12 +303,8 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Check whether the anchor edge of a range is in a `node`.
-     *
-     * @param {Node} node
-     * @return {Boolean}
      */
-
-    public hasAnchorIn(node) {
+    public hasAnchorIn(node: AnyNode): boolean {
         return node.object === 'text'
             ? node.key === this.anchorKey
             : this.anchorKey != null && node.hasDescendant(this.anchorKey);
@@ -371,12 +312,8 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Check whether focus point of the range is at the end of a `node`.
-     *
-     * @param {Node} node
-     * @return {Boolean}
      */
-
-    public hasFocusAtEndOf(node) {
+    public hasFocusAtEndOf(node: AnyNode): boolean {
         const last = getLast(node);
         return (
             this.focusKey === last.key && this.focusOffset === last.text.length
@@ -385,12 +322,8 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Check whether focus point of the range is at the start of a `node`.
-     *
-     * @param {Node} node
-     * @return {Boolean}
      */
-
-    public hasFocusAtStartOf(node) {
+    public hasFocusAtStartOf(node: AnyNode): boolean {
         if (this.focusOffset !== 0) {
             return false;
         }
@@ -401,14 +334,8 @@ class Range extends Record(DEFAULTS) {
     /*
      * Check whether the focus edge of a range is in a `node` and at an
      * offset between `start` and `end`.
-     *
-     * @param {Node} node
-     * @param {Number} start
-     * @param {Number} end
-     * @return {Boolean}
      */
-
-    public hasFocusBetween(node, start, end) {
+    public hasFocusBetween(node: AnyNode, start: number, end: number): boolean {
         return (
             start <= this.focusOffset &&
             this.focusOffset <= end &&
@@ -418,12 +345,8 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Check whether the focus edge of a range is in a `node`.
-     *
-     * @param {Node} node
-     * @return {Boolean}
      */
-
-    public hasFocusIn(node) {
+    public hasFocusIn(node: AnyNode): boolean {
         return node.object === 'text'
             ? node.key === this.focusKey
             : this.focusKey != null && node.hasDescendant(this.focusKey);
@@ -431,33 +354,22 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Check whether the range is at the start of a `node`.
-     *
-     * @param {Node} node
-     * @return {Boolean}
      */
-
-    public isAtStartOf(node) {
+    public isAtStartOf(node: AnyNode): boolean {
         return this.isCollapsed && this.hasAnchorAtStartOf(node);
     }
 
     /*
      * Check whether the range is at the end of a `node`.
-     *
-     * @param {Node} node
-     * @return {Boolean}
      */
-
-    public isAtEndOf(node) {
+    public isAtEndOf(node: AnyNode): boolean {
         return this.isCollapsed && this.hasAnchorAtEndOf(node);
     }
 
     /*
      * Focus the range.
-     *
-     * @return {Range}
      */
-
-    public focus() {
+    public focus(): Range {
         return this.merge({
             isFocused: true
         });
@@ -465,11 +377,9 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Blur the range.
-     *
-     * @return {Range}
      */
 
-    public blur() {
+    public blur(): Range {
         return this.merge({
             isFocused: false
         });
@@ -477,11 +387,8 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Unset the range.
-     *
-     * @return {Range}
      */
-
-    public deselect() {
+    public deselect(): Range {
         return this.merge({
             anchorKey: null,
             anchorOffset: 0,
@@ -494,11 +401,8 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Flip the range.
-     *
-     * @return {Range}
      */
-
-    public flip() {
+    public flip(): Range {
         return this.merge({
             anchorKey: this.focusKey,
             anchorOffset: this.focusOffset,
@@ -510,12 +414,8 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Move the anchor offset `n` characters.
-     *
-     * @param {Number} n (optional)
-     * @return {Range}
      */
-
-    public moveAnchor(n = 1) {
+    public moveAnchor(n: number = 1): Range {
         const { anchorKey, focusKey, focusOffset, isBackward } = this;
         const anchorOffset = this.anchorOffset + n;
         return this.merge({
@@ -527,12 +427,8 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Move the anchor offset `n` characters.
-     *
-     * @param {Number} n (optional)
-     * @return {Range}
      */
-
-    public moveFocus(n = 1) {
+    public moveFocus(n: number = 1): Range {
         const { anchorKey, anchorOffset, focusKey, isBackward } = this;
         const focusOffset = this.focusOffset + n;
         return this.merge({
@@ -544,13 +440,9 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Move the range's anchor point to a `key` and `offset`.
-     *
-     * @param {String} key
-     * @param {Number} offset
-     * @return {Range}
      */
 
-    public moveAnchorTo(key, offset) {
+    public moveAnchorTo(key: string, offset: number): Range {
         const { anchorKey, focusKey, focusOffset, isBackward } = this;
         return this.merge({
             anchorKey: key,
@@ -566,13 +458,8 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Move the range's focus point to a `key` and `offset`.
-     *
-     * @param {String} key
-     * @param {Number} offset
-     * @return {Range}
      */
-
-    public moveFocusTo(key, offset) {
+    public moveFocusTo(key: string, offset: number): Range {
         const { focusKey, anchorKey, anchorOffset, isBackward } = this;
         return this.merge({
             focusKey: key,
@@ -588,12 +475,8 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Move the range to `anchorOffset`.
-     *
-     * @param {Number} anchorOffset
-     * @return {Range}
      */
-
-    public moveAnchorOffsetTo(anchorOffset) {
+    public moveAnchorOffsetTo(anchorOffset: number): Range {
         return this.merge({
             anchorOffset,
             isBackward:
@@ -605,12 +488,8 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Move the range to `focusOffset`.
-     *
-     * @param {Number} focusOffset
-     * @return {Range}
      */
-
-    public moveFocusOffsetTo(focusOffset) {
+    public moveFocusOffsetTo(focusOffset: number): Range {
         return this.merge({
             focusOffset,
             isBackward:
@@ -622,13 +501,8 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Move the range to `anchorOffset` and `focusOffset`.
-     *
-     * @param {Number} anchorOffset
-     * @param {Number} focusOffset (optional)
-     * @return {Range}
      */
-
-    public moveOffsetsTo(anchorOffset, focusOffset = anchorOffset) {
+    public moveOffsetsTo(anchorOffset: number, focusOffset: number = anchorOffset): Range {
         return this.moveAnchorOffsetTo(anchorOffset).moveFocusOffsetTo(
             focusOffset
         );
@@ -636,81 +510,55 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Move the focus point to the anchor point.
-     *
-     * @return {Range}
      */
 
-    public moveToAnchor() {
+    public moveToAnchor(): Range {
         return this.moveFocusTo(this.anchorKey, this.anchorOffset);
     }
 
     /*
      * Move the anchor point to the focus point.
-     *
-     * @return {Range}
      */
-
-    public moveToFocus() {
+    public moveToFocus(): Range {
         return this.moveAnchorTo(this.focusKey, this.focusOffset);
     }
 
     /*
      * Move the range's anchor point to the start of a `node`.
-     *
-     * @param {Node} node
-     * @return {Range}
      */
-
-    public moveAnchorToStartOf(node) {
+    public moveAnchorToStartOf(node: AnyNode): Range {
         node = getFirst(node);
         return this.moveAnchorTo(node.key, 0);
     }
 
     /*
      * Move the range's anchor point to the end of a `node`.
-     *
-     * @param {Node} node
-     * @return {Range}
      */
-
-    public moveAnchorToEndOf(node) {
+    public moveAnchorToEndOf(node: AnyNode): Range {
         node = getLast(node);
         return this.moveAnchorTo(node.key, node.text.length);
     }
 
     /*
      * Move the range's focus point to the start of a `node`.
-     *
-     * @param {Node} node
-     * @return {Range}
      */
-
-    public moveFocusToStartOf(node) {
+    public moveFocusToStartOf(node: AnyNode): Range {
         node = getFirst(node);
         return this.moveFocusTo(node.key, 0);
     }
 
     /*
      * Move the range's focus point to the end of a `node`.
-     *
-     * @param {Node} node
-     * @return {Range}
      */
-
-    public moveFocusToEndOf(node) {
+    public moveFocusToEndOf(node: AnyNode): Range {
         node = getLast(node);
         return this.moveFocusTo(node.key, node.text.length);
     }
 
     /*
      * Move to the entire range of `start` and `end` nodes.
-     *
-     * @param {Node} start
-     * @param {Node} end (optional)
-     * @return {Range}
      */
-
-    public moveToRangeOf(start, end = start) {
+    public moveToRangeOf(start: AnyNode, end: AnyNode = start): Range {
         const range = this.isBackward ? this.flip() : this;
         return range.moveAnchorToStartOf(start).moveFocusToEndOf(end);
     }
@@ -825,11 +673,8 @@ class Range extends Record(DEFAULTS) {
 
     /*
      * Return a JSON representation of the range.
-     *
-     * @return {Object}
      */
-
-    public toJS() {
+    public toJS(): RangeJSON {
         const object = {
             object: this.object,
             anchorKey: this.anchorKey,
@@ -846,18 +691,6 @@ class Range extends Record(DEFAULTS) {
         };
 
         return object;
-    }
-
-    /*
-     * Alias `toJS`.
-     */
-
-    public toJSON() {
-        logger.deprecate(
-            'slate@0.35.0',
-            'toJSON methods are deprecated, use toJS instead'
-        );
-        return this.toJS();
     }
 }
 
@@ -945,30 +778,16 @@ ALIAS_METHODS.forEach(([alias, method]) => {
 
 /*
  * Get the first text of a `node`.
- *
- * @param {Node} node
- * @return {Text}
  */
-
-function getFirst(node) {
+function getFirst(node: AnyNode): Text | null {
     return node.object === 'text' ? node : node.getFirstText();
 }
 
 /*
  * Get the last text of a `node`.
- *
- * @param {Node} node
- * @return {Text}
  */
-
-function getLast(node) {
+function getLast(node: AnyNode): Text | null {
     return node.object === 'text' ? node : node.getLastText();
 }
-
-/*
- * Export.
- *
- * @type {Range}
- */
 
 export default Range;

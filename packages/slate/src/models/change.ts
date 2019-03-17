@@ -34,6 +34,7 @@ class Change {
      */
     public static isChange = isType.bind(null, 'CHANGE');
 
+    // Mutable properties
     public value: Value;
     public operations: List<Operation>;
     public flags: ChangeFlags;

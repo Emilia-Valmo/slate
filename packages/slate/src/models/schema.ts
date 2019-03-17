@@ -37,33 +37,49 @@ export type ValidateNodeFn = (
     node: AnyNode
 ) => null | undefined | SchemaNormalizeFn;
 
-// Context when normalizing a node (it depends on the violation)
-export interface SchemaNormalizeContext {
-    node: AnyNode;
-    child: AnyNode;
+// Rule for a node (used for first, parent, etc)
+interface NodeSchemaRule {
+    /** Types that should be allowed as a parent */
+    types?: string[];
+    /** Object kinds that should be allowed as a child */
+    objects?: Array<'text' | 'inline' | 'block'>;
 }
 
+// Rule for a block/document/inline
 export interface SchemaRule {
     isVoid?: boolean;
     text?: RegExp;
+    /** Validation for marks */
+    marks?: Array<{
+        type: string;
+    }>;
     /** Validation for the data of the node */
     data?: {
         [key: string]: (value: any) => boolean;
     };
+    /** Validation for the parent */
+    parent?: NodeSchemaRule;
+    first?: NodeSchemaRule;
+    last?: NodeSchemaRule;
     /** Validation for inner nodes */
-    nodes?: Array<{
-        /** Types that should be allowed as a child */
-        types?: string[];
-        /** Object kinds that should be allowed as a child */
-        objects: Array<'text' | 'inline' | 'block'>;
-        min?: number;
-        max?: number;
-    }>;
+    nodes?: Array<
+        NodeSchemaRule & {
+            min?: number;
+            max?: number;
+        }
+    >;
     normalize?: (
         change: Change,
         violation: SchemaViolation,
         context: SchemaNormalizeContext
     ) => void;
+}
+
+// Context when normalizing a node (it depends on the violation)
+export interface SchemaNormalizeContext {
+    node: AnyNode;
+    child: AnyNode;
+    rule: SchemaRule;
 }
 
 const debug = Debug('slate:schema');
@@ -488,8 +504,27 @@ class Schema extends Record({
  * A Lodash customizer for merging schema definitions. Special cases `objects`,
  * `marks` and `types` arrays to be unioned, and ignores new `null` values.
  */
-function customizer<T extends any>(target: T, source: T, key: string): T {
-    if (key === 'objects' || key === 'types' || key === 'marks') {
+function customizer<K extends keyof SchemaRule>(
+    target: SchemaRule[K] | undefined,
+    source: SchemaRule[K] | undefined,
+    key: K
+): SchemaRule[K] {
+    if (key === 'normalize' && source && target) {
+        return (
+            change: Change,
+            violation: SchemaViolation,
+            context: SchemaNormalizeContext
+        ) => {
+            const original = change.operations.size;
+            target(change, violation, context);
+
+            if (change.operations.size > original) {
+                return;
+            }
+
+            source(change, violation, context);
+        };
+    } else if (key === 'objects' || key === 'types' || key === 'marks') {
         return target == null ? source : target.concat(source);
     } else {
         return source == null ? target : source;

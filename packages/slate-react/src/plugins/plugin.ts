@@ -37,4 +37,9 @@ export interface Plugin {
     renderMark?: (props: MarkProps) => React.Node;
     /** Decorate a node with range of marks */
     decorateNode?: (node: Block | Inline) => Range[] | List<Range> | void;
+    /** Function to force an update of a node component */
+    shouldNodeComponentUpdate?: <T extends Block | Inline>(
+        props: NodeProps<T>,
+        nextProps: NodeProps<T>
+    ) => boolean | null;
 }

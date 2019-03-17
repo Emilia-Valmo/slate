@@ -5,14 +5,14 @@ import h from '../../helpers/h';
 
 function Image(props) {
     return React.createElement('img', {
-        className: imageProps.isSelected ? 'selected' : '',
-        src: imageProps.node.data.get('src'),
-        ...imageProps.attributes
+        className: props.isSelected ? 'selected' : '',
+        src: props.node.data.get('src'),
+        ...props.attributes
     });
 }
 
 function renderNode(props) {
-    switch (nodeProps.node.type) {
+    switch (props.node.type) {
         case 'image':
             return Image(props);
     }

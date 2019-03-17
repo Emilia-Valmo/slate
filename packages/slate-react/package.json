@@ -1,7 +1,7 @@
 {
   "name": "@gitbook/slate-react",
   "description": "A set of React components for building completely customizable rich-text editors.",
-  "version": "3.0.0-alpha.1",
+  "version": "3.0.0-alpha.2",
   "license": "MIT",
   "repository": "https://github.com/GitbookIO/slate.git",
   "source": "src/index.ts",
@@ -13,14 +13,14 @@
     "dist/"
   ],
   "dependencies": {
-    "@gitbook/slate-base64-serializer": "^3.0.0-alpha.1",
-    "@gitbook/slate-dev-environment": "^3.0.0-alpha.1",
-    "@gitbook/slate-dev-logger": "^3.0.0-alpha.1",
-    "@gitbook/slate-hotkeys": "^3.0.0-alpha.1",
-    "@gitbook/slate-plain-serializer": "^3.0.0-alpha.1",
-    "immutablejs-record-memoize": "^1.0.1",
+    "@gitbook/slate-base64-serializer": "^3.0.0-alpha.2",
+    "@gitbook/slate-dev-environment": "^3.0.0-alpha.2",
+    "@gitbook/slate-dev-logger": "^3.0.0-alpha.2",
+    "@gitbook/slate-hotkeys": "^3.0.0-alpha.2",
+    "@gitbook/slate-plain-serializer": "^3.0.0-alpha.2",
     "debug": "^3.1.0",
     "get-window": "^1.1.1",
+    "immutablejs-record-memoize": "^1.0.1",
     "is-window": "^1.0.2",
     "keycode": "^2.1.2",
     "scheduler": "^0.13.4",
@@ -33,9 +33,9 @@
     "react-dom": ">=16.8.4"
   },
   "devDependencies": {
-    "@gitbook/slate": "^3.0.0-alpha.1",
-    "@gitbook/slate-hyperscript": "^3.0.0-alpha.1",
-    "@gitbook/slate-simulator": "^3.0.0-alpha.1",
+    "@gitbook/slate": "^3.0.0-alpha.2",
+    "@gitbook/slate-hyperscript": "^3.0.0-alpha.2",
+    "@gitbook/slate-simulator": "^3.0.0-alpha.2",
     "immutable": ">=4.0.0-rc.12"
   }
 }

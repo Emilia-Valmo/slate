@@ -1,10 +1,4 @@
-import {
-    Block,
-    Change,
-    Inline,
-    Mark,
-    Value
-} from '@gitbook/slate';
+import { Block, Change, Inline, Mark, Value } from '@gitbook/slate';
 import {
     IS_ANDROID,
     IS_BROWSER,
@@ -21,8 +15,8 @@ import {
     unstable_UserBlockingPriority as UserBlockingPriority
 } from 'scheduler';
 
-import { PluginsStack, Plugin } from '../plugins';
 import EVENT_HANDLERS from '../constants/event-handlers';
+import { Plugin, PluginsStack } from '../plugins';
 import AfterPlugin from '../plugins/after';
 import BeforePlugin from '../plugins/before';
 import findDOMRange from '../utils/find-dom-range';
@@ -63,7 +57,7 @@ function Editor(props: EditorProps): React.Node {
         style,
         plugins: propPlugins,
         renderNode,
-        renderMark,
+        renderMark
     } = props;
     const { document, selection, isFocused, decorations } = value;
 

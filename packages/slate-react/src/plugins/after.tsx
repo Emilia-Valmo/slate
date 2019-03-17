@@ -1,4 +1,4 @@
-import { Block, EditorContainer, Inline, Change } from '@gitbook/slate';
+import { Block, Change, EditorContainer, Inline } from '@gitbook/slate';
 import Base64 from '@gitbook/slate-base64-serializer';
 import { IS_IOS } from '@gitbook/slate-dev-environment';
 import Hotkeys from '@gitbook/slate-hotkeys';

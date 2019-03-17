@@ -1,8 +1,8 @@
 import { List, Map, Record, Set } from 'immutable';
 import isPlainObject from 'is-plain-object';
 
-import MODEL_TYPES from '../constants/model-types';
 import CORE_SCHEMA from '../constants/core-schema';
+import MODEL_TYPES from '../constants/model-types';
 import Block from './block';
 import Change from './change';
 import Data from './data';
@@ -397,7 +397,9 @@ class Value extends Record({
                 props.decorations = Range.createList(attrs.decorations);
             }
             if ('schema' in attrs) {
-                props.schema = CORE_SCHEMA.combineWith(Schema.create(attrs.schema));
+                props.schema = CORE_SCHEMA.combineWith(
+                    Schema.create(attrs.schema)
+                );
             }
             return props;
         }

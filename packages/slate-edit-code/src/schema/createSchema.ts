@@ -1,4 +1,4 @@
-import { Schema, Block, Change, Node } from '@gitbook/slate';
+import { Block, Change, Node, Schema } from '@gitbook/slate';
 import {
     CHILD_OBJECT_INVALID,
     CHILD_TYPE_INVALID,

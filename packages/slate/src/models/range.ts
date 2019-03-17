@@ -293,7 +293,11 @@ class Range extends Record({
      * Check whether the anchor edge of a range is in a `node` and at an
      * offset between `start` and `end`.
      */
-    public hasAnchorBetween(node: AnyNode, start: number, end: number): boolean {
+    public hasAnchorBetween(
+        node: AnyNode,
+        start: number,
+        end: number
+    ): boolean {
         return (
             this.anchorOffset <= end &&
             start <= this.anchorOffset &&
@@ -502,7 +506,10 @@ class Range extends Record({
     /*
      * Move the range to `anchorOffset` and `focusOffset`.
      */
-    public moveOffsetsTo(anchorOffset: number, focusOffset: number = anchorOffset): Range {
+    public moveOffsetsTo(
+        anchorOffset: number,
+        focusOffset: number = anchorOffset
+    ): Range {
         return this.moveAnchorOffsetTo(anchorOffset).moveFocusOffsetTo(
             focusOffset
         );

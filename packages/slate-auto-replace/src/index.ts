@@ -1,49 +1,35 @@
-import { Plugin } from '@gitbook/slate-react';
+import { Change, Value } from '@gitbook/slate';
+import { EditorContainer, Plugin } from '@gitbook/slate-react';
 import isHotkey from 'is-hotkey';
 import typeOf from 'type-of';
+
+type MatcherFn = (type: string) => boolean;
+type TriggerFn = (event: Event) => boolean;
+
+type MatcherInput = MatcherFn | string[] | string;
+type TriggerInput = TriggerFn | RegExp | string;
 
 /*
  * A Slate plugin to automatically replace a block when a string of matching
  * text is typed.
- *
- * @param {Object} opts
- * @return {Object}
  */
-
 function AutoReplace(
     opts: {
+        trigger: MatcherInput;
         transform?: () => void;
+        ignoreIn?: MatcherInput;
+        onlyIn?: MatcherInput;
     } = {}
 ): Plugin {
     const { transform } = opts;
     const trigger = normalizeTrigger(opts.trigger);
-    let ignoreIn;
-    let onlyIn;
-
-    if (opts.ignoreIn) {
-        ignoreIn = normalizeMatcher(opts.ignoreIn);
-    }
-    if (opts.onlyIn) {
-        onlyIn = normalizeMatcher(opts.onlyIn);
-    }
-
-    if (!transform) {
-        throw new Error('You must provide a `transform` option.');
-    }
-    if (!trigger) {
-        throw new Error('You must provide a `trigger` option.');
-    }
+    const ignoreIn = opts.ignoreIn ? normalizeMatcher(opts.ignoreIn) : null;
+    const onlyIn = opts.onlyIn ? normalizeMatcher(opts.onlyIn) : null;
 
     /*
      * On key down.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
-     * @return {Value}
      */
-
-    function onKeyDown(event, change, editor) {
+    function onKeyDown(event: Event, change: Change, editor: EditorContainer) {
         if (trigger(event)) {
             return replace(event, change, editor);
         }
@@ -51,14 +37,12 @@ function AutoReplace(
 
     /*
      * Replace a block's properties.
-     *
-     * @param {Event} event
-     * @param {Change} change
-     * @param {Editor} editor
-     * @return {Value}
      */
-
-    function replace(event, change, editor) {
+    function replace(
+        event: Event,
+        change: Change,
+        editor: EditorContainer
+    ): Change | void {
         const { value } = change;
         if (value.isExpanded) {
             return;
@@ -103,25 +87,23 @@ function AutoReplace(
     /*
      * Try to match the current text of a `value` with the `before` and
      * `after` regexes.
-     *
-     * @param {Value} value
-     * @return {Object}
      */
-
-    function getMatches(value) {
+    function getMatches(
+        value: Value
+    ): { after: string | null; before: string | null } | null {
         const { startText, startOffset } = value;
         const { text } = startText;
         let after = null;
         let before = null;
 
         if (opts.after) {
-            const string = text.slice(startOffset);
-            after = string.match(opts.after);
+            const content = text.slice(startOffset);
+            after = content.match(opts.after);
         }
 
         if (opts.before) {
-            const string = text.slice(0, startOffset);
-            before = string.match(opts.before);
+            const content = text.slice(0, startOffset);
+            before = content.match(opts.before);
         }
 
         // If both sides, require that both are matched, otherwise null.
@@ -149,13 +131,15 @@ function AutoReplace(
 
     /*
      * Return the offsets for `matches` with `start` offset.
-     *
-     * @param {Object} matches
-     * @param {Number} start
-     * @return {Object}
      */
-
-    function getOffsets(matches, start) {
+    function getOffsets(
+        matches: { after: string | null; before: string | null },
+        start: number
+    ): Array<{
+        start: number;
+        end: number;
+        total: number;
+    }> {
         const { before, after } = matches;
         const offsets = [];
         let totalRemoved = 0;
@@ -210,29 +194,18 @@ function AutoReplace(
 
         return offsets;
     }
-
-    /*
-     * Return the plugin.
-     *
-     * @type {Object}
-     */
-
     return { onKeyDown };
 }
 
 /*
  * Normalize a `trigger` option to a matching function.
- *
- * @param {Mixed} trigger
- * @return {Function}
  */
-
-function normalizeTrigger(trigger) {
+function normalizeTrigger(trigger: TriggerInput): TriggerFn {
     switch (typeOf(trigger)) {
         case 'function':
-            return trigger;
+            return trigger as TriggerInput;
         case 'regexp':
-            return event => !!(event.key && event.key.match(trigger));
+            return (event: Event) => !!(event.key && event.key.match(trigger));
         case 'string':
             return isHotkey(trigger);
     }
@@ -240,26 +213,16 @@ function normalizeTrigger(trigger) {
 
 /*
  * Normalize a node matching plugin option.
- *
- * @param {Function|Array|String} matchIn
- * @return {Function}
  */
-
-function normalizeMatcher(matcher) {
+function normalizeMatcher(matcher: MatcherInput): MatcherFn {
     switch (typeOf(matcher)) {
         case 'function':
-            return matcher;
+            return matcher as MatcherFn;
         case 'array':
-            return node => matcher.includes(node);
+            return (type: string) => matcher.includes(type);
         case 'string':
-            return node => node === matcher;
+            return (type: string) => type === matcher;
     }
 }
-
-/*
- * Export.
- *
- * @type {Function}
- */
 
 export default AutoReplace;

@@ -27,7 +27,6 @@ class Text extends Record({
     leaves: List(),
     key: ''
 }) {
-
     get object(): 'text' {
         return 'text';
     }
@@ -128,7 +127,7 @@ class Text extends Record({
             key
         });
     }
-    
+
     // Record properties
     public readonly key: string;
     public readonly leaves: List<Leaf>;

@@ -1,4 +1,4 @@
-/* tslint-disable no-console */
+/* tslint:disable no-console */
 
 /*
  * Is in development?

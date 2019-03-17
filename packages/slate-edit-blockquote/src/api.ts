@@ -6,7 +6,7 @@ import { isSelectionInBlockquote } from './utils';
  * The core of the plugin, which does not relies on `slate-react`, and includes
  * everything but behavior and rendering logic.
  */
-function createAPI(opts: OptionsFormat): Object {
+function createAPI(opts: OptionsFormat): object {
     return {
         utils: {
             isSelectionInBlockquote: isSelectionInBlockquote.bind(null, opts)

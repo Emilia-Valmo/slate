@@ -92,8 +92,8 @@ function decorateNode(opts: Options, block: Node) {
                     offset += token.content.length;
                 } else {
                     // When using token.content instead of token.matchedStr, token can be deep
-                    for (let i = 0; i < token.content.length; i += 1) {
-                        processToken(token.content[i], accu);
+                    for (const item of token.conten) {
+                        processToken(item, accu);
                     }
                 }
             }

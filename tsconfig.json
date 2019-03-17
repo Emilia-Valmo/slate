@@ -18,11 +18,10 @@
         ]
     },
     "include": [
-        "packages/**/*.ts"
+        "packages/**/*"
     ],
     "exclude": [
         "node_modules",
-        "**/dist/**/*",
-        "**/test/**/*"
+        "**/dist/**/*"
     ]
 }

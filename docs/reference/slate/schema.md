@@ -218,12 +218,6 @@ Will validate a node's text.
 
 Create a new `Schema` instance with `properties`.
 
-### `Schema.fromJS`
-
-`Schema.fromJS(object: Object) => Schema`
-
-Create a schema from a JSON `object`.
-
 ### `Schema.isSchema`
 
 `Schema.isSchema(maybeSchema: Any) => Boolean`
@@ -232,11 +226,11 @@ Returns a boolean if the passed in argument is a `Schema`.
 
 ## Instance Methods
 
-### `toJS`
+### `combineWith`
 
-`toJS() => Object`
+`combineWith(schema: Schema | Schema[]) => Schema`
 
-Returns a JSON representation of the schema.
+Returns a new schema by combining the current one with one or more schemas. 
 
 ## Violations
 

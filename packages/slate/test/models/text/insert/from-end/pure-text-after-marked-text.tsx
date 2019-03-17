@@ -1,20 +1,20 @@
 /* @jsx h */
 
-import h from '../../../../helpers/h'
+import h from '../../../../helpers/h';
 
 export const input = (
-  <text>
-    <i>Cat</i>
-    <b> Cute</b>
-  </text>
-)[0]
+    <text>
+        <i>Cat</i>
+        <b> Cute</b>
+    </text>
+)[0];
 
 export default function(t) {
-  return t.insertText(3, ' is')
+    return t.insertText(3, ' is');
 }
 
 export const output = (
-  <text>
-    <i>Cat</i> is<b> Cute</b>
-  </text>
-)[0]
+    <text>
+        <i>Cat</i> is<b> Cute</b>
+    </text>
+)[0];

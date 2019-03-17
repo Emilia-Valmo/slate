@@ -1,16 +1,16 @@
 /* @jsx h */
 
-import h from '../../helpers/h'
+import h from '../../helpers/h';
 
-export const props = {}
+export const editorProps = {};
 
 export const value = (
-  <value>
-    <document>
-      <paragraph>word</paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>word</paragraph>
+        </document>
+    </value>
+);
 
 export const output = `
 <div data-slate-editor="true" contenteditable="true" role="textbox">
@@ -20,4 +20,4 @@ export const output = `
     </span>
   </div>
 </div>
-`.trim()
+`.trim();

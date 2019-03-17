@@ -1,27 +1,27 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
+import h from '../../../helpers/h';
 
 export default function(change) {
-  change.insertText('a')
+    change.insertText('a');
 }
 
 export const input = (
-  <value>
-    <document>
-      <image>
-        <cursor />
-      </image>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <image>
+                <cursor />
+            </image>
+        </document>
+    </value>
+);
 
 export const output = (
-  <value>
-    <document>
-      <image>
-        <cursor />
-      </image>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <image>
+                <cursor />
+            </image>
+        </document>
+    </value>
+);

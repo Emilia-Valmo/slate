@@ -1,4 +1,4 @@
-import { Value, Schema } from '@gitbook/slate';
+import { Schema, Value } from '@gitbook/slate';
 import hyperprint from '@gitbook/slate-hyperprint';
 import fs from 'fs';
 import path from 'path';
@@ -18,7 +18,9 @@ describe('slate-edit-blockquote', () => {
         it(test, () => {
             const dir = path.resolve(__dirname, test);
 
-            const input = require(path.resolve(dir, 'input')).default.setSchema(plugin.schema);
+            const input = require(path.resolve(dir, 'input')).default.setSchema(
+                plugin.schema
+            );
 
             const expectedPath = path.resolve(dir, 'expected');
             const expected =

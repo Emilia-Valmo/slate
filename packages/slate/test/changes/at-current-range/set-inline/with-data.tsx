@@ -1,35 +1,37 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
-import { Data } from '@gitbook/slate'
+import { Data } from '@gitbook/slate';
+import h from '../../../helpers/h';
 
 export default function(change) {
-  change.setInlines({
-    type: 'hashtag',
-    data: Data.create({ thing: 'value' }),
-  })
+    change.setInlines({
+        type: 'hashtag',
+        data: Data.create({ thing: 'value' })
+    });
 }
 
 export const input = (
-  <value>
-    <document>
-      <paragraph>
-        <link>
-          <cursor />word
-        </link>
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                <link>
+                    <cursor />
+                    word
+                </link>
+            </paragraph>
+        </document>
+    </value>
+);
 
 export const output = (
-  <value>
-    <document>
-      <paragraph>
-        <hashtag thing="value">
-          <cursor />word
-        </hashtag>
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                <hashtag thing="value">
+                    <cursor />
+                    word
+                </hashtag>
+            </paragraph>
+        </document>
+    </value>
+);

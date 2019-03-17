@@ -1,23 +1,22 @@
-import Options, { OptionsFormat } from './options'
-import { isSelectionInBlockquote } from './utils'
-import { wrapInBlockquote, unwrapBlockquote } from './changes'
-
+import { unwrapBlockquote, wrapInBlockquote } from './changes';
+import Options, { OptionsFormat } from './options';
+import { isSelectionInBlockquote } from './utils';
 
 /*
  * The core of the plugin, which does not relies on `slate-react`, and includes
  * everything but behavior and rendering logic.
  */
 function createAPI(opts: OptionsFormat): Object {
-  return {
-    utils: {
-      isSelectionInBlockquote: isSelectionInBlockquote.bind(null, opts),
-    },
+    return {
+        utils: {
+            isSelectionInBlockquote: isSelectionInBlockquote.bind(null, opts)
+        },
 
-    changes: {
-      wrapInBlockquote: wrapInBlockquote.bind(null, opts),
-      unwrapBlockquote: bindAndScopeChange(opts, unwrapBlockquote),
-    },
-  }
+        changes: {
+            wrapInBlockquote: wrapInBlockquote.bind(null, opts),
+            unwrapBlockquote: bindAndScopeChange(opts, unwrapBlockquote)
+        }
+    };
 }
 
 /*
@@ -25,18 +24,16 @@ function createAPI(opts: OptionsFormat): Object {
  */
 
 function bindAndScopeChange(opts: Options, fn: any): any {
-  return (change, ...args) => {
-    const { value } = change
+    return (change, ...args) => {
+        const { value } = change;
 
-    if (!isSelectionInBlockquote(opts, value)) {
-      return change
-    }
+        if (!isSelectionInBlockquote(opts, value)) {
+            return change;
+        }
 
-    // $FlowFixMe
-    return fn(...[opts, change].concat(args))
-  }
+        // $FlowFixMe
+        return fn(...[opts, change].concat(args));
+    };
 }
 
-export {
-  createAPI
-}
+export { createAPI };

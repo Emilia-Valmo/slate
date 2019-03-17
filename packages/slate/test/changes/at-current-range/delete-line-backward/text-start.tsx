@@ -1,20 +1,20 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
+import h from '../../../helpers/h';
 
 export default function(change) {
-  change.deleteLineBackward()
+    change.deleteLineBackward();
 }
 
 export const input = (
-  <value>
-    <document>
-      <paragraph>
-        <cursor />
-        one two three
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                <cursor />
+                one two three
+            </paragraph>
+        </document>
+    </value>
+);
 
-export const output = input
+export const output = input;

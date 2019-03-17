@@ -1,33 +1,35 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
+import h from '../../../helpers/h';
 
 export default function(change) {
-  change.delete()
+    change.delete();
 }
 
 export const input = (
-  <value>
-    <document>
-      <image>
-        <anchor />
-      </image>
-      <image />
-      <paragraph>
-        <focus />one
-      </paragraph>
-      <paragraph>two</paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <image>
+                <anchor />
+            </image>
+            <image />
+            <paragraph>
+                <focus />
+                one
+            </paragraph>
+            <paragraph>two</paragraph>
+        </document>
+    </value>
+);
 
 export const output = (
-  <value>
-    <document>
-      <paragraph>
-        <cursor />one
-      </paragraph>
-      <paragraph>two</paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                <cursor />
+                one
+            </paragraph>
+            <paragraph>two</paragraph>
+        </document>
+    </value>
+);

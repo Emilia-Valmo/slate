@@ -1,34 +1,34 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
+import h from '../../../helpers/h';
 
 export default function(change) {
-  change.insertFragmentByKey(
-    'a',
-    1,
-    <document>
-      <paragraph>one</paragraph>
-      <paragraph>two</paragraph>
-    </document>
-  )
+    change.insertFragmentByKey(
+        'a',
+        1,
+        <document>
+            <paragraph>one</paragraph>
+            <paragraph>two</paragraph>
+        </document>
+    );
 }
 
 export const input = (
-  <value>
-    <document key="a">
-      <paragraph>word</paragraph>
-      <paragraph>another</paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document key="a">
+            <paragraph>word</paragraph>
+            <paragraph>another</paragraph>
+        </document>
+    </value>
+);
 
 export const output = (
-  <value>
-    <document>
-      <paragraph>word</paragraph>
-      <paragraph>one</paragraph>
-      <paragraph>two</paragraph>
-      <paragraph>another</paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>word</paragraph>
+            <paragraph>one</paragraph>
+            <paragraph>two</paragraph>
+            <paragraph>another</paragraph>
+        </document>
+    </value>
+);

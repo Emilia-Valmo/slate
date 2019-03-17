@@ -1,3 +1,4 @@
+import { StatsGraph } from '@helpscout/stats';
 import React from 'react';
 import styled from 'react-emotion';
 import {
@@ -7,7 +8,6 @@ import {
     Route,
     Switch
 } from 'react-router-dom';
-import {StatsGraph} from '@helpscout/stats'
 
 import CheckLists from './check-lists';
 import Embeds from './embeds';
@@ -152,7 +152,7 @@ export default class App extends React.Component {
         info: null
     };
 
-    public componentDidCatch(error: Error, info: object ) {
+    public componentDidCatch(error: Error, info: object) {
         this.setState({ error, info });
     }
 

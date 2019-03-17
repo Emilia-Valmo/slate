@@ -1,25 +1,25 @@
 /* @jsx h */
 
-import h from '../../helpers/h'
+import h from '../../helpers/h';
 
 export const schema = {
-  blocks: {
-    paragraph: {
-      text: /^\d*$/,
-    },
-  },
-}
+    blocks: {
+        paragraph: {
+            text: /^\d*$/
+        }
+    }
+};
 
 export const input = (
-  <value>
-    <document>
-      <paragraph>invalid</paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>invalid</paragraph>
+        </document>
+    </value>
+);
 
 export const output = (
-  <value>
-    <document />
-  </value>
-)
+    <value>
+        <document />
+    </value>
+);

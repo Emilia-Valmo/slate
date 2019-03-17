@@ -18,7 +18,7 @@ function renderNode(props) {
     }
 }
 
-export const props = {
+export const editorProps = {
     renderNode
 };
 

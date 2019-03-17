@@ -1,27 +1,29 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
+import h from '../../../helpers/h';
 
 export default function(change) {
-  change.collapseToFocus()
+    change.collapseToFocus();
 }
 
 export const input = (
-  <value>
-    <document>
-      <paragraph>
-        one<cursor />
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                one
+                <cursor />
+            </paragraph>
+        </document>
+    </value>
+);
 
 export const output = (
-  <value>
-    <document>
-      <paragraph>
-        one<cursor />
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                one
+                <cursor />
+            </paragraph>
+        </document>
+    </value>
+);

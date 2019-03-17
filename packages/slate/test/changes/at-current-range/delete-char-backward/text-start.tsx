@@ -1,27 +1,29 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
+import h from '../../../helpers/h';
 
 export default function(change) {
-  change.deleteCharBackward()
+    change.deleteCharBackward();
 }
 
 export const input = (
-  <value>
-    <document>
-      <paragraph>
-        w<cursor />ord
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                w<cursor />
+                ord
+            </paragraph>
+        </document>
+    </value>
+);
 
 export const output = (
-  <value>
-    <document>
-      <paragraph>
-        <cursor />ord
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                <cursor />
+                ord
+            </paragraph>
+        </document>
+    </value>
+);

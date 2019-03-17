@@ -1,31 +1,37 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
+import h from '../../../helpers/h';
 
 export default function(change) {
-  change.insertText('a')
+    change.insertText('a');
 }
 
 export const input = (
-  <value>
-    <document>
-      <paragraph>
-        w<b>
-          or<cursor />
-        </b>d
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                w
+                <b>
+                    or
+                    <cursor />
+                </b>
+                d
+            </paragraph>
+        </document>
+    </value>
+);
 
 export const output = (
-  <value>
-    <document>
-      <paragraph>
-        w<b>
-          ora<cursor />
-        </b>d
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                w
+                <b>
+                    ora
+                    <cursor />
+                </b>
+                d
+            </paragraph>
+        </document>
+    </value>
+);

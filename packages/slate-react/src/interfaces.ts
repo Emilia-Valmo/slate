@@ -1,4 +1,11 @@
-import { Block, EditorContainer, Inline, Mark, Value, Change } from '@gitbook/slate';
+import {
+    Block,
+    Change,
+    EditorContainer,
+    Inline,
+    Mark,
+    Value
+} from '@gitbook/slate';
 import { Set } from 'immutable';
 import * as React from 'react';
 

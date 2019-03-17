@@ -1,27 +1,28 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
+import h from '../../../helpers/h';
 
 export default function(change) {
-  change.deleteWordForward()
+    change.deleteWordForward();
 }
 
 export const input = (
-  <value>
-    <document>
-      <paragraph>
-        <cursor />one two three
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                <cursor />
+                one two three
+            </paragraph>
+        </document>
+    </value>
+);
 
 export const output = (
-  <value>
-    <document>
-      <paragraph>
-        <cursor /> two three
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                <cursor /> two three
+            </paragraph>
+        </document>
+    </value>
+);

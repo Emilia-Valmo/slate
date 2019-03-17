@@ -9,7 +9,7 @@ type Normalizer = (change: Change) => any;
  * Create a schema definition with rules to normalize lists
  */
 
-function validateNode(opts: Options): (node: Node) => void | Normalizer {
+function createValidation(opts: Options): (node: Node) => void | Normalizer {
     return node => joinAdjacentLists(opts, node);
 }
 
@@ -66,4 +66,4 @@ function joinAdjacentLists(opts: Options, node: Node): void | Normalizer {
     };
 }
 
-export default validateNode;
+export default createValidation;

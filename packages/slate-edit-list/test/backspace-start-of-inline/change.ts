@@ -1,7 +1,7 @@
 import { createEvent } from '@gitbook/slate-simulator';
 
 export default function(plugin, change) {
-    plugin.onKeyDown(
+    plugin.plugin.onKeyDown(
         createEvent({
             key: 'Backspace'
         }),

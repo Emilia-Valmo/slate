@@ -1,6 +1,3 @@
-/* eslint-disable import/no-dynamic-require */
-/* eslint-disable global-require */
-
 import Slate from '@gitbook/slate';
 import hyperprint from '@gitbook/slate-hyperprint';
 import fs from 'fs';
@@ -8,21 +5,7 @@ import path from 'path';
 
 import EditList from '../src';
 
-// Provide the value with
-function deserializeValue(plugin, value) {
-    const SCHEMA = Slate.Schema.create({
-        plugins: [plugin]
-    });
-
-    return Slate.Value.fromJS(
-        {
-            selection: value.selection,
-            document: value.document,
-            schema: SCHEMA
-        },
-        { normalize: false }
-    );
-}
+const plugin = EditList();
 
 describe('slate-edit-list', () => {
     const tests = fs.readdirSync(__dirname);
@@ -34,17 +17,15 @@ describe('slate-edit-list', () => {
 
         it(test, () => {
             const dir = path.resolve(__dirname, test);
-            const plugin = EditList();
 
-            const input = deserializeValue(
-                plugin,
-                require(path.resolve(dir, 'input')).default
+            const input = require(path.resolve(dir, 'input')).default.setSchema(
+                plugin.schema
             );
 
             const expectedPath = path.resolve(dir, 'expected');
             const expected =
                 fs.existsSync(expectedPath) &&
-                deserializeValue(plugin, require(expectedPath).default);
+                require(expectedPath).default.setSchema(plugin.schema);
 
             const runChange = require(path.resolve(dir, 'change')).default;
 

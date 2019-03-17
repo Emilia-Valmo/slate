@@ -1,13 +1,15 @@
-import { Change, Node } from '@gitbook/slate';
+import { Change, Node, Schema } from '@gitbook/slate';
 
 import Options from '../options';
+import createValidation from './createValidation';
 
 /*
  * Create a schema definition with rules to normalize lists
  */
 
-function schema(opts: Options): object {
+function createSchema(opts: Options): Schema {
     const constructedSchema = {
+        validations: [createValidation(opts)],
         blocks: {
             [opts.typeItem]: {
                 parent: { types: opts.types },
@@ -38,13 +40,12 @@ function schema(opts: Options): object {
         };
     });
 
-    return constructedSchema;
+    return Schema.create(constructedSchema);
 }
 
 /*
  * Allows to define a normalize function through a keyed collection of functions
  */
-
 function normalize(reasons: { [string]: (Change, context: any) => any }): any {
     return (change, reason, context) => {
         const reasonFn = reasons[reason];
@@ -59,7 +60,6 @@ function normalize(reasons: { [string]: (Change, context: any) => any }): any {
  * Wraps all child of a node in the default block type.
  * Returns a change, for chaining purposes
  */
-
 function wrapChildrenInDefaultBlock(
     opts: Options,
     change: Change,
@@ -81,4 +81,4 @@ function wrapChildrenInDefaultBlock(
     return change;
 }
 
-export default schema;
+export default createSchema;

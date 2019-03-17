@@ -50,8 +50,6 @@ const EXAMPLES = [
     ['Markdown Preview', MarkdownPreview, '/markdown-preview'],
     ['Markdown Shortcuts', MarkdownShortcuts, '/markdown-shortcuts'],
     ['Check Lists', CheckLists, '/check-lists'],
-    ['Code Highlighting', CodeHighlighting, '/code-highlighting'],
-    ['Tables', Tables, '/tables'],
     ['Search Highlighting', SearchHighlighting, '/search-highlighting'],
     ['Syncing Operations', SyncingOperations, '/syncing-operations'],
     ['Read-only', ReadOnly, '/read-only'],

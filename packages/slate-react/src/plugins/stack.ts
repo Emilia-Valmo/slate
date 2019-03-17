@@ -65,6 +65,6 @@ class PluginsStack extends Record({
  * Memoize read methods.
  */
 
-memoize(PluginsStack.prototype, ['getPluginsWith', 'getDecorations']);
+memoize(PluginsStack.prototype, ['getDecorations']);
 
 export default PluginsStack;

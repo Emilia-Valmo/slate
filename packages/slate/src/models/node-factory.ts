@@ -12,8 +12,9 @@ import Block from './block';
 import Document from './document';
 import Inline from './inline';
 
-type ChildNode = Block | Inline | Text;
-type AncestorNode = Block | Inline;
+export type ChildNode = Block | Inline | Text;
+export type AnyNode = Block | Inline | Text | Document;
+export type AncestorNode = Block | Inline;
 
 export interface NodeDefaultProps {
     key: string;
@@ -350,7 +351,7 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
         /*
          * Get the closest inline parent of a `node`.
          */
-        public getClosestInline(key: string): ChildNode | null {
+        public getClosestInline(key: string): Inline | null {
             return this.getClosest(key, parent => parent.object === 'inline');
         }
 
@@ -1604,6 +1605,25 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
             return node;
         }
     };
+}
+
+/*
+ * Asserts for nodes.
+ */
+export function assertText(node: AnyNode): Text {
+    if (node.object !== 'text') {
+        throw new Error(`Expected node "${node.key}" to be a text`);
+    }
+
+    return node;
+}
+
+export function assertInline(node: AnyNode): Inline {
+    if (node.object !== 'inline') {
+        throw new Error(`Expected node "${node.key}" to be a text`);
+    }
+
+    return node;
 }
 
 /*

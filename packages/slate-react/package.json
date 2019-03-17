@@ -18,6 +18,7 @@
     "@gitbook/slate-dev-logger": "^3.0.0-alpha.1",
     "@gitbook/slate-hotkeys": "^3.0.0-alpha.1",
     "@gitbook/slate-plain-serializer": "^3.0.0-alpha.1",
+    "immutablejs-record-memoize": "^1.0.1",
     "debug": "^3.1.0",
     "get-window": "^1.1.1",
     "is-window": "^1.0.2",

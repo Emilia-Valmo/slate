@@ -1,4 +1,4 @@
-import { Block, Inline, Range } from '@gitbook/slate';
+import { Block, Inline, List, Range } from '@gitbook/slate';
 import { Record } from 'immutable';
 import memoize from 'immutablejs-record-memoize';
 

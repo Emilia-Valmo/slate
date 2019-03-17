@@ -9,6 +9,8 @@ import Data from './data';
 import Document from './document';
 import History from './history';
 import Inline from './inline';
+import Mark from './mark';
+import { assertText } from './node-factory';
 import Range from './range';
 import Schema from './schema';
 import Text from './text';
@@ -17,7 +19,7 @@ import Text from './text';
  * Immutable state representing the value of the editor.
  */
 class Value extends Record({
-    data: new Map(),
+    data: Data.create(),
     decorations: null,
     document: Document.create(),
     history: History.create(),
@@ -209,56 +211,52 @@ class Value extends Record({
      * Get the current start text node.
      */
     get startText(): Text | null {
-        return this.startKey && this.document.getDescendant(this.startKey);
+        const result =
+            this.startKey && this.document.getDescendant(this.startKey);
+        return result ? assertText(result) : null;
     }
 
     /*
      * Get the current end node.
      */
     get endText(): Text | null {
-        return this.endKey && this.document.getDescendant(this.endKey);
+        const result = this.endKey && this.document.getDescendant(this.endKey);
+        return result ? assertText(result) : null;
     }
 
     /*
      * Get the current anchor node.
      */
     get anchorText(): Text | null {
-        return this.anchorKey && this.document.getDescendant(this.anchorKey);
+        const result =
+            this.anchorKey && this.document.getDescendant(this.anchorKey);
+        return result ? assertText(result) : null;
     }
 
     /*
      * Get the current focus node.
      */
     get focusText(): Text | null {
-        return this.focusKey && this.document.getDescendant(this.focusKey);
+        const result =
+            this.focusKey && this.document.getDescendant(this.focusKey);
+        return result ? assertText(result) : null;
     }
 
     /*
      * Get the next block node.
      */
     get nextBlock(): Text | null {
-        return this.endKey && this.document.getNextBlock(this.endKey);
+        const result = this.endKey && this.document.getNextBlock(this.endKey);
+        return result ? assertText(result) : null;
     }
 
     /*
      * Get the previous block node.
      */
     get previousBlock(): Text | null {
-        return this.startKey && this.document.getPreviousBlock(this.startKey);
-    }
-
-    /*
-     * Get the next inline node.
-     */
-    get nextInline(): Inline | null {
-        return this.endKey && this.document.getNextInline(this.endKey);
-    }
-
-    /*
-     * Get the previous inline node.
-     */
-    get previousInline(): Inline | null {
-        return this.startKey && this.document.getPreviousInline(this.startKey);
+        const result =
+            this.startKey && this.document.getPreviousBlock(this.startKey);
+        return result ? assertText(result) : null;
     }
 
     /*

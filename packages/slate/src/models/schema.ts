@@ -111,7 +111,6 @@ class Schema extends Record({
     public static isSchema(input: any): input is Schema {
         return !!(input && input[MODEL_TYPES.SCHEMA]);
     }
-    public x;
 
     // Properties
     public readonly validations: ValidateNodeFn[];

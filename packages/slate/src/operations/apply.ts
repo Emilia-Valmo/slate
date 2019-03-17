@@ -3,12 +3,6 @@ import Debug from 'debug';
 import Operation from '../models/operation';
 import Value from '../models/value';
 
-/*
- * Debug.
- *
- * @type {Function}
- */
-
 const debug = Debug('slate:operation:apply');
 
 /*

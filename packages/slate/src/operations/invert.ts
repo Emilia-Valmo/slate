@@ -3,23 +3,12 @@ import pick from 'lodash/pick';
 
 import Operation from '../models/operation';
 
-/*
- * Debug.
- *
- * @type {Function}
- */
-
 const debug = Debug('slate:operation:invert');
 
 /*
- * Invert an `op`.
- *
- * @param {Object} op
- * @return {Object}
+ * Invert an operation.
  */
-
-function invertOperation(op) {
-    op = Operation.create(op);
+function invertOperation(op: Operation): Operation {
     const { type } = op;
     debug(type, op);
 
@@ -240,11 +229,5 @@ function invertOperation(op) {
         return inverse;
     }
 }
-
-/*
- * Export.
- *
- * @type {Function}
- */
 
 export default invertOperation;

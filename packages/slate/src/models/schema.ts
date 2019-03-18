@@ -63,16 +63,20 @@ export interface SchemaRule {
     last?: NodeSchemaRule;
     /** Validation for inner nodes */
     nodes?: Array<
-        NodeSchemaRule & {
-            min?: number;
-            max?: number;
-        }
+        | NodeSchemaRule
+        | {
+              min?: number;
+              max?: number;
+          }
     >;
     normalize?: (
         change: Change,
         violation: SchemaViolation,
         context: SchemaNormalizeContext
     ) => void;
+}
+export interface SchemaRulesSet {
+    [key: string]: SchemaRule;
 }
 
 // Context when normalizing a node (it depends on the violation)
@@ -142,18 +146,12 @@ class Schema extends Record({
             return schema.reduce((r, s) => r.combineWith(s), this);
         }
 
-        const newSchema = {
+        return new Schema({
             validations: [...this.validations, ...schema.validations],
-            document: { ...this.document },
-            blocks: { ...this.blocks },
-            inlines: { ...this.inlines }
-        };
-
-        mergeWith(newSchema.document, schema.document, customizer);
-        mergeWith(newSchema.blocks, schema.blocks, customizer);
-        mergeWith(newSchema.inlines, schema.inlines, customizer);
-
-        return new Schema(newSchema);
+            document: mergeRules(this.document, schema.document),
+            blocks: mergeRulesSets(this.blocks, schema.blocks),
+            inlines: mergeRulesSets(this.inlines, schema.inlines)
+        });
     }
 
     /*
@@ -501,10 +499,38 @@ class Schema extends Record({
 }
 
 /*
- * A Lodash customizer for merging schema definitions. Special cases `objects`,
- * `marks` and `types` arrays to be unioned, and ignores new `null` values.
+ * Merge two schema rules together.
  */
-function customizer<K extends keyof SchemaRule>(
+function mergeRules(a: SchemaRule, b: SchemaRule): SchemaRule {
+    const rule: SchemaRule = { ...a };
+    mergeWith(rule, b, ruleMergeCustomizer);
+
+    return rule;
+}
+
+/*
+ * Merge two schema rules together.
+ */
+function mergeRulesSets(a: SchemaRulesSet, b: SchemaRulesSet): SchemaRulesSet {
+    const result: SchemaRulesSet = { ...a };
+
+    for (const key in b) {
+        if (b.hasOwnProperty(key)) {
+            result[key] = result[key]
+                ? mergeRules(result[key], b[key])
+                : b[key];
+        }
+    }
+
+    return result;
+}
+
+/*
+ * A Lodash customizer for merging schema rules. Special cases `objects`,
+ * `marks` and `types` arrays to be unioned, and ignores new `null` values.
+ * Merge two schema rules together.
+ */
+function ruleMergeCustomizer<K extends keyof SchemaRule>(
     target: SchemaRule[K] | undefined,
     source: SchemaRule[K] | undefined,
     key: K
@@ -521,7 +547,6 @@ function customizer<K extends keyof SchemaRule>(
             if (change.operations.size > original) {
                 return;
             }
-
             source(change, violation, context);
         };
     } else if (key === 'objects' || key === 'types' || key === 'marks') {

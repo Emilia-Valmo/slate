@@ -1,7 +1,7 @@
 {
   "name": "@gitbook/slate-edit-code",
   "description": "A Slate plugin to handle code blocks editing.",
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0-alpha.3",
   "license": "MIT",
   "repository": "https://github.com/GitbookIO/slate.git",
   "source": "src/index.ts",
@@ -24,10 +24,10 @@
     "immutable": ">=4.0.0-rc.12"
   },
   "devDependencies": {
-    "@gitbook/slate": "^3.0.0-alpha.2",
+    "@gitbook/slate": "^3.0.0-alpha.3",
     "@gitbook/slate-hyperprint": "^2.2.6",
-    "@gitbook/slate-hyperscript": "^3.0.0-alpha.2",
-    "@gitbook/slate-react": "^3.0.0-alpha.2",
-    "@gitbook/slate-schema-violations": "^3.0.0-alpha.2"
+    "@gitbook/slate-hyperscript": "^3.0.0-alpha.3",
+    "@gitbook/slate-react": "^3.0.0-alpha.3",
+    "@gitbook/slate-schema-violations": "^3.0.0-alpha.3"
   }
 }

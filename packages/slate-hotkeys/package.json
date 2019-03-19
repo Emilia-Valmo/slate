@@ -1,7 +1,7 @@
 {
   "name": "@gitbook/slate-hotkeys",
   "description": "A set of function to detect common keypresses in a platform-agnostic way",
-  "version": "3.0.0-alpha.3",
+  "version": "3.0.0-alpha.4",
   "license": "MIT",
   "repository": "https://github.com/GitbookIO/slate.git",
   "source": "src/index.ts",
@@ -12,7 +12,7 @@
     "dist/"
   ],
   "dependencies": {
-    "@gitbook/slate-dev-environment": "^3.0.0-alpha.3",
+    "@gitbook/slate-dev-environment": "^3.0.0-alpha.4",
     "is-hotkey": "^0.1.1"
   }
 }

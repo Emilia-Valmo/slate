@@ -33,7 +33,7 @@ function renderMark(props) {
     }
 }
 
-export const props = {
+export const editorProps = {
     plugins: [plugin],
     renderMark
 };

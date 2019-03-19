@@ -1,29 +1,30 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
-import { Block } from '@gitbook/slate'
+import { Block } from '@gitbook/slate';
+import h from '../../../helpers/h';
 
 export default function(change) {
-  change.insertBlock(Block.create({ type: 'quote' }))
+    change.insertBlock(Block.create({ type: 'quote' }));
 }
 
 export const input = (
-  <value>
-    <document>
-      <paragraph>
-        <cursor />word
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                <cursor />
+                word
+            </paragraph>
+        </document>
+    </value>
+);
 
 export const output = (
-  <value>
-    <document>
-      <quote>
-        <cursor />
-      </quote>
-      <paragraph>word</paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <quote>
+                <cursor />
+            </quote>
+            <paragraph>word</paragraph>
+        </document>
+    </value>
+);

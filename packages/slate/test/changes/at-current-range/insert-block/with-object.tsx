@@ -1,28 +1,29 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
+import h from '../../../helpers/h';
 
 export default function(change) {
-  change.insertBlock({ type: 'quote' })
+    change.insertBlock({ type: 'quote' });
 }
 
 export const input = (
-  <value>
-    <document>
-      <paragraph>
-        <cursor />word
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                <cursor />
+                word
+            </paragraph>
+        </document>
+    </value>
+);
 
 export const output = (
-  <value>
-    <document>
-      <quote>
-        <cursor />
-      </quote>
-      <paragraph>word</paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <quote>
+                <cursor />
+            </quote>
+            <paragraph>word</paragraph>
+        </document>
+    </value>
+);

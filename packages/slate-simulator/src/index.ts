@@ -1,43 +1,40 @@
-import { Stack, Value, EditorContainer } from '@gitbook/slate';
+import { EditorContainer, Stack, Value } from '@gitbook/slate';
 
 /*
  * Event handlers that can be simulated.
  */
 const EVENT_HANDLERS = [
-  'onBeforeInput',
-  'onBlur',
-  'onCopy',
-  'onCut',
-  'onDrop',
-  'onFocus',
-  'onKeyDown',
-  'onKeyUp',
-  'onPaste',
-  'onSelect',
-]
+    'onBeforeInput',
+    'onBlur',
+    'onCopy',
+    'onCut',
+    'onDrop',
+    'onFocus',
+    'onKeyDown',
+    'onKeyUp',
+    'onPaste',
+    'onSelect'
+];
 
 /*
  * Simulator to run tests on Slate plugins.
  */
 class Simulator {
-  value: Value;
-  stack: Stack;
-  props: object;
+    public value: Value;
+    public stack: Stack;
+    public props: object;
 
-  /*
-   * Create a new `Simulator` with `plugins` and an initial `value`.
-   */
-  constructor(props: {
-    plugins: any[],
-    value: Value
-  }) {
-    const { plugins, value } = props
-    const stack = new Stack({ plugins })
+    /*
+     * Create a new `Simulator` with `plugins` and an initial `value`.
+     */
+    constructor(props: { plugins: any[]; value: Value }) {
+        const { plugins, value } = props;
+        const stack = new Stack({ plugins });
 
-    this.props = props
-    this.stack = stack
-    this.value = value
-  }
+        this.props = props;
+        this.stack = stack;
+        this.value = value;
+    }
 }
 
 /*
@@ -45,29 +42,31 @@ class Simulator {
  */
 
 EVENT_HANDLERS.forEach(handler => {
-  const method = getMethodName(handler)
+    const method = getMethodName(handler);
 
-  Simulator.prototype[method] = function(e) {
-    if (e  == null) e = {}
+    Simulator.prototype[method] = function(e) {
+        if (e == null) {
+            e = {};
+        }
 
-    const { stack, value } = this
-    const editor = createEditor(this)
-    const event = createEvent(e)
-    const change = value.change()
+        const { stack, value } = this;
+        const editor = createEditor(this);
+        const event = createEvent(e);
+        const change = value.change();
 
-    stack.run(handler, event, change, editor)
-    stack.run('onChange', change, editor)
+        stack.run(handler, event, change, editor);
+        stack.run('onChange', change, editor);
 
-    this.value = change.value
-    return this
-  }
-})
+        this.value = change.value;
+        return this;
+    };
+});
 
 /*
  * Get the method name from a `handler` name.
  */
 function getMethodName(handler: string): string {
-  return handler.charAt(2).toLowerCase() + handler.slice(3)
+    return handler.charAt(2).toLowerCase() + handler.slice(3);
 }
 
 /*
@@ -75,32 +74,29 @@ function getMethodName(handler: string): string {
  * TODO
  */
 function createEditor(simulator: Simulator): EditorContainer {
-  const editor = {
-    getSchema: () => simulator.stack.schema,
-    getState: () => simulator.value,
-    readOnly: false
-  }
+    const editor = {
+        getSchema: () => simulator.stack.schema,
+        getState: () => simulator.value,
+        readOnly: false
+    };
 
-  return editor
+    return editor;
 }
 
 /*
  * Create a fake event with `attributes`.
  */
 function createEvent(attributes: object): object {
-  const event = {
-    preventDefault: () => (event.isDefaultPrevented = true),
-    stopPropagation: () => (event.isPropagationStopped = true),
-    isDefaultPrevented: false,
-    isPropagationStopped: false,
-    ...attributes,
-  }
+    const event = {
+        preventDefault: () => (event.isDefaultPrevented = true),
+        stopPropagation: () => (event.isPropagationStopped = true),
+        isDefaultPrevented: false,
+        isPropagationStopped: false,
+        ...attributes
+    };
 
-  return event
+    return event;
 }
 
-
-export default Simulator
-export {
-  createEditor, createEvent
-}
+export default Simulator;
+export { createEditor, createEvent };

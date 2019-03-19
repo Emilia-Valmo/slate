@@ -1,4 +1,3 @@
+const TOKEN_MARK = 'prism-token';
 
-const TOKEN_MARK = 'prism-token'
-
-export default TOKEN_MARK
+export default TOKEN_MARK;

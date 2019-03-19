@@ -1,11 +1,11 @@
-import { Block, EditorContainer, Inline, Text } from '@gitbook/slate';
+import { Block, Change, EditorContainer, Inline } from '@gitbook/slate';
 import Base64 from '@gitbook/slate-base64-serializer';
 import { IS_IOS } from '@gitbook/slate-dev-environment';
 import Hotkeys from '@gitbook/slate-hotkeys';
 import Plain from '@gitbook/slate-plain-serializer';
 import Debug from 'debug';
 import getWindow from 'get-window';
-import React from 'react';
+import * as React from 'react';
 
 import cloneFragment from '../utils/clone-fragment';
 import findSlateDOMNode from '../utils/find-dom-node';
@@ -16,13 +16,14 @@ import getEventRange from '../utils/get-event-range';
 import getEventTransfer from '../utils/get-event-transfer';
 import setEventTransfer from '../utils/set-event-transfer';
 
+import { Plugin } from './plugin';
+
 const debug = Debug('slate:after');
 
 /*
  * The after plugin.
  */
-
-function AfterPlugin() {
+function AfterPlugin(): Plugin {
     let isDraggingInternally = null;
 
     /*

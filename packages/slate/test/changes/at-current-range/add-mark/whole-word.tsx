@@ -1,29 +1,31 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
+import h from '../../../helpers/h';
 
 export default function(change) {
-  change.addMark('bold')
+    change.addMark('bold');
 }
 
 export const input = (
-  <value>
-    <document>
-      <paragraph>
-        <anchor />word<focus />
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                <anchor />
+                word
+                <focus />
+            </paragraph>
+        </document>
+    </value>
+);
 
 export const output = (
-  <value>
-    <document>
-      <paragraph>
-        <anchor />
-        <b>word</b>
-        <focus />
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                <anchor />
+                <b>word</b>
+                <focus />
+            </paragraph>
+        </document>
+    </value>
+);

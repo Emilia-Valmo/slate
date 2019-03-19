@@ -1,30 +1,31 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
-import { Mark } from '@gitbook/slate'
+import { Mark } from '@gitbook/slate';
+import h from '../../../helpers/h';
 
 export default function(change) {
-  const marks = Mark.createSet([{ type: 'bold' }])
-  change.insertText('a', marks)
+    const marks = Mark.createSet([{ type: 'bold' }]);
+    change.insertText('a', marks);
 }
 
 export const input = (
-  <value>
-    <document>
-      <paragraph>
-        word<cursor />
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                word
+                <cursor />
+            </paragraph>
+        </document>
+    </value>
+);
 
 export const output = (
-  <value>
-    <document>
-      <paragraph>
-        word<b>a</b>
-        <cursor />
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                word<b>a</b>
+                <cursor />
+            </paragraph>
+        </document>
+    </value>
+);

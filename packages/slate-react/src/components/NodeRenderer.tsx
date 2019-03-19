@@ -106,7 +106,7 @@ const PureNodeRenderer = React.memo(function NodeRenderer(
     const { selection } = value;
     const { stack } = editor;
     const indexes = node.getSelectionIndexes(selection, isSelected);
-    const decs = decorations.concat(node.getDecorations(stack));
+    const decs = decorations.concat(stack.getDecorations(node));
     const childrenDecorations = getChildrenDecorations(node, decs);
 
     const children = node.nodes.map((child, i) => {

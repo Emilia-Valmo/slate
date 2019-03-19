@@ -7,8 +7,8 @@ import PluginEditBlockquote from '@gitbook/slate-edit-blockquote';
 
 import INITIAL_VALUE from './value';
 
-const plugin = PluginEditBlockquote();
-const plugins = [plugin];
+const blockquote = PluginEditBlockquote();
+const plugins = [blockquote.plugin];
 
 function renderNode(props) {
     const { node, children, attributes } = props;
@@ -27,7 +27,7 @@ function renderNode(props) {
 
 class BlockquoteExample extends React.Component {
     public state = {
-        value: INITIAL_VALUE
+        value: INITIAL_VALUE.setSchema(blockquote.schema)
     };
 
     public onChange = ({ value }) => {
@@ -39,18 +39,18 @@ class BlockquoteExample extends React.Component {
     public onWrapInBlockquote = e => {
         const { value } = this.state;
 
-        this.onChange(plugin.changes.wrapInBlockquote(value.change()));
+        this.onChange(blockquote.changes.wrapInBlockquote(value.change()));
     };
 
     public onUnwrapBlockquote = e => {
         const { value } = this.state;
 
-        this.onChange(plugin.changes.unwrapBlockquote(value.change()));
+        this.onChange(blockquote.changes.unwrapBlockquote(value.change()));
     };
 
     public render() {
         const { value } = this.state;
-        const inBlockquote = plugin.utils.isSelectionInBlockquote(value);
+        const inBlockquote = blockquote.utils.isSelectionInBlockquote(value);
 
         return (
             <div>
@@ -66,7 +66,6 @@ class BlockquoteExample extends React.Component {
                     </Button>
                 </Toolbar>
                 <Editor
-                    placeholder={'Enter some text...'}
                     plugins={plugins}
                     value={value}
                     onChange={this.onChange}

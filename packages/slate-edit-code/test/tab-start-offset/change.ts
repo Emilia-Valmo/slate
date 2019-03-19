@@ -8,5 +8,5 @@ export default function(plugin, change) {
 
     change.collapseToStartOf(block).moveOffsetsTo(0);
 
-    return plugin.onKeyDown(simulateKey('tab'), change, {});
+    return plugin.plugin.onKeyDown(simulateKey('tab'), change, {});
 }

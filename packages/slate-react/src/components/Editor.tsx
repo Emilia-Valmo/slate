@@ -1,13 +1,4 @@
-import {
-    Block,
-    Change,
-    Inline,
-    Mark,
-    Plugin,
-    Schema,
-    Stack,
-    Value
-} from '@gitbook/slate';
+import { Block, Change, Inline, Mark, Value } from '@gitbook/slate';
 import {
     IS_ANDROID,
     IS_BROWSER,
@@ -25,6 +16,7 @@ import {
 } from 'scheduler';
 
 import EVENT_HANDLERS from '../constants/event-handlers';
+import { Plugin, PluginsStack } from '../plugins';
 import AfterPlugin from '../plugins/after';
 import BeforePlugin from '../plugins/before';
 import findDOMRange from '../utils/find-dom-range';
@@ -63,15 +55,14 @@ function Editor(props: EditorProps): React.Node {
         spellCheck,
         tabIndex,
         style,
-        renderNode,
-        renderMark,
         plugins: propPlugins,
-        schema: propSchema
+        renderNode,
+        renderMark
     } = props;
     const { document, selection, isFocused, decorations } = value;
 
     /*
-     * Compute the stack and schema that should be used
+     * Compute the stack of plugins that should be used.
      *
      * In addition to the plugins provided in props, this will initialize three
      * other plugins:
@@ -79,11 +70,10 @@ function Editor(props: EditorProps): React.Node {
      * - The top-level editor plugin, which allows for top-level handlers, etc.
      * - The two "core" plugins, one before all the other and one after.
      */
-    const { stack, schema } = React.useMemo(() => {
+    const stack = React.useMemo(() => {
         const beforePlugin = BeforePlugin();
         const afterPlugin = AfterPlugin();
         const editorPlugin = {
-            schema: propSchema || {},
             renderNode,
             renderMark
         };
@@ -95,11 +85,8 @@ function Editor(props: EditorProps): React.Node {
             afterPlugin
         ];
 
-        return {
-            stack: Stack.create({ plugins }),
-            schema: Schema.create({ plugins })
-        };
-    }, [propPlugins, propSchema, renderNode, renderMark]);
+        return PluginsStack.create(plugins);
+    }, [propPlugins, renderNode, renderMark]);
 
     const domRef = React.useRef();
     const isUpdatingSelectionRef = React.useRef(false);
@@ -109,7 +96,6 @@ function Editor(props: EditorProps): React.Node {
 
     editorRef.current.readOnly = readOnly;
     editorRef.current.stack = stack;
-    editorRef.current.schema = schema;
     editorRef.current.value = value;
 
     editorRef.current.change = (fn: (change: Change) => Change | null) => {
@@ -387,7 +373,7 @@ function Editor(props: EditorProps): React.Node {
     });
 
     const indexes = document.getSelectionIndexes(selection);
-    const decs = document.getDecorations(stack).concat(decorations || []);
+    const decs = stack.getDecorations(document).concat(decorations || []);
     const childrenDecorations = getChildrenDecorations(document, decs);
 
     const children = document.nodes.toArray().map((child, i) => {

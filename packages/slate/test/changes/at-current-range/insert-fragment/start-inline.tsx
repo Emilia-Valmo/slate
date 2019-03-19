@@ -1,37 +1,39 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
+import h from '../../../helpers/h';
 
 export default function(change) {
-  change.insertFragment(
-    <document>
-      <quote>fragment</quote>
-    </document>
-  )
+    change.insertFragment(
+        <document>
+            <quote>fragment</quote>
+        </document>
+    );
 }
 
 export const input = (
-  <value>
-    <document>
-      <paragraph>
-        <link>
-          <cursor />word
-        </link>
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                <link>
+                    <cursor />
+                    word
+                </link>
+            </paragraph>
+        </document>
+    </value>
+);
 
 export const output = (
-  <value>
-    <document>
-      <paragraph>
-        fragment<cursor />
-        <link>word</link>
-      </paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>
+                fragment
+                <cursor />
+                <link>word</link>
+            </paragraph>
+        </document>
+    </value>
+);
 
 // The result has an invalid selection for now:
 //
@@ -48,4 +50,4 @@ export const output = (
 //     1
 //     0
 //   ]
-export const skip = true
+export const skip = true;

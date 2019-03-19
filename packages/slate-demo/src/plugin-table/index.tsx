@@ -32,7 +32,7 @@ function renderNode(props) {
     }
 }
 
-const plugins = [tablePlugin, alignPlugin, { renderNode }];
+const plugins = [tablePlugin.plugin, { renderNode }];
 
 const TableContext = React.createContext(false);
 
@@ -89,7 +89,7 @@ class Paragraph extends React.Component {
 
 class TableExample extends React.Component {
     public state = {
-        value: INITIAL_VALUE
+        value: INITIAL_VALUE.setSchema([tablePlugin.schema, alignPlugin.schema])
     };
 
     public renderToolbar() {

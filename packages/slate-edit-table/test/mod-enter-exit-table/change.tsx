@@ -4,7 +4,7 @@ export default function(plugin, change) {
     const blockStart = change.value.document.getDescendant('anchor');
     const withCursor = change.collapseToStartOf(blockStart);
 
-    const result = plugin.onKeyDown(
+    const result = plugin.plugin.onKeyDown(
         createEvent({
             key: 'Enter',
             metaKey: true

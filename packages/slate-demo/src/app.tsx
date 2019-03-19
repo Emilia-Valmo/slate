@@ -1,3 +1,4 @@
+import { StatsGraph } from '@helpscout/stats';
 import React from 'react';
 import styled from 'react-emotion';
 import {
@@ -7,10 +8,8 @@ import {
     Route,
     Switch
 } from 'react-router-dom';
-import {StatsGraph} from '@helpscout/stats'
 
 import CheckLists from './check-lists';
-import CodeHighlighting from './code-highlighting';
 import Embeds from './embeds';
 import Emojis from './emojis';
 import ForcedLayout from './forced-layout';
@@ -27,7 +26,6 @@ import RichText from './rich-text';
 import RTL from './rtl';
 import SearchHighlighting from './search-highlighting';
 import SyncingOperations from './syncing-operations';
-import Tables from './tables';
 
 // Plugins
 import PluginAutoReplace from './plugin-auto-replace';
@@ -52,8 +50,6 @@ const EXAMPLES = [
     ['Markdown Preview', MarkdownPreview, '/markdown-preview'],
     ['Markdown Shortcuts', MarkdownShortcuts, '/markdown-shortcuts'],
     ['Check Lists', CheckLists, '/check-lists'],
-    ['Code Highlighting', CodeHighlighting, '/code-highlighting'],
-    ['Tables', Tables, '/tables'],
     ['Search Highlighting', SearchHighlighting, '/search-highlighting'],
     ['Syncing Operations', SyncingOperations, '/syncing-operations'],
     ['Read-only', ReadOnly, '/read-only'],
@@ -156,7 +152,7 @@ export default class App extends React.Component {
         info: null
     };
 
-    public componentDidCatch(error: Error, info: object ) {
+    public componentDidCatch(error: Error, info: object) {
         this.setState({ error, info });
     }
 

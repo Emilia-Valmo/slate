@@ -1,7 +1,6 @@
 import Debug from 'debug';
 import { Record } from 'immutable';
 import memoize from 'immutablejs-record-memoize';
-import isPlainObject from 'is-plain-object';
 import mergeWith from 'lodash/mergeWith';
 
 import {
@@ -22,13 +21,11 @@ import {
     SchemaViolation
 } from '@gitbook/slate-schema-violations';
 
-import CORE_SCHEMA_RULES from '../constants/core-schema-rules';
 import MODEL_TYPES from '../constants/model-types';
 import Block from './block';
 import Change from './change';
 import Document from './document';
 import Inline from './inline';
-import Stack from './stack';
 import Text from './text';
 
 type AnyNode = Block | Inline | Text | Document;
@@ -36,17 +33,58 @@ type AnyNode = Block | Inline | Text | Document;
 // Callback when running a normalization
 export type SchemaNormalizeFn = (change: Change) => void;
 
+export type ValidateNodeFn = (
+    node: AnyNode
+) => null | undefined | SchemaNormalizeFn;
+
+// Rule for a node (used for first, parent, etc)
+interface NodeSchemaRule {
+    /** Types that should be allowed as a parent */
+    types?: string[];
+    /** Object kinds that should be allowed as a child */
+    objects?: Array<'text' | 'inline' | 'block'>;
+}
+
+// Rule for a block/document/inline
+export interface SchemaRule {
+    isVoid?: boolean;
+    text?: RegExp;
+    /** Validation for marks */
+    marks?: Array<{
+        type: string;
+    }>;
+    /** Validation for the data of the node */
+    data?: {
+        [key: string]: (value: any) => boolean;
+    };
+    /** Validation for the parent */
+    parent?: NodeSchemaRule;
+    first?: NodeSchemaRule;
+    last?: NodeSchemaRule;
+    /** Validation for inner nodes */
+    nodes?: Array<
+        | NodeSchemaRule
+        | {
+              min?: number;
+              max?: number;
+          }
+    >;
+    normalize?: (
+        change: Change,
+        violation: SchemaViolation,
+        context: SchemaNormalizeContext
+    ) => void;
+}
+export interface SchemaRulesSet {
+    [key: string]: SchemaRule;
+}
+
 // Context when normalizing a node (it depends on the violation)
 export interface SchemaNormalizeContext {
     node: AnyNode;
     child: AnyNode;
+    rule: SchemaRule;
 }
-
-export type SchemaRule =
-    | {
-          validateNode: (node: AnyNode) => null | undefined | SchemaNormalizeFn;
-      }
-    | {};
 
 const debug = Debug('slate:schema');
 
@@ -54,7 +92,7 @@ const debug = Debug('slate:schema');
  * Immutable model to represent a schema.
  */
 class Schema extends Record({
-    stack: Stack.create(),
+    validations: [],
     document: {},
     blocks: {},
     inlines: {}
@@ -68,54 +106,23 @@ class Schema extends Record({
     }
 
     /*
-     * Create a new `Schema` with `attrs`.
+     * Create a new `Schema` with a set of rules
      */
-    public static create(attrs: any = {}): Schema {
+    public static create(
+        attrs:
+            | Schema
+            | {
+                  validations?: ValidateNodeFn[];
+                  document?: SchemaRule;
+                  blocks?: { [type: string]: SchemaRule };
+                  inlines?: { [type: string]: SchemaRule };
+              } = {}
+    ): Schema {
         if (Schema.isSchema(attrs)) {
             return attrs;
         }
 
-        if (isPlainObject(attrs)) {
-            return Schema.fromJS(attrs);
-        }
-
-        throw new Error(
-            `\`Schema.create\` only accepts objects or schemas, but you passed it: ${attrs}`
-        );
-    }
-
-    /*
-     * Create a `Schema` from a JSON `object`.
-     */
-    public static fromJS(object: any): Schema {
-        if (Schema.isSchema(object)) {
-            return object;
-        }
-
-        let { plugins } = object;
-
-        if (object.rules) {
-            throw new Error(
-                'Schemas in Slate have changed! They are no longer accept a `rules` property.'
-            );
-        }
-
-        if (object.nodes) {
-            throw new Error(
-                'Schemas in Slate have changed! They are no longer accept a `nodes` property.'
-            );
-        }
-
-        if (!plugins) {
-            plugins = [{ schema: object }];
-        }
-
-        const schema = resolveSchema(plugins);
-        const stack = Stack.create({
-            plugins: [...CORE_SCHEMA_RULES, ...plugins]
-        });
-        const ret = new Schema({ ...schema, stack });
-        return ret;
+        return new Schema(attrs);
     }
 
     /*
@@ -126,10 +133,26 @@ class Schema extends Record({
     }
 
     // Properties
-    public readonly stack: Stack;
+    public readonly validations: ValidateNodeFn[];
     public readonly document: SchemaRule;
     public readonly blocks: { [type: string]: SchemaRule };
     public readonly inlines: { [type: string]: SchemaRule };
+
+    /*
+     * Combine this schema with another one.
+     */
+    public combineWith(schema: Schema | Schema[]): Schema {
+        if (Array.isArray(schema)) {
+            return schema.reduce((r, s) => r.combineWith(s), this);
+        }
+
+        return new Schema({
+            validations: [...this.validations, ...schema.validations],
+            document: mergeRules(this.document, schema.document),
+            blocks: mergeRulesSets(this.blocks, schema.blocks),
+            inlines: mergeRulesSets(this.inlines, schema.inlines)
+        });
+    }
 
     /*
      * Get the first invalid node.
@@ -218,7 +241,7 @@ class Schema extends Record({
         change: Change,
         violation: SchemaViolation,
         context: SchemaNormalizeContext
-    ) {
+    ): void {
         switch (violation) {
             case CHILD_OBJECT_INVALID:
             case CHILD_TYPE_INVALID:
@@ -278,9 +301,12 @@ class Schema extends Record({
      * invalid node, or void if the node is valid.
      */
     public validateNode(node: AnyNode): SchemaNormalizeFn | undefined {
-        const ret = this.stack.find('validateNode', node);
-        if (ret) {
-            return ret;
+        // Run custom validations
+        for (const validation of this.validations) {
+            const ret = validation(node);
+            if (ret != null) {
+                return ret;
+            }
         }
 
         if (node.object === 'text') {
@@ -470,123 +496,60 @@ class Schema extends Record({
             }
         }
     }
-
-    /*
-     * Return a JSON representation of the schema.
-     */
-    public toJS() {
-        const object = {
-            object: this.object,
-            document: this.document,
-            blocks: this.blocks,
-            inlines: this.inlines
-        };
-
-        return object;
-    }
 }
 
 /*
- * Resolve a set of schema rules from an array of `plugins`.
- *
- * @param {Array} plugins
- * @return {Object}
+ * Merge two schema rules together.
  */
-function resolveSchema(plugins = []) {
-    const schema = {
-        document: {},
-        blocks: {},
-        inlines: {}
-    };
+function mergeRules(a: SchemaRule, b: SchemaRule): SchemaRule {
+    const rule: SchemaRule = { ...a };
+    mergeWith(rule, b, ruleMergeCustomizer);
 
-    plugins
-        .slice()
-        .reverse()
-        .forEach(plugin => {
-            if (!plugin.schema) {
+    return rule;
+}
+
+/*
+ * Merge two schema rules together.
+ */
+function mergeRulesSets(a: SchemaRulesSet, b: SchemaRulesSet): SchemaRulesSet {
+    const result: SchemaRulesSet = { ...a };
+
+    for (const key in b) {
+        if (b.hasOwnProperty(key)) {
+            result[key] = result[key]
+                ? mergeRules(result[key], b[key])
+                : b[key];
+        }
+    }
+
+    return result;
+}
+
+/*
+ * A Lodash customizer for merging schema rules. Special cases `objects`,
+ * `marks` and `types` arrays to be unioned, and ignores new `null` values.
+ * Merge two schema rules together.
+ */
+function ruleMergeCustomizer<K extends keyof SchemaRule>(
+    target: SchemaRule[K] | undefined,
+    source: SchemaRule[K] | undefined,
+    key: K
+): SchemaRule[K] {
+    if (key === 'normalize' && source && target) {
+        return (
+            change: Change,
+            violation: SchemaViolation,
+            context: SchemaNormalizeContext
+        ) => {
+            const original = change.operations.size;
+            target(change, violation, context);
+
+            if (change.operations.size > original) {
                 return;
             }
-
-            if (plugin.schema.rules) {
-                throw new Error(
-                    'Schemas in Slate have changed! They are no longer accept a `rules` property.'
-                );
-            }
-
-            if (plugin.schema.nodes) {
-                throw new Error(
-                    'Schemas in Slate have changed! They are no longer accept a `nodes` property.'
-                );
-            }
-
-            const { document = {}, blocks = {}, inlines = {} } = plugin.schema;
-            const d = resolveDocumentRule(document);
-            const bs = {};
-            const is = {};
-
-            for (const key of Object.keys(blocks)) {
-                bs[key] = resolveNodeRule('block', key, blocks[key]);
-            }
-
-            for (const key of Object.keys(inlines)) {
-                is[key] = resolveNodeRule('inline', key, inlines[key]);
-            }
-
-            mergeWith(schema.document, d, customizer);
-            mergeWith(schema.blocks, bs, customizer);
-            mergeWith(schema.inlines, is, customizer);
-        });
-
-    return schema;
-}
-
-/*
- * Resolve a document rule `obj`.
- *
- * @param {Object} obj
- * @return {Object}
- */
-
-function resolveDocumentRule(obj) {
-    return {
-        data: {},
-        nodes: null,
-        ...obj
-    };
-}
-
-/*
- * Resolve a node rule with `type` from `obj`.
- *
- * @param {String} object
- * @param {String} type
- * @param {Object} obj
- * @return {Object}
- */
-
-function resolveNodeRule(object, type, obj) {
-    return {
-        data: {},
-        isVoid: null,
-        nodes: null,
-        first: null,
-        last: null,
-        parent: null,
-        text: null,
-        ...obj
-    };
-}
-
-/*
- * A Lodash customizer for merging schema definitions. Special cases `objects`,
- * `marks` and `types` arrays to be unioned, and ignores new `null` values.
- *
- * @param {Mixed} target
- * @param {Mixed} source
- * @return {Array|Void}
- */
-function customizer(target, source, key) {
-    if (key === 'objects' || key === 'types' || key === 'marks') {
+            source(change, violation, context);
+        };
+    } else if (key === 'objects' || key === 'types' || key === 'marks') {
         return target == null ? source : target.concat(source);
     } else {
         return source == null ? target : source;

@@ -1,39 +1,39 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
+import h from '../../../helpers/h';
 
 export const input = {
-  object: 'value',
-  document: {
-    object: 'document',
-    data: {},
-    nodes: [
-      {
-        object: 'block',
-        type: 'image',
-        isVoid: true,
+    object: 'value',
+    document: {
+        object: 'document',
         data: {},
         nodes: [
-          {
-            object: 'text',
-            leaves: [
-              {
-                object: 'leaf',
-                text: '',
-                marks: [],
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-}
+            {
+                object: 'block',
+                type: 'image',
+                isVoid: true,
+                data: {},
+                nodes: [
+                    {
+                        object: 'text',
+                        leaves: [
+                            {
+                                object: 'leaf',
+                                text: '',
+                                marks: []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+};
 
 export const output = (
-  <value>
-    <document>
-      <image />
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <image />
+        </document>
+    </value>
+);

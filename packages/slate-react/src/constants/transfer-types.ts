@@ -1,7 +1,5 @@
 /*
  * The transfer types that Slate recognizes.
- *
- * @type {Object}
  */
 
 const TRANSFER_TYPES = {
@@ -11,11 +9,5 @@ const TRANSFER_TYPES = {
     RICH: 'text/rtf',
     TEXT: 'text/plain'
 };
-
-/*
- * Export.
- *
- * @type {Object}
- */
 
 export default TRANSFER_TYPES;

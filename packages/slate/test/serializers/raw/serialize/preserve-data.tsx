@@ -1,44 +1,44 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
+import h from '../../../helpers/h';
 
 export const input = (
-  <value>
-    <document>
-      <paragraph>one</paragraph>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <paragraph>one</paragraph>
+        </document>
+    </value>
+);
 
 export const output = {
-  object: 'value',
-  data: {},
-  document: {
-    object: 'document',
+    object: 'value',
     data: {},
-    nodes: [
-      {
-        object: 'block',
-        type: 'paragraph',
+    document: {
+        object: 'document',
         data: {},
-        isVoid: false,
         nodes: [
-          {
-            object: 'text',
-            leaves: [
-              {
-                text: 'one',
-                object: 'leaf',
-                marks: [],
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-}
+            {
+                object: 'block',
+                type: 'paragraph',
+                data: {},
+                isVoid: false,
+                nodes: [
+                    {
+                        object: 'text',
+                        leaves: [
+                            {
+                                text: 'one',
+                                object: 'leaf',
+                                marks: []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+};
 
 export const options = {
-  preserveData: true,
-}
+    preserveData: true
+};

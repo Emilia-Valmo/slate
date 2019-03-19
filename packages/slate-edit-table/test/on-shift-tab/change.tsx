@@ -6,7 +6,7 @@ export default function(plugin, change) {
 
     const initialPosition = plugin.utils.getPosition(change.value);
 
-    plugin.onKeyDown(
+    plugin.plugin.onKeyDown(
         createEvent({
             key: 'Tab',
             shiftKey: true

@@ -1,25 +1,25 @@
 /* @jsx h */
 
-import h from '../../../helpers/h'
+import h from '../../../helpers/h';
 
 export default function(simulator) {
-  simulator.blur()
+    simulator.blur();
 }
 
 export const input = (
-  <value>
-    <document>
-      <paragraph />
-    </document>
-    <selection isFocused />
-  </value>
-)
+    <value>
+        <document>
+            <paragraph />
+        </document>
+        <selection isFocused />
+    </value>
+);
 
 export const output = (
-  <value>
-    <document>
-      <paragraph />
-    </document>
-    <selection isFocused={false} />
-  </value>
-)
+    <value>
+        <document>
+            <paragraph />
+        </document>
+        <selection isFocused={false} />
+    </value>
+);

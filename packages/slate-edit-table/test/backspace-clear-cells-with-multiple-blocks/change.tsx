@@ -9,7 +9,7 @@ export default function(plugin, change) {
         .collapseToStartOf(blockStart)
         .extendToEndOf(blockEnd);
 
-    return plugin.onKeyDown(
+    return plugin.plugin.onKeyDown(
         createEvent({
             key: 'Backspace'
         }),

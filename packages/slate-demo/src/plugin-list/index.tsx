@@ -7,11 +7,11 @@ import React from 'react';
 import { Button, Icon, Toolbar } from '../components';
 import initialValue from './value';
 
-const PLUGIN_LIST = PluginEditList({
+const list = PluginEditList({
     types: ['bulleted-list', 'numbered-list'],
     typeItem: 'list-item'
 });
-const PLUGINS = [PLUGIN_LIST];
+const PLUGINS = [list.plugin];
 
 /*
  * Define the default node type.
@@ -46,7 +46,7 @@ class ListExample extends React.Component {
      */
 
     public state = {
-        value: Value.fromJS(initialValue)
+        value: Value.fromJS(initialValue).setSchema(list.schema)
     };
 
     /*
@@ -286,11 +286,9 @@ class ListExample extends React.Component {
                 change.setBlocks(isActive ? DEFAULT_NODE : type);
             }
         } else {
-            const inList = PLUGIN_LIST.utils.isSelectionInList(
-                this.state.value
-            );
+            const inList = list.utils.isSelectionInList(this.state.value);
 
-            const { wrapInList, unwrapList } = PLUGIN_LIST.changes;
+            const { wrapInList, unwrapList } = list.changes;
 
             if (inList) {
                 unwrapList(change);

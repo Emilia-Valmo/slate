@@ -1,33 +1,33 @@
 /* @jsx h */
 
-import h from '../../helpers/h'
+import h from '../../helpers/h';
 
 export const schema = {
-  blocks: {
-    paragraph: {},
-    quote: {
-      nodes: [{ types: ['paragraph'], max: 1 }],
-    },
-  },
-}
+    blocks: {
+        paragraph: {},
+        quote: {
+            nodes: [{ types: ['paragraph'], max: 1 }]
+        }
+    }
+};
 
 export const input = (
-  <value>
-    <document>
-      <quote>
-        <paragraph>one</paragraph>
-        <paragraph>two</paragraph>
-      </quote>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <quote>
+                <paragraph>one</paragraph>
+                <paragraph>two</paragraph>
+            </quote>
+        </document>
+    </value>
+);
 
 export const output = (
-  <value>
-    <document>
-      <quote>
-        <paragraph>one</paragraph>
-      </quote>
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <quote>
+                <paragraph>one</paragraph>
+            </quote>
+        </document>
+    </value>
+);

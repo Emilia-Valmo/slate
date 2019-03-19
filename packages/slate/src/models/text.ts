@@ -128,6 +128,10 @@ class Text extends Record({
         });
     }
 
+    // Record properties
+    public readonly key: string;
+    public readonly leaves: List<Leaf>;
+
     public isText(): this is Text {
         return true;
     }

@@ -21,13 +21,13 @@ describe('rendering', () => {
     for (const test of tests) {
         it(test, async () => {
             const module = require(resolve(dir, test));
-            const { value, output, props } = module;
+            const { value, output, editorProps } = module;
             const p = {
                 value,
                 onChange() {
                     // Do nothing
                 },
-                ...(props || {})
+                ...(editorProps || {})
             };
 
             const content = ReactDOM.renderToStaticMarkup(<Editor {...p} />);

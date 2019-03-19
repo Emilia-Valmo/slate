@@ -13,13 +13,10 @@ import Node from './models/node';
 import Operation from './models/operation';
 import Range from './models/range';
 import Schema from './models/schema';
-import Stack from './models/stack';
 import Text from './models/text';
 import Value from './models/value';
 import Operations from './operations';
 import { resetKeyGenerator, setKeyGenerator } from './utils/generate-key';
-
-export * from './interfaces';
 
 /*
  * File thh Change class with all the methods
@@ -47,30 +44,6 @@ export {
     Operations,
     Range,
     Schema,
-    Stack,
-    Text,
-    Value,
-    resetKeyGenerator,
-    setKeyGenerator,
-    resetMemoization,
-    useMemoization
-};
-
-export default {
-    Block,
-    Changes,
-    Data,
-    Document,
-    History,
-    Inline,
-    Leaf,
-    Mark,
-    Node,
-    Operation,
-    Operations,
-    Range,
-    Schema,
-    Stack,
     Text,
     Value,
     resetKeyGenerator,

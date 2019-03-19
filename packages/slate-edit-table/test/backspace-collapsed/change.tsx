@@ -6,7 +6,7 @@ export default function(plugin, change) {
 
     const withCursor = change.collapseToStartOf(blockStart);
 
-    plugin.onKeyDown(
+    plugin.plugin.onKeyDown(
         createEvent({
             key: 'Backspace'
         }),

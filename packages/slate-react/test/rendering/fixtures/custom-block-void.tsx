@@ -1,33 +1,33 @@
 /* @jsx h */
 
-import React from 'react'
-import h from '../../helpers/h'
+import React from 'react';
+import h from '../../helpers/h';
 
 function Image(props) {
-  return React.createElement('img', {
-    src: props.node.data.get('src'),
-    ...props.attributes,
-  })
+    return React.createElement('img', {
+        src: props.node.data.get('src'),
+        ...props.attributes
+    });
 }
 
 function renderNode(props) {
-  switch (props.node.type) {
-    case 'image':
-      return Image(props)
-  }
+    switch (props.node.type) {
+        case 'image':
+            return Image(props);
+    }
 }
 
-export const props = {
-  renderNode,
-}
+export const editorProps = {
+    renderNode
+};
 
 export const value = (
-  <value>
-    <document>
-      <image src="https://example.com/image.png" />
-    </document>
-  </value>
-)
+    <value>
+        <document>
+            <image src="https://example.com/image.png" />
+        </document>
+    </value>
+);
 
 export const output = `
 <div data-slate-editor="true" contenteditable="true" role="textbox">
@@ -44,4 +44,4 @@ export const output = `
     </div>
   </div>
 </div>
-`.trim()
+`.trim();

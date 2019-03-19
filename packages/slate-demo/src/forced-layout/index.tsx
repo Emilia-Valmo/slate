@@ -1,4 +1,4 @@
-import { Block, Value } from '@gitbook/slate';
+import { Block, Schema, Value } from '@gitbook/slate';
 import { Editor } from '@gitbook/slate-react';
 import {
     CHILD_REQUIRED,
@@ -10,11 +10,8 @@ import initialValue from './value.json';
 
 /*
  * A simple schema to enforce the nodes in the Slate document.
- *
- * @type {Object}
  */
-
-const schema = {
+const schema = Schema.create({
     document: {
         nodes: [
             { types: ['title'], min: 1, max: 1 },
@@ -37,29 +34,22 @@ const schema = {
             }
         }
     }
-};
+});
 
 /*
  * The Forced Layout example.
- *
- * @type {Component}
  */
-
 class ForcedLayout extends React.Component {
     /*
      * Deserialize the initial editor value.
-     *
-     * @type {Object}
      */
 
     public state = {
-        value: Value.fromJS(initialValue)
+        value: Value.fromJS(initialValue).setSchema(schema)
     };
 
     /*
      * Render the editor.
-     *
-     * @return {Component} component
      */
 
     public render() {
@@ -67,7 +57,6 @@ class ForcedLayout extends React.Component {
             <Editor
                 placeholder="Enter a title..."
                 value={this.state.value}
-                schema={schema}
                 onChange={this.onChange}
                 renderNode={this.renderNode}
             />

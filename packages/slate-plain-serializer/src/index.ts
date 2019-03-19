@@ -12,7 +12,8 @@ function deserialize(
         defaultMarks?: string[] | Set<string>;
     } = {}
 ): Value {
-    let { defaultBlock = 'line', defaultMarks = [], toJSON = false } = options;
+    let { defaultBlock = 'line', defaultMarks = [] } = options;
+    const { toJSON = false } = options;
 
     if (Set.isSet(defaultMarks)) {
         defaultMarks = defaultMarks.toArray();

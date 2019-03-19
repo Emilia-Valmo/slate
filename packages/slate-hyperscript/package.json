@@ -1,7 +1,7 @@
 {
   "name": "@gitbook/slate-hyperscript",
   "description": "A hyperscript helper for creating Slate documents.",
-  "version": "3.0.0-alpha.1",
+  "version": "3.0.0-alpha.3",
   "license": "MIT",
   "repository": "https://github.com/GitbookIO/slate.git",
   "source": "src/index.ts",
@@ -12,7 +12,7 @@
     "dist/"
   ],
   "dependencies": {
-    "@gitbook/slate-dev-logger": "^3.0.0-alpha.1",
+    "@gitbook/slate-dev-logger": "^3.0.0-alpha.3",
     "is-empty": "^1.0.0",
     "is-plain-object": "^2.0.4"
   },
@@ -20,6 +20,6 @@
     "@gitbook/slate": ">=0.32.0"
   },
   "devDependencies": {
-    "@gitbook/slate": "^3.0.0-alpha.1"
+    "@gitbook/slate": "^3.0.0-alpha.3"
   }
 }

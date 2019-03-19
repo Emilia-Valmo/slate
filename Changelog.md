@@ -6,13 +6,14 @@ All packages follow the same versions. Before 1.0.0, each package was progressin
 
 # 3.0.0
 
-* [BREAKING] Remove `renderPortal`, `renderPlaceholder`, `renderNode` and `renderMark` and `renderEditor` from plugins. `renderNode` and `renderMark` should now be passed as props to `<Editor />`
+* [BREAKING] Remove `renderPortal`, `renderPlaceholder`, `renderNode` and `renderMark` and `renderEditor` from plugins.
 * [BREAKING] Support only `react>=16.8`
 * [BREAKING] Package `@gitbook/slate-prop-types` is no longer published
 * [BREAKING] Props `readOnly` has been removed when rendering nodes, you should use `editor.readOnly` instead
 * [BREAKING] Remove deprecated `toJSON`, `fromJSON` and `kind` properties on models
 * [BREAKING] Remove deprecated `Character` model
 * [BREAKING] Switch to Typescript, not all modules are typed yet. Dynamic type checks are no longer done.
+* [BREAKING] Schema has been split from plugins, and should be created using `Schema.create({ ... })`
 * Debug logs are no longer emitted during rendering (you can use the React dev tools instead)
 * Compatibility with react strict/concurrent modes 
 

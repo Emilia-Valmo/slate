@@ -127,7 +127,7 @@ const Node = {
      * Create a `Node` from a JSON `value`
      */
 
-    fromJSON(value: NodeJSON): Block | Document | Inline | Text {
+    fromJS(value: NodeJSON): Block | Document | Inline | Text {
         switch (value.object) {
             case 'block':
                 return Block.fromJS(value);

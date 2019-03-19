@@ -1,12 +1,8 @@
+import { Value } from '@gitbook/slate';
+import { IS_EDGE } from '@gitbook/slate-dev-environment';
 import getWindow from 'get-window';
 
 import OffsetKey from './offset-key';
-
-/*
- * Constants.
- *
- * @type {String}
- */
 
 export const ZERO_WIDTH_ATTRIBUTE = 'data-slate-zero-width';
 export const ZERO_WIDTH_SELECTOR = `[${ZERO_WIDTH_ATTRIBUTE}]`;
@@ -17,14 +13,15 @@ const VOID_SELECTOR = '[data-slate-void]';
 
 /*
  * Find a Slate point from a DOM selection's `nativeNode` and `nativeOffset`.
- *
- * @param {Element} nativeNode
- * @param {Number} nativeOffset
- * @param {Value} value
- * @return {Object}
  */
-
-function findPoint(nativeNode, nativeOffset, value) {
+function findPoint(
+    nativeNode: HTMLElement,
+    nativeOffset: number,
+    value: Value
+): {
+    key: string;
+    offset: number;
+} | null {
     const { node: nearestNode, offset: nearestOffset } = normalizeNodeAndOffset(
         nativeNode,
         nativeOffset
@@ -44,7 +41,16 @@ function findPoint(nativeNode, nativeOffset, value) {
         range.setStart(textNode, 0);
         range.setEnd(nearestNode, nearestOffset);
         node = textNode;
-        offset = range.toString().length;
+
+        // COMPAT: Edge has a bug where Range.prototype.toString() will convert \n
+        // into \r\n. The bug causes a loop when slate-react attempts to reposition
+        // its cursor to match the native position. Use textContent.length instead.
+        // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/10291116/
+        if (IS_EDGE) {
+            offset = range.cloneContents().textContent.length;
+        } else {
+            offset = range.toString().length;
+        }
     } else {
         // For void nodes, the element with the offset key will be a cousin, not an
         // ancestor, so find it by going down from the nearest void parent.
@@ -95,13 +101,14 @@ function findPoint(nativeNode, nativeOffset, value) {
 /*
  * From a DOM selection's `node` and `offset`, normalize so that it always
  * refers to a text node.
- *
- * @param {Element} node
- * @param {Number} offset
- * @return {Object}
  */
-
-function normalizeNodeAndOffset(node, offset) {
+function normalizeNodeAndOffset(
+    node: HTMLElement,
+    offset: number
+): {
+    node: HTMLElement;
+    offset: number;
+} {
     // If it's an element node, its offset refers to the index of its children
     // including comment nodes, so try to find the right text child node.
     if (node.nodeType === 1 && node.childNodes.length) {
@@ -128,14 +135,12 @@ function normalizeNodeAndOffset(node, offset) {
 /*
  * Get the nearest editable child at `index` in a `parent`, preferring
  * `direction`.
- *
- * @param {Element} parent
- * @param {Number} index
- * @param {String} direction ('forward' or 'backward')
- * @return {Element|Null}
  */
-
-function getEditableChild(parent, index, direction) {
+function getEditableChild(
+    parent: HTMLElement,
+    index: number,
+    direction: 'forward' | 'backward'
+): HTMLElement | null {
     const { childNodes } = parent;
     let child = childNodes[index];
     let i = index;
@@ -179,11 +184,5 @@ function getEditableChild(parent, index, direction) {
 
     return child || null;
 }
-
-/*
- * Export.
- *
- * @type {Function}
- */
 
 export default findPoint;

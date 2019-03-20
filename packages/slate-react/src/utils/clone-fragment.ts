@@ -1,5 +1,6 @@
 import { Value } from '@gitbook/slate';
 import Base64 from '@gitbook/slate-base64-serializer';
+import * as debug from '@gitbook/slate-debug';
 import { IS_IE } from '@gitbook/slate-dev-environment';
 import Plain from '@gitbook/slate-plain-serializer';
 import getWindow from 'get-window';
@@ -24,6 +25,11 @@ function cloneFragment(event, value, fragment = value.fragment) {
     const { startKey, endKey } = value;
     const startVoid = value.document.getClosestVoid(startKey);
     const endVoid = value.document.getClosestVoid(endKey);
+
+    if (native.rangeCount < 1) {
+        debug.report(new Error('Cannot copy a selection with no range'));
+        return;
+    }
 
     // If the selection is collapsed, and it isn't inside a void node, abort.
     if (native.isCollapsed && !startVoid) {

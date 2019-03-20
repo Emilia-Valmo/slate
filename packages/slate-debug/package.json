@@ -1,5 +1,5 @@
 {
-  "name": "@gitbook/slate-dev-logger",
+  "name": "@gitbook/slate-debug",
   "description": "A simple, development-only logger for Slate.",
   "version": "3.0.0-alpha.6",
   "license": "MIT",
@@ -10,5 +10,8 @@
   "types": "dist/es6/index.d.ts",
   "files": [
     "dist/"
-  ]
+  ],
+  "dependencies": {
+    "debug": "^3.1.0"
+  }
 }

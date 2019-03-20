@@ -1,18 +1,11 @@
-import logger from '@gitbook/slate-dev-logger';
-import Debug from 'debug';
+import * as debug from '@gitbook/slate-debug';
 import { List, Record, Stack } from 'immutable';
 import isPlainObject from 'is-plain-object';
 import isEqual from 'lodash/isEqual';
 
 import MODEL_TYPES, { isType } from '../constants/model-types';
 
-/*
- * Debug.
- *
- * @type {Function}
- */
-
-const debug = Debug('slate:history');
+const logger = debug.Logger('slate:history');
 
 /*
  * Default properties.
@@ -43,7 +36,7 @@ class History extends Record(DEFAULTS) {
     }
 
     get kind() {
-        logger.deprecate(
+        debug.deprecate(
             'slate@0.32.0',
             'The `kind` property of Slate objects has been renamed to `object`.'
         );
@@ -123,7 +116,7 @@ class History extends Record(DEFAULTS) {
      */
 
     public static fromJSON(object) {
-        logger.deprecate(
+        debug.deprecate(
             'slate@0.35.0',
             'fromJSON methods are deprecated, use fromJS instead'
         );
@@ -157,7 +150,7 @@ class History extends Record(DEFAULTS) {
             merge = shouldMerge(operation, prevOperation);
         }
 
-        debug('save', { operation, merge });
+        logger('save', { operation, merge });
 
         // If the `merge` flag is true, add the operation to the previous batch.
         if (merge && prevBatch) {
@@ -202,7 +195,7 @@ class History extends Record(DEFAULTS) {
      */
 
     public toJSON() {
-        logger.deprecate(
+        debug.deprecate(
             'slate@0.35.0',
             'toJSON methods are deprecated, use toJS instead'
         );

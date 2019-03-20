@@ -11,9 +11,6 @@
     "*.md",
     "dist/"
   ],
-  "dependencies": {
-    "@gitbook/slate-dev-logger": "^3.0.0-alpha.6"
-  },
   "peerDependencies": {
     "@gitbook/slate": ">=0.32.0",
     "immutable": ">=4.0.0-rc.12"

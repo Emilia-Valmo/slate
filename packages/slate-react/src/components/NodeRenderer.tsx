@@ -1,5 +1,5 @@
 import { Block, EditorContainer, Inline, Range } from '@gitbook/slate';
-import logger from '@gitbook/slate-dev-logger';
+import * as debug from '@gitbook/slate-debug';
 import { List } from 'immutable';
 import * as React from 'react';
 
@@ -45,7 +45,7 @@ function areEqual(
         }
 
         if (shouldUpdate === false) {
-            logger.warn(
+            debug.warn(
                 "Returning false in `shouldNodeComponentUpdate` does not disable Slate's internal `shouldComponentUpdate` logic. If you want to prevent updates, use React's `shouldComponentUpdate` instead."
             );
         }

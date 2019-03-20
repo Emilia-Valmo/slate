@@ -1,4 +1,4 @@
-import logger from '@gitbook/slate-dev-logger';
+import * as debug from '@gitbook/slate-debug';
 import { List } from 'immutable';
 import Block from '../models/block';
 import Inline from '../models/inline';
@@ -1030,7 +1030,7 @@ Changes.setBlocksAtRange = (change, range, properties, options = {}) => {
 };
 
 Changes.setBlockAtRange = (...args) => {
-    logger.deprecate(
+    debug.deprecate(
         'slate@0.33.0',
         'The `setBlockAtRange` method of Slate changes has been renamed to `setBlocksAtRange`.'
     );
@@ -1060,7 +1060,7 @@ Changes.setInlinesAtRange = (change, range, properties, options = {}) => {
 };
 
 Changes.setInlineAtRange = (...args) => {
-    logger.deprecate(
+    debug.deprecate(
         'slate@0.33.0',
         'The `setInlineAtRange` method of Slate changes has been renamed to `setInlinesAtRange`.'
     );

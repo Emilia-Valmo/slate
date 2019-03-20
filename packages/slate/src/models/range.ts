@@ -1,4 +1,4 @@
-import logger from '@gitbook/slate-dev-logger';
+import * as debug from '@gitbook/slate-debug';
 import { List, Record, Set } from 'immutable';
 import isPlainObject from 'is-plain-object';
 
@@ -583,7 +583,7 @@ class Range extends Record({
         const focusOffsetType = typeof focusOffset;
 
         if (anchorOffsetType !== 'number' || focusOffsetType !== 'number') {
-            logger.warn(
+            debug.warn(
                 `The range offsets should be numbers, but they were of type "${anchorOffsetType}" and "${focusOffsetType}".`
             );
         }
@@ -605,7 +605,7 @@ class Range extends Record({
 
         // If the range is malformed, warn and zero it out.
         if (!anchorNode || !focusNode) {
-            logger.warn(
+            debug.warn(
                 'The range was invalid and was reset. The range in question was:',
                 range
             );
@@ -622,7 +622,7 @@ class Range extends Record({
 
         // If the anchor node isn't a text node, match it to one.
         if (anchorNode.object !== 'text') {
-            logger.warn(
+            debug.warn(
                 'The range anchor was set to a Node that is not a Text node. This should not happen and can degrade performance. The node in question was:',
                 anchorNode
             );
@@ -635,7 +635,7 @@ class Range extends Record({
 
         // If the focus node isn't a text node, match it to one.
         if (focusNode.object !== 'text') {
-            logger.warn(
+            debug.warn(
                 'The range focus was set to a Node that is not a Text node. This should not happen and can degrade performance. The node in question was:',
                 focusNode
             );

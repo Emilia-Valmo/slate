@@ -1,16 +1,16 @@
-import Debug from 'debug';
+import * as debug from '@gitbook/slate-debug';
 import pick from 'lodash/pick';
 
 import Operation from '../models/operation';
 
-const debug = Debug('slate:operation:invert');
+const logger = debug.Logger('slate:operation:invert');
 
 /*
  * Invert an operation.
  */
 function invertOperation(op: Operation): Operation {
     const { type } = op;
-    debug(type, op);
+    logger(type, op);
 
     /*
      * Insert node.

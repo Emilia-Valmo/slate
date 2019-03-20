@@ -1,9 +1,9 @@
-import Debug from 'debug';
+import * as debug from '@gitbook/slate-debug';
 
 import Operation from '../models/operation';
 import Value from '../models/value';
 
-const debug = Debug('slate:operation:apply');
+const logger = debug.Logger('slate:operation:apply');
 
 /*
  * Apply adjustments to affected ranges (selections, decorations);
@@ -560,7 +560,7 @@ function applyOperation(value: Value, operation: Operation) {
         throw new Error(`Unknown operation type: "${type}".`);
     }
 
-    debug(type, operation);
+    logger(type, operation);
     value = apply(value, operation);
     return value;
 }

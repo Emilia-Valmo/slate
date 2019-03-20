@@ -1,5 +1,4 @@
-import logger from '@gitbook/slate-dev-logger';
-import Debug from 'debug';
+import * as debug from '@gitbook/slate-debug';
 import { List } from 'immutable';
 import pick from 'lodash/pick';
 
@@ -8,7 +7,7 @@ import apply from '../operations/apply';
 import Operation from './operation';
 import Value from './value';
 
-const debug = Debug('slate:change');
+const logger = debug.Logger('slate:change');
 
 interface ApplyOperationOptions {
     merge?: boolean | null;
@@ -27,7 +26,7 @@ interface ChangeFlags {
  */
 
 class Change {
-    public static debug = debug;
+    public static logger = logger;
 
     /*
      * Check if `any` is a `Change`.
@@ -70,7 +69,7 @@ class Change {
     }
 
     get kind(): 'change' {
-        logger.deprecate(
+        debug.deprecate(
             'slate@0.32.0',
             'The `kind` property of Slate objects has been renamed to `object`.'
         );
@@ -101,7 +100,7 @@ class Change {
         } = options;
 
         // Apply the operation to the value.
-        debug('apply', { operation, save, merge });
+        logger('apply', { operation, save, merge });
         value = apply(value, operation);
 
         // If needed, save the operation to the history.

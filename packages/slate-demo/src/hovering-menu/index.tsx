@@ -137,6 +137,9 @@ class HoveringMenu extends React.Component {
         }
 
         const selection = window.getSelection();
+        if (selection.rangeCount < 1) {
+            return;
+        }
         const range = selection.getRangeAt(0);
         const rect = range.getBoundingClientRect();
         menu.style.opacity = 1;

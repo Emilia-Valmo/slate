@@ -107,8 +107,10 @@ function onSomeNativeEvent() {
   const range = findRange(nativeSelection, value)
 
   // ...or from a native DOM range...
-  const nativeRange = nativeSelection.getRangeAt(0)
-  const range = findRange(nativeRange, value)
+  if (nativeSelection.rangeCount > 0) {
+    const nativeRange = nativeSelection.getRangeAt(0)
+    const range = findRange(nativeRange, value)
+  }
 }
 ```
 

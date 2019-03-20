@@ -23,7 +23,7 @@ import { resetKeyGenerator, setKeyGenerator } from './utils/generate-key';
  */
 Object.keys(Changes).forEach(type => {
     Change.prototype[type] = function(...args) {
-        Change.debug(type, { args });
+        Change.logger(type, { args });
         this.call(Changes[type], ...args);
         return this;
     };

@@ -1,4 +1,4 @@
-import logger from '@gitbook/slate-dev-logger';
+import * as debug from '@gitbook/slate-debug';
 import { List, Record } from 'immutable';
 import isPlainObject from 'is-plain-object';
 
@@ -195,7 +195,7 @@ class Operation extends Record(DEFAULTS) {
      */
 
     public static fromJSON(object) {
-        logger.deprecate(
+        debug.deprecate(
             'slate@0.35.0',
             'fromJSON methods are deprecated, use fromJS instead'
         );
@@ -228,7 +228,7 @@ class Operation extends Record(DEFAULTS) {
     }
 
     get kind(): 'operation' {
-        logger.deprecate(
+        debug.deprecate(
             'slate@0.32.0',
             'The `kind` property of Slate objects has been renamed to `object`.'
         );
@@ -367,7 +367,7 @@ class Operation extends Record(DEFAULTS) {
      */
 
     public toJSON(options) {
-        logger.deprecate(
+        debug.deprecate(
             'slate@0.35.0',
             'toJSON methods are deprecated, use toJS instead'
         );

@@ -1,4 +1,7 @@
 /* tslint:disable no-console */
+import Debug from 'debug';
+
+const Logger = Debug;
 
 /*
  * Is in development?
@@ -33,16 +36,6 @@ export function log(
 }
 
 /*
- * Log an error `message`.
- */
-
-function error(message: string, ...args: any[]) {
-    if (HAS_CONSOLE) {
-        console.error(message, ...args);
-    }
-}
-
-/*
  * Log a warning `message` in development only.
  */
 
@@ -59,10 +52,14 @@ function deprecate(version: string, message: string, ...args: any[]) {
     log('warn', `Deprecation (${version}): ${message}`, ...args);
 }
 
-const logger = {
-    deprecate,
-    error,
-    warn
-};
+/*
+ * Log an error without interrupting the current execution.
+ * This is meant to be captured by Sentry.
+ */
+function report(error: Error) {
+    setTimeout(() => {
+        throw error;
+    }, 0);
+}
 
-export default logger;
+export { deprecate, warn, report, Logger };

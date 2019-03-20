@@ -1,4 +1,5 @@
 import { Block, Change, Inline, Mark, Value } from '@gitbook/slate';
+import * as debug from '@gitbook/slate-debug';
 import {
     IS_ANDROID,
     IS_BROWSER,
@@ -589,25 +590,23 @@ function isInEditor(
 function reportRangeError(value: Value): void {
     const { selection } = value;
 
-    setTimeout(() => {
-        function getAncestorsTypes(key: string) {
-            const ancestors = value.document.getAncestors(key);
-            if (!ancestors) {
-                return [];
-            }
-            return ancestors.toArray().map(node => node.type);
+    function getAncestorsTypes(key: string) {
+        const ancestors = value.document.getAncestors(key);
+        if (!ancestors) {
+            return [];
         }
+        return ancestors.toArray().map(node => node.type);
+    }
 
-        // For logging purpose
-        const error = new Error(
-            'Unable to find a native DOM range for current selection.'
-        );
-        error.selection = selection.toJS();
-        error.anchorAncestors = getAncestorsTypes(selection.anchorKey);
-        error.focusAncestors = getAncestorsTypes(selection.focusKey);
+    // For logging purpose
+    const error = new Error(
+        'Unable to find a native DOM range for current selection.'
+    );
+    error.selection = selection.toJS();
+    error.anchorAncestors = getAncestorsTypes(selection.anchorKey);
+    error.focusAncestors = getAncestorsTypes(selection.focusKey);
 
-        throw error;
-    }, 0);
+    debug.report(error);
 }
 
 Editor.defaultProps = {

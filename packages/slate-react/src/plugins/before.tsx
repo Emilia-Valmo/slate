@@ -1,4 +1,5 @@
 import { Change, EditorContainer } from '@gitbook/slate';
+import * as debug from '@gitbook/slate-debug';
 import {
     IS_ANDROID,
     IS_FIREFOX,
@@ -7,7 +8,6 @@ import {
     SUPPORTED_EVENTS
 } from '@gitbook/slate-dev-environment';
 import Hotkeys from '@gitbook/slate-hotkeys';
-import Debug from 'debug';
 import getWindow from 'get-window';
 
 import findNode from '../utils/find-node';
@@ -15,7 +15,7 @@ import findRange from '../utils/find-range';
 
 import { Plugin } from './plugin';
 
-const debug = Debug('slate:before');
+const logger = debug.Logger('slate:before');
 
 /*
  * In edit mode, uses the current change selection. In read mode,
@@ -86,7 +86,7 @@ function BeforePlugin(): Plugin {
             return true;
         }
 
-        debug('onBeforeInput', { event });
+        logger('onBeforeInput', { event });
     }
 
     /*
@@ -140,7 +140,7 @@ function BeforePlugin(): Plugin {
             }
         }
 
-        debug('onBlur', { event });
+        logger('onBlur', { event });
     }
 
     /*
@@ -172,7 +172,7 @@ function BeforePlugin(): Plugin {
             }
         });
 
-        debug('onCompositionEnd', { event });
+        logger('onCompositionEnd', { event });
     }
 
     /*
@@ -195,7 +195,7 @@ function BeforePlugin(): Plugin {
             editor.setState({ isComposing: true });
         }
 
-        debug('onCompositionStart', { event });
+        logger('onCompositionStart', { event });
     }
 
     /*
@@ -216,7 +216,7 @@ function BeforePlugin(): Plugin {
         isCopying = true;
         window.requestAnimationFrame(() => (isCopying = false));
 
-        debug('onCopy', { event });
+        logger('onCopy', { event });
     }
 
     /*
@@ -228,7 +228,7 @@ function BeforePlugin(): Plugin {
         isCopying = true;
         window.requestAnimationFrame(() => (isCopying = false));
 
-        debug('onCut', { event });
+        logger('onCut', { event });
     }
 
     /*
@@ -238,7 +238,7 @@ function BeforePlugin(): Plugin {
     function onDragEnd(event: Event, change: Change, editor: EditorContainer) {
         isDragging = false;
 
-        debug('onDragEnd', { event });
+        logger('onDragEnd', { event });
     }
 
     /*
@@ -250,7 +250,7 @@ function BeforePlugin(): Plugin {
         change: Change,
         editor: EditorContainer
     ) {
-        debug('onDragEnter', { event });
+        logger('onDragEnter', { event });
     }
 
     /*
@@ -258,7 +258,7 @@ function BeforePlugin(): Plugin {
      */
 
     function onDragExit(event: Event, change: Change, editor: EditorContainer) {
-        debug('onDragExit', { event });
+        logger('onDragExit', { event });
     }
 
     /*
@@ -270,7 +270,7 @@ function BeforePlugin(): Plugin {
         change: Change,
         editor: EditorContainer
     ) {
-        debug('onDragLeave', { event });
+        logger('onDragLeave', { event });
     }
 
     /*
@@ -306,7 +306,7 @@ function BeforePlugin(): Plugin {
             }
         }
 
-        debug('onDragOver', { event });
+        logger('onDragOver', { event });
     }
 
     /*
@@ -320,7 +320,7 @@ function BeforePlugin(): Plugin {
     ) {
         isDragging = true;
 
-        debug('onDragStart', { event });
+        logger('onDragStart', { event });
     }
 
     /*
@@ -336,7 +336,7 @@ function BeforePlugin(): Plugin {
         // Prevent default so the DOM's value isn't corrupted.
         event.preventDefault();
 
-        debug('onDrop', { event });
+        logger('onDrop', { event });
     }
 
     /*
@@ -365,7 +365,7 @@ function BeforePlugin(): Plugin {
             return true;
         }
 
-        debug('onFocus', { event });
+        logger('onFocus', { event });
     }
 
     /*
@@ -380,7 +380,7 @@ function BeforePlugin(): Plugin {
             return true;
         }
 
-        debug('onInput', { event });
+        logger('onInput', { event });
     }
 
     /*
@@ -408,7 +408,7 @@ function BeforePlugin(): Plugin {
             event.preventDefault();
         }
 
-        debug('onKeyDown', { event });
+        logger('onKeyDown', { event });
     }
 
     /*
@@ -423,7 +423,7 @@ function BeforePlugin(): Plugin {
         // Prevent defaults so the DOM state isn't corrupted.
         event.preventDefault();
 
-        debug('onPaste', { event });
+        logger('onPaste', { event });
     }
 
     /*
@@ -445,7 +445,7 @@ function BeforePlugin(): Plugin {
         const window = getWindow(event.target);
         activeElement = window.document.activeElement;
 
-        debug('onSelect', { event });
+        logger('onSelect', { event });
     }
 
     return {

@@ -1,3 +1,4 @@
+import * as debug from '@gitbook/slate-debug';
 import { IS_IOS, IS_SAFARI } from '@gitbook/slate-dev-environment';
 import getWindow from 'get-window';
 import isBackward from 'selection-is-backward';
@@ -57,6 +58,9 @@ function scrollToSelection(selection: Selection) {
         return;
     }
     if (!selection.anchorNode) {
+        return;
+    }
+    if (selection.rangeCount < 1) {
         return;
     }
 

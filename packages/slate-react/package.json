@@ -15,7 +15,7 @@
   "dependencies": {
     "@gitbook/slate-base64-serializer": "^3.0.0-alpha.6",
     "@gitbook/slate-dev-environment": "^3.0.0-alpha.6",
-    "@gitbook/slate-dev-logger": "^3.0.0-alpha.6",
+    "@gitbook/slate-debug": "^3.0.0-alpha.6",
     "@gitbook/slate-hotkeys": "^3.0.0-alpha.6",
     "@gitbook/slate-plain-serializer": "^3.0.0-alpha.6",
     "debug": "^3.1.0",

@@ -1,8 +1,8 @@
-import Debug from 'debug';
 import { Record } from 'immutable';
 import memoize from 'immutablejs-record-memoize';
 import mergeWith from 'lodash/mergeWith';
 
+import * as debug from '@gitbook/slate-debug';
 import {
     CHILD_OBJECT_INVALID,
     CHILD_REQUIRED,
@@ -86,7 +86,7 @@ export interface SchemaNormalizeContext {
     rule: SchemaRule;
 }
 
-const debug = Debug('slate:schema');
+const logger = debug.Logger('slate:schema');
 
 /*
  * Immutable model to represent a schema.
@@ -221,7 +221,7 @@ class Schema extends Record({
         context: SchemaNormalizeContext
     ): SchemaNormalizeFn {
         return (change: Change) => {
-            debug(`normalizing`, { violation, context });
+            logger(`normalizing`, { violation, context });
             const { rule } = context;
             const { size } = change.operations;
             if (rule.normalize) {

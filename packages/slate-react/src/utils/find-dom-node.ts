@@ -1,5 +1,5 @@
 import { Node } from '@gitbook/slate';
-import logger from '@gitbook/slate-dev-logger';
+import * as debug from '@gitbook/slate-debug';
 
 /*
  * Find the DOM node for a `key`.
@@ -17,7 +17,7 @@ function findSlateDOMNode(key, win = window) {
     const el = win.document.querySelector(`[data-key="${key}"]`);
 
     if (!el) {
-        logger.warn(
+        debug.warn(
             `Unable to find a DOM node for "${key}". This is often because of forgetting to add \`props.attributes\` to a custom component.`
         );
 

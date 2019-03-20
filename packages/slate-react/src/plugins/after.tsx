@@ -1,9 +1,9 @@
 import { Block, Change, EditorContainer, Inline } from '@gitbook/slate';
 import Base64 from '@gitbook/slate-base64-serializer';
+import * as debug from '@gitbook/slate-debug';
 import { IS_IOS } from '@gitbook/slate-dev-environment';
 import Hotkeys from '@gitbook/slate-hotkeys';
 import Plain from '@gitbook/slate-plain-serializer';
-import Debug from 'debug';
 import getWindow from 'get-window';
 import * as React from 'react';
 
@@ -18,7 +18,7 @@ import setEventTransfer from '../utils/set-event-transfer';
 
 import { Plugin } from './plugin';
 
-const debug = Debug('slate:after');
+const logger = debug.Logger('slate:after');
 
 /*
  * The after plugin.
@@ -35,7 +35,7 @@ function AfterPlugin(): Plugin {
         change: Change,
         editor: EditorContainer
     ) {
-        debug('onBeforeInput', { event });
+        logger('onBeforeInput', { event });
 
         event.preventDefault();
         change.insertText(event.data);
@@ -46,7 +46,7 @@ function AfterPlugin(): Plugin {
      */
 
     function onBlur(event: Event, change: Change, editor: EditorContainer) {
-        debug('onBlur', { event });
+        logger('onBlur', { event });
 
         change.blur();
     }
@@ -82,7 +82,7 @@ function AfterPlugin(): Plugin {
             change.focus().collapseToEndOf(node);
         }
 
-        debug('onClick', { event });
+        logger('onClick', { event });
     }
 
     /*
@@ -90,7 +90,7 @@ function AfterPlugin(): Plugin {
      */
 
     function onCopy(event: Event, change: Change, editor: EditorContainer) {
-        debug('onCopy', { event });
+        logger('onCopy', { event });
 
         cloneFragment(event, change.value);
     }
@@ -100,7 +100,7 @@ function AfterPlugin(): Plugin {
      */
 
     function onCut(event: Event, change: Change, editor: EditorContainer) {
-        debug('onCut', { event });
+        logger('onCut', { event });
 
         const { value } = change;
         cloneFragment(event, value);
@@ -136,7 +136,7 @@ function AfterPlugin(): Plugin {
      */
 
     function onDragEnd(event: Event, change: Change, editor: EditorContainer) {
-        debug('onDragEnd', { event });
+        logger('onDragEnd', { event });
 
         isDraggingInternally = null;
     }
@@ -146,7 +146,7 @@ function AfterPlugin(): Plugin {
      */
 
     function onDragOver(event: Event, change: Change, editor: EditorContainer) {
-        debug('onDragOver', { event });
+        logger('onDragOver', { event });
     }
 
     /*
@@ -158,7 +158,7 @@ function AfterPlugin(): Plugin {
         change: Change,
         editor: EditorContainer
     ) {
-        debug('onDragStart', { event });
+        logger('onDragStart', { event });
 
         isDraggingInternally = true;
 
@@ -183,7 +183,7 @@ function AfterPlugin(): Plugin {
      */
 
     function onDrop(event: Event, change: Change, editor: EditorContainer) {
-        debug('onDrop', { event });
+        logger('onDrop', { event });
 
         const { value } = change;
         const { document, selection } = value;
@@ -284,7 +284,7 @@ function AfterPlugin(): Plugin {
      */
 
     function onInput(event: Event, change: Change, editor: EditorContainer) {
-        debug('onInput', { event });
+        logger('onInput', { event });
 
         const window = getWindow(event.target);
         const { value } = change;
@@ -353,7 +353,7 @@ function AfterPlugin(): Plugin {
      */
 
     function onKeyDown(event: Event, change: Change, editor: EditorContainer) {
-        debug('onKeyDown', { event });
+        logger('onKeyDown', { event });
 
         const { value } = change;
 
@@ -474,7 +474,7 @@ function AfterPlugin(): Plugin {
      */
 
     function onPaste(event: Event, change: Change, editor: EditorContainer) {
-        debug('onPaste', { event });
+        logger('onPaste', { event });
 
         const transfer = getEventTransfer(event);
         const { type, fragment, text } = transfer;
@@ -506,7 +506,7 @@ function AfterPlugin(): Plugin {
      */
 
     function onSelect(event: Event, change: Change, editor: EditorContainer) {
-        debug('onSelect', { event });
+        logger('onSelect', { event });
 
         const window = getWindow(event.target);
         const { value } = change;

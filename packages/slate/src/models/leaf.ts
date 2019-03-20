@@ -1,4 +1,4 @@
-import logger from '@gitbook/slate-dev-logger';
+import * as debug from '@gitbook/slate-debug';
 import { List, Record, Set } from 'immutable';
 import isPlainObject from 'is-plain-object';
 

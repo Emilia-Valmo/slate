@@ -1,4 +1,4 @@
-import logger from '@gitbook/slate-dev-logger';
+import * as debug from '@gitbook/slate-debug';
 import Block from '../models/block';
 import Inline from '../models/inline';
 import Mark from '../models/mark';
@@ -50,7 +50,7 @@ PROXY_TRANSFORMS.forEach(method => {
 });
 
 Changes.setBlock = (...args) => {
-    logger.deprecate(
+    debug.deprecate(
         'slate@0.33.0',
         'The `setBlock` method of Slate changes has been renamed to `setBlocks`.'
     );
@@ -59,7 +59,7 @@ Changes.setBlock = (...args) => {
 };
 
 Changes.setInline = (...args) => {
-    logger.deprecate(
+    debug.deprecate(
         'slate@0.33.0',
         'The `setInline` method of Slate changes has been renamed to `setInlines`.'
     );

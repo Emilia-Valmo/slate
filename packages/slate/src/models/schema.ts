@@ -40,9 +40,9 @@ export type ValidateNodeFn = (
 // Rule for a node (used for first, parent, etc)
 interface NodeSchemaRule {
     /** Types that should be allowed as a parent */
-    types?: string[];
+    types?: Array<string | void>;
     /** Object kinds that should be allowed as a child */
-    objects?: Array<'text' | 'inline' | 'block'>;
+    objects?: Array<'text' | 'inline' | 'block' | void>;
 }
 
 // Rule for a block/document/inline

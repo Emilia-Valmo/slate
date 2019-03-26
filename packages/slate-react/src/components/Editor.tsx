@@ -453,8 +453,6 @@ function updateSelection(
         return;
     }
 
-    const { rangeCount, anchorNode } = native;
-
     // If the Slate selection is blurred, but the DOM's active element is still
     // the editor, we need to blur it.
     if (selection.isBlurred && activeElement === element) {
@@ -463,7 +461,11 @@ function updateSelection(
 
     // If the Slate selection is unset, but the DOM selection has a range
     // selected in the editor, we need to remove the range.
-    if (selection.isUnset && rangeCount && isInEditor(element, anchorNode)) {
+    if (
+        selection.isUnset &&
+        native.rangeCount &&
+        isInEditor(element, native.anchorNode)
+    ) {
         removeAllRanges(native);
     }
 
@@ -476,7 +478,7 @@ function updateSelection(
 
     // Otherwise, figure out which DOM nodes should be selected...
     if (selection.isFocused && selection.isSet) {
-        const current = rangeCount ? native.getRangeAt(0) : null;
+        const current = native.rangeCount ? native.getRangeAt(0) : null;
         const range = findDOMRange(selection, window);
 
         if (!range) {

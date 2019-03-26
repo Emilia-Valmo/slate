@@ -1,7 +1,7 @@
 {
   "name": "@gitbook/slate-base64-serializer",
   "description": "A Base64 serializer for Slate editors.",
-  "version": "3.0.0-alpha.7",
+  "version": "3.0.0-alpha.8",
   "license": "MIT",
   "repository": "https://github.com/GitbookIO/slate.git",
   "source": "src/index.ts",
@@ -15,7 +15,7 @@
     "@gitbook/slate": ">=0.32.0"
   },
   "devDependencies": {
-    "@gitbook/slate": "^3.0.0-alpha.7",
+    "@gitbook/slate": "^3.0.0-alpha.8",
     "mocha": "^2.5.3"
   },
   "dependencies": {

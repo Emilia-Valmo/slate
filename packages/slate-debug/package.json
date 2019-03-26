@@ -1,7 +1,7 @@
 {
   "name": "@gitbook/slate-debug",
   "description": "A simple, development-only logger for Slate.",
-  "version": "3.0.0-alpha.7",
+  "version": "3.0.0-alpha.8",
   "license": "MIT",
   "repository": "https://github.com/GitbookIO/slate.git",
   "source": "src/index.ts",

@@ -161,10 +161,14 @@ class Block extends NodeFactory<BlockProperties>({
     public readonly type: string;
 
     /*
-     * Validate that a child is valid in this node.
+     * Block can contain everything except documents.
      */
     public validateChild(child: ChildNode): boolean {
-        return child.isText() || child.isBlock() || child.isInline();
+        return (
+            child.object === 'inline' ||
+            child.object === 'block' ||
+            child.object === 'text'
+        );
     }
 
     /*

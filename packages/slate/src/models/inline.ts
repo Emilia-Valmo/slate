@@ -193,7 +193,7 @@ class Inline extends NodeFactory<InlineProperties>({
      * Validate that a child is valid in this node.
      */
     public validateChild(child: ChildNode): boolean {
-        return child.isText() || child.isInline();
+        return child.object === 'text' || child.object === 'inline';
     }
 }
 

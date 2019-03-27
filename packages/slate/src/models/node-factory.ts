@@ -1,3 +1,4 @@
+import { warn } from '@gitbook/slate-debug';
 import direction from 'direction';
 import { List, Map, OrderedSet, Record, Set } from 'immutable';
 import memoize from 'immutablejs-record-memoize';
@@ -1365,6 +1366,15 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
          * Insert a `node` at `index`.
          */
         public insertNode(index: number, node: ChildNode) {
+            if (!this.validateChild(node)) {
+                warn(
+                    `Cannot do insertNode of "${node.object}" in "${
+                        this.object
+                    }"`
+                );
+                return this;
+            }
+
             const keys = this.getKeysAsArray();
 
             if (keys.includes(node.key)) {
@@ -1604,6 +1614,16 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
 
             let child = this.assertDescendant(node.key);
             const ancestors = this.getAncestors(node.key);
+            const lastParent = ancestors.last();
+
+            if (lastParent && !lastParent.validateChild(node)) {
+                warn(
+                    `Cannot do updateNode from "${child.object}" to "${
+                        node.object
+                    }" in "${this.object}"`
+                );
+                return this;
+            }
 
             ancestors.reverse().forEach(parent => {
                 let { nodes } = parent;

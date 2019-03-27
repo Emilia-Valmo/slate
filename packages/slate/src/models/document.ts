@@ -5,7 +5,11 @@ import MODEL_TYPES, { isType } from '../constants/model-types';
 import generateKey from '../utils/generate-key';
 import Block, { BlockJSON } from './block';
 import { DataJSON } from './data';
-import NodeFactory, { memoizeMethods, NodeDefaultProps } from './node-factory';
+import NodeFactory, {
+    ChildNode,
+    memoizeMethods,
+    NodeDefaultProps
+} from './node-factory';
 
 // JSON representation of a document node
 export interface DocumentJSON {
@@ -194,6 +198,13 @@ class Document extends NodeFactory<{}>({}) {
 
         // Return a new document fragment.
         return Document.create({ nodes });
+    }
+
+    /*
+     * Block can contain everything except documents.
+     */
+    public validateChild(child: ChildNode): boolean {
+        return child.object === 'block';
     }
 }
 

@@ -4,7 +4,11 @@ import isPlainObject from 'is-plain-object';
 import MODEL_TYPES, { isType } from '../constants/model-types';
 import generateKey from '../utils/generate-key';
 import { DataJSON } from './data';
-import NodeFactory, { memoizeMethods, NodeDefaultProps } from './node-factory';
+import NodeFactory, {
+    ChildNode,
+    memoizeMethods,
+    NodeDefaultProps
+} from './node-factory';
 import Text, { TextCreateProps, TextJSON } from './text';
 
 interface InlineProperties {
@@ -183,6 +187,13 @@ class Inline extends NodeFactory<InlineProperties>({
         }
 
         return object;
+    }
+
+    /*
+     * Validate that a child is valid in this node.
+     */
+    public validateChild(child: ChildNode): boolean {
+        return child.isText() || child.isInline();
     }
 }
 

@@ -3,6 +3,7 @@ import { resetMemoization, useMemoization } from 'immutablejs-record-memoize';
 import Changes from './changes';
 import Block from './models/block';
 import Change from './models/change';
+import Container from './models/Container';
 import Data from './models/data';
 import Document from './models/document';
 import History from './models/history';
@@ -37,6 +38,7 @@ export {
     Document,
     History,
     Inline,
+    Container,
     Leaf,
     Mark,
     Node,

@@ -9,6 +9,7 @@ import Text from './text';
 
 // Types only
 import Block from './block';
+import Container from './container';
 import Document from './document';
 import Inline from './inline';
 
@@ -39,7 +40,7 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
         public readonly data: DataMap;
         public readonly nodes: List<ChildNode>;
 
-        public readonly object: 'inline' | 'block' | 'document';
+        public readonly object: 'inline' | 'block' | 'document' | 'container';
 
         public isText(): this is Text {
             return false;
@@ -55,6 +56,17 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
 
         public isDocument(): this is Document {
             return this.object === 'document';
+        }
+
+        public isContainer(): this is Container {
+            return this.object === 'container';
+        }
+
+        /*
+         * Validate that a child is valid in this node.
+         */
+        public validateChild(child: ChildNode): boolean {
+            return true;
         }
 
         /*
@@ -1324,7 +1336,7 @@ function NodeFactory<Properties extends object>(defaultProps: Properties) {
         public hasInlines(key: string): boolean {
             const node = this.assertNode(key);
             return !!(
-                node.nodes && node.nodes.find(n => n.isInline || n.isText)
+                node.nodes && node.nodes.find(n => n.isInline() || n.isText())
             );
         }
 

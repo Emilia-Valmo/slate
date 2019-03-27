@@ -4,40 +4,38 @@ import isPlainObject from 'is-plain-object';
 import MODEL_TYPES, { isType } from '../constants/model-types';
 import generateKey from '../utils/generate-key';
 import { DataJSON } from './data';
-import Inline, { InlineCreateProps, InlineJSON } from './inline';
+import Block, { BlockCreateProps, BlockJSON } from './inline';
 import NodeFactory, {
     ChildNode,
     memoizeMethods,
     NodeDefaultProps
 } from './node-factory';
-import Text, { TextCreateProps } from './text';
 
-interface BlockProperties {
+interface ContainerProperties {
     isVoid: boolean;
     type: string;
 }
 
-// JSON representation of a block node
-export interface BlockJSON {
-    object: 'block';
+// JSON representation of a container node
+export interface ContainerJSON {
+    object: 'container';
     key?: string;
     data: DataJSON;
     isVoid: boolean;
-    nodes: Array<BlockJSON | InlineJSON>;
+    nodes: Array<ContainerJSON | BlockJSON>;
     type: string;
 }
 
-// Argument to create a block
-export type BlockCreateProps =
+// Argument to create a container
+export type ContainerCreateProps =
     | string
-    | Block
-    | Partial<BlockProperties & NodeDefaultProps>;
+    | Container
+    | Partial<ContainerProperties & NodeDefaultProps>;
 
 /*
- * Model to represent a block node.
+ * Model to represent a container node.
  */
-class Block extends NodeFactory<BlockProperties>({
-    isVoid: false,
+class Container extends NodeFactory<ContainerProperties>({
     type: ''
 }) {
     get object(): 'block' {
@@ -45,12 +43,12 @@ class Block extends NodeFactory<BlockProperties>({
     }
 
     /*
-     * Check if the block is empty.
+     * Check if the container is empty.
      * Returns true if block is not void and all it's children nodes are empty.
      * Void node is never empty, regardless of it's content.
      */
     get isEmpty(): boolean {
-        return !this.isVoid && !this.nodes.some(child => !child.isEmpty);
+        return !this.nodes.some(child => !child.isEmpty);
     }
 
     /*
@@ -63,15 +61,15 @@ class Block extends NodeFactory<BlockProperties>({
     /*
      * Check if `input` is a `Block`.
      */
-    public static isBlock(input: any): input is Block {
-        return isType('BLOCK', input);
+    public static isContainer(input: any): input is Container {
+        return isType('CONTAINER', input);
     }
 
     /*
      * Create a new `Block` from `attrs`.
      */
-    public static create(attrs: BlockCreateProps = {}): Block {
-        if (Block.isBlock(attrs)) {
+    public static create(attrs: ContainerCreateProps = {}): Container {
+        if (Container.isContainer(attrs)) {
             return attrs;
         }
 
@@ -80,11 +78,11 @@ class Block extends NodeFactory<BlockProperties>({
         }
 
         if (isPlainObject(attrs)) {
-            return Block.fromJS(attrs);
+            return Container.fromJS(attrs);
         }
 
         throw new Error(
-            `\`Block.create\` only accepts objects, strings or blocks, but you passed it: ${attrs}`
+            `\`Container.create\` only accepts objects, strings or blocks, but you passed it: ${attrs}`
         );
     }
 
@@ -92,8 +90,8 @@ class Block extends NodeFactory<BlockProperties>({
      * Create a list of `Blocks` from `attrs`.
      */
     public static createList(
-        attrs: BlockCreateProps[] | List<BlockCreateProps> = []
-    ): List<Block> {
+        attrs: ContainerCreateProps[] | List<ContainerCreateProps> = []
+    ): List<Container> {
         return List(attrs.map(Block.create));
     }
 
@@ -102,48 +100,39 @@ class Block extends NodeFactory<BlockProperties>({
      */
     public static createChildren(
         elements:
-            | Array<BlockCreateProps | InlineCreateProps | TextCreateProps>
-            | List<BlockCreateProps | InlineCreateProps | TextCreateProps>
-    ): List<Block | Inline> {
+            | Array<BlockCreateProps | ContainerCreateProps>
+            | List<BlockCreateProps | ContainerCreateProps>
+    ): List<Block | Container> {
         return List(
             elements.map(element => {
-                if (element.object === 'block') {
-                    return Block.create(element);
-                } else if (element.object === 'inline') {
-                    return Inline.create(element);
+                if (element.object === 'container') {
+                    return Container.create(element);
                 } else {
-                    return Text.create(element);
+                    return Block.create(element);
                 }
             })
         );
     }
 
     /*
-     * Create a `Block` from a JSON `object`.
+     * Create a `Container` from a JSON `object`.
      */
-    public static fromJS(input: BlockJSON | Block): Block {
-        if (Block.isBlock(input)) {
+    public static fromJS(input: ContainerJSON | Container): Container {
+        if (Container.isContainer(input)) {
             return input;
         }
 
-        const {
-            data = {},
-            isVoid = false,
-            key = generateKey(),
-            nodes = [],
-            type
-        } = input;
+        const { data = {}, key = generateKey(), nodes = [], type } = input;
 
         if (typeof type !== 'string') {
-            throw new Error('`Block.fromJS` requires a `type` string.');
+            throw new Error('`Container.fromJS` requires a `type` string.');
         }
 
-        const block = new Block({
+        const block = new Container({
             key,
             type,
-            isVoid: !!isVoid,
             data: Map(data),
-            nodes: Block.createChildren(nodes)
+            nodes: Container.createChildren(nodes)
         });
 
         return block;
@@ -152,33 +141,34 @@ class Block extends NodeFactory<BlockProperties>({
     /*
      * Check if `input` is a block list.
      */
-    public static isBlockList(input: any): boolean {
-        return List.isList(input) && input.every(item => Block.isBlock(item));
+    public static isContainerList(input: any): boolean {
+        return (
+            List.isList(input) &&
+            input.every(item => Container.isContainer(item))
+        );
     }
 
     // Record properties
-    public readonly isVoid: boolean;
     public readonly type: string;
 
     /*
      * Validate that a child is valid in this node.
      */
     public validateChild(child: ChildNode): boolean {
-        return child.isText() || child.isBlock() || child.isInline();
+        return child.object === 'container' || child.object === 'block';
     }
 
     /*
-     * Return a JSON representation of the block.
+     * Return a JSON representation of the container.
      */
     public toJS(
         options: {
             preserveKeys?: boolean;
         } = {}
-    ): BlockJSON {
+    ): ContainerJSON {
         const object = {
             object: this.object,
             type: this.type,
-            isVoid: this.isVoid,
             data: this.data.toJS(),
             nodes: this.nodes.toArray().map(n => n.toJS(options))
         };
@@ -194,8 +184,8 @@ class Block extends NodeFactory<BlockProperties>({
 /*
  * Attach a pseudo-symbol for type checking.
  */
-Block.prototype[MODEL_TYPES.BLOCK] = true;
+Container.prototype[MODEL_TYPES.CONTAINER] = true;
 
-memoizeMethods(Block);
+memoizeMethods(Container);
 
-export default Block;
+export default Container;

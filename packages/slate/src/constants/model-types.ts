@@ -4,6 +4,7 @@
 
 const MODEL_TYPES = {
     BLOCK: '@@__SLATE_BLOCK__@@',
+    CONTAINER: '@@__SLATE_CONTAINER__@@',
     CHANGE: '@@__SLATE_CHANGE__@@',
     CHARACTER: '@@__SLATE_CHARACTER__@@',
     DOCUMENT: '@@__SLATE_DOCUMENT__@@',

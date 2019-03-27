@@ -9,7 +9,7 @@ import resolve from 'rollup-plugin-node-resolve'
 const ROOT_DIR = __dirname;
 const PACKAGES_DIR = path.resolve(ROOT_DIR, 'packages')
 
-const packages = fs.readdirSync(PACKAGES_DIR)
+const packages = fs.readdirSync(PACKAGES_DIR).filter(name => fs.lstatSync(path.join(PACKAGES_DIR, name)).isDirectory())
 
 /*
  * Sort the packages to compile first the ones that do not depend on others.

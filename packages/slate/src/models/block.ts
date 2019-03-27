@@ -1,4 +1,5 @@
-import { List, Map, Record } from 'immutable';
+import { deprecate } from '@gitbook/slate-debug';
+import { List, Map } from 'immutable';
 import isPlainObject from 'is-plain-object';
 
 import MODEL_TYPES, { isType } from '../constants/model-types';
@@ -104,17 +105,32 @@ class Block extends NodeFactory<BlockProperties>({
         elements:
             | Array<BlockCreateProps | InlineCreateProps | TextCreateProps>
             | List<BlockCreateProps | InlineCreateProps | TextCreateProps>
-    ): List<Block | Inline> {
+    ): List<Block | Inline | Text> | List<Block> {
+        const items = elements.map(element => {
+            if (element.object === 'block') {
+                return Block.create(element);
+            } else if (element.object === 'inline') {
+                return Inline.create(element);
+            } else {
+                return Text.create(element);
+            }
+        });
+
+        const shouldOnlyHaveBlocks = items.some(n => n.object === 'block');
+
+        if (shouldOnlyHaveBlocks) {
+            deprecate(
+                '3.1.0',
+                'Blocks should no longer contain blocks, use containers instead'
+            );
+        }
+
         return List(
-            elements.map(element => {
-                if (element.object === 'block') {
-                    return Block.create(element);
-                } else if (element.object === 'inline') {
-                    return Inline.create(element);
-                } else {
-                    return Text.create(element);
-                }
-            })
+            items.filter(n =>
+                shouldOnlyHaveBlocks
+                    ? n.object === 'block'
+                    : n.object === 'inline' || n.object === 'text'
+            )
         );
     }
 
@@ -164,11 +180,15 @@ class Block extends NodeFactory<BlockProperties>({
      * Block can contain everything except documents.
      */
     public validateChild(child: ChildNode): boolean {
-        return (
-            child.object === 'inline' ||
-            child.object === 'block' ||
-            child.object === 'text'
-        );
+        if (this.nodes.size === 0) {
+            return true;
+        }
+
+        const hasBlockChildren = this.nodes.some(n => n.object === 'block');
+
+        return hasBlockChildren
+            ? child.object === 'block'
+            : child.object === 'inline' || child.object === 'text';
     }
 
     /*

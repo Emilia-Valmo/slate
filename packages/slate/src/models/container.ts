@@ -1,4 +1,4 @@
-import { List, Map, Record } from 'immutable';
+import { List, Map } from 'immutable';
 import isPlainObject from 'is-plain-object';
 
 import MODEL_TYPES, { isType } from '../constants/model-types';

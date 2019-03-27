@@ -485,6 +485,7 @@ class Value extends Record({
     public readonly selection: Range;
     public readonly history: History;
     public readonly document: Document;
+    public readonly decorations: List<Range> | null;
 
     /*
      * Create a new `Change` with the current value as a starting point.

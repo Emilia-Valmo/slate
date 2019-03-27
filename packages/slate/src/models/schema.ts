@@ -42,7 +42,7 @@ interface NodeSchemaRule {
     /** Types that should be allowed as a parent */
     types?: Array<string | void>;
     /** Object kinds that should be allowed as a child */
-    objects?: Array<'text' | 'inline' | 'block' | void>;
+    objects?: Array<'text' | 'inline' | 'block' | 'container' | void>;
 }
 
 // Rule for a block/document/inline
@@ -94,6 +94,7 @@ const logger = debug.Logger('slate:schema');
 class Schema extends Record({
     validations: [],
     document: {},
+    containers: {},
     blocks: {},
     inlines: {}
 }) {
@@ -135,6 +136,7 @@ class Schema extends Record({
     // Properties
     public readonly validations: ValidateNodeFn[];
     public readonly document: SchemaRule;
+    public readonly containers: { [type: string]: SchemaRule };
     public readonly blocks: { [type: string]: SchemaRule };
     public readonly inlines: { [type: string]: SchemaRule };
 
@@ -149,6 +151,7 @@ class Schema extends Record({
         return new Schema({
             validations: [...this.validations, ...schema.validations],
             document: mergeRules(this.document, schema.document),
+            containers: mergeRulesSets(this.containers, schema.containers),
             blocks: mergeRulesSets(this.blocks, schema.blocks),
             inlines: mergeRulesSets(this.inlines, schema.inlines)
         });
@@ -182,6 +185,8 @@ class Schema extends Record({
                 return this.document;
             case 'block':
                 return this.blocks[node.type];
+            case 'container':
+                return this.containers[node.type];
             case 'inline':
                 return this.inlines[node.type];
         }
@@ -190,9 +195,17 @@ class Schema extends Record({
     /*
      * Get a dictionary of the parent rule validations by child type.
      */
-    public getParentRules(): { [type: string]: SchemaRule } {
-        const { blocks, inlines } = this;
+    public getParentRules(): { [type: string]: NodeSchemaRule } | null {
+        const { blocks, containers, inlines } = this;
         const parents = {};
+
+        for (const key of Object.keys(containers)) {
+            const rule = containers[key];
+            if (rule.parent == null) {
+                continue;
+            }
+            parents[key] = rule;
+        }
 
         for (const key of Object.keys(blocks)) {
             const rule = blocks[key];

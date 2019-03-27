@@ -11,7 +11,7 @@ const CORE_SCHEMA = Schema.create({
         /*
          * Only allow block nodes in documents.
          */
-        node => {
+        /*node => {
             if (node.object !== 'document') {
                 return;
             }
@@ -25,12 +25,12 @@ const CORE_SCHEMA = Schema.create({
                     change.removeNodeByKey(child.key, { normalize: false });
                 });
             };
-        },
+        },*/
 
         /*
          * Only allow block nodes or inline and text nodes in blocks.
          */
-        node => {
+        /*node => {
             if (node.object !== 'block') {
                 return;
             }
@@ -52,12 +52,12 @@ const CORE_SCHEMA = Schema.create({
                     change.removeNodeByKey(child.key, { normalize: false });
                 });
             };
-        },
+        },*/
 
         /*
          * Only allow inline and text nodes in inlines.
          */
-        node => {
+        /*node => {
             if (node.object !== 'inline') {
                 return;
             }
@@ -73,7 +73,7 @@ const CORE_SCHEMA = Schema.create({
                     change.removeNodeByKey(child.key, { normalize: false });
                 });
             };
-        },
+        },*/
 
         /*
          * Ensure that block and inline nodes have at least one text child.

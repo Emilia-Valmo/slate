@@ -1,6 +1,7 @@
 import * as debug from '@gitbook/slate-debug';
 
 import Operation from '../models/operation';
+import Range from '../models/range';
 import Value from '../models/value';
 
 const logger = debug.Logger('slate:operation:apply');
@@ -9,14 +10,12 @@ const logger = debug.Logger('slate:operation:apply');
  * Apply adjustments to affected ranges (selections, decorations);
  * accepts (value, checking function(range) -> bool, applying function(range) -> range)
  * returns value with affected ranges updated
- *
- * @param {Value} value
- * @param {Function} checkAffected
- * @param {Function} adjustRange
- * @return {Value}
  */
-
-function applyRangeAdjustments(value, checkAffected, adjustRange) {
+function applyRangeAdjustments(
+    value: Value,
+    checkAffected: (r: Range) => boolean,
+    adjustRange: (r: Range) => Range
+): Value {
     // check selection, apply adjustment if affected
     if (value.selection && checkAffected(value.selection)) {
         value = value.set('selection', adjustRange(value.selection));
@@ -38,15 +37,13 @@ function applyRangeAdjustments(value, checkAffected, adjustRange) {
 /*
  * clear any atomic ranges (in decorations) if they contain the point (key, offset, offset-end?)
  * specified
- *
- * @param {Value} value
- * @param {String} key
- * @param {Number} offset
- * @param {Number?} offsetEnd
- * @return {Value}
  */
-
-function clearAtomicRangesIfContains(value, key, offset, offsetEnd = null) {
+function clearAtomicRangesIfContains(
+    value: Value,
+    key: string,
+    offset: number,
+    offsetEnd: number = null
+): Value {
     return applyRangeAdjustments(
         value,
         range => {
@@ -68,22 +65,11 @@ function clearAtomicRangesIfContains(value, key, offset, offsetEnd = null) {
     );
 }
 
-/*
- * Applying functions.
- *
- * @type {Object}
- */
-
 const APPLIERS = {
     /*
      * Add mark to text at `offset` and `length` in node by `path`.
-     *
-     * @param {Value} value
-     * @param {Operation} operation
-     * @return {Value}
      */
-
-    add_mark(value: Value, operation: Operation) {
+    add_mark(value: Value, operation: Operation): Value {
         const { path, offset, length, mark } = operation;
         let { document } = value;
         let node = document.assertPath(path);
@@ -95,13 +81,8 @@ const APPLIERS = {
 
     /*
      * Insert a `node` at `index` in a node by `path`.
-     *
-     * @param {Value} value
-     * @param {Operation} operation
-     * @return {Value}
      */
-
-    insert_node(value: Value, operation: Operation) {
+    insert_node(value: Value, operation: Operation): Value {
         const { path, node } = operation;
         const index = path[path.length - 1];
         const rest = path.slice(0, -1);
@@ -115,13 +96,8 @@ const APPLIERS = {
 
     /*
      * Insert `text` at `offset` in node by `path`.
-     *
-     * @param {Value} value
-     * @param {Operation} operation
-     * @return {Value}
      */
-
-    insert_text(value: Value, operation: Operation) {
+    insert_text(value: Value, operation: Operation): Value {
         const { path, offset, text, marks } = operation;
         let { document } = value;
         let node = document.assertPath(path);
@@ -159,13 +135,8 @@ const APPLIERS = {
 
     /*
      * Merge a node at `path` with the previous node.
-     *
-     * @param {Value} value
-     * @param {Operation} operation
-     * @return {Value}
      */
-
-    merge_node(value: Value, operation: Operation) {
+    merge_node(value: Value, operation: Operation): Value {
         const { path } = operation;
         const withPath = path
             .slice(0, path.length - 1)
@@ -212,13 +183,8 @@ const APPLIERS = {
 
     /*
      * Move a node by `path` to `newPath`.
-     *
-     * @param {Value} value
-     * @param {Operation} operation
-     * @return {Value}
      */
-
-    move_node(value: Value, operation: Operation) {
+    move_node(value: Value, operation: Operation): Value {
         const { path, newPath } = operation;
         const newIndex = newPath[newPath.length - 1];
         const newParentPath = newPath.slice(0, -1);
@@ -264,13 +230,8 @@ const APPLIERS = {
 
     /*
      * Remove mark from text at `offset` and `length` in node by `path`.
-     *
-     * @param {Value} value
-     * @param {Operation} operation
-     * @return {Value}
      */
-
-    remove_mark(value: Value, operation: Operation) {
+    remove_mark(value: Value, operation: Operation): Value {
         const { path, offset, length, mark } = operation;
         let { document } = value;
         let node = document.assertPath(path);
@@ -282,13 +243,8 @@ const APPLIERS = {
 
     /*
      * Remove a node by `path`.
-     *
-     * @param {Value} value
-     * @param {Operation} operation
-     * @return {Value}
      */
-
-    remove_node(value: Value, operation: Operation) {
+    remove_node(value: Value, operation: Operation): Value {
         const { path } = operation;
         let { document } = value;
         const { selection } = value;
@@ -349,13 +305,8 @@ const APPLIERS = {
 
     /*
      * Remove `text` at `offset` in node by `path`.
-     *
-     * @param {Value} value
-     * @param {Operation} operation
-     * @return {Value}
      */
-
-    remove_text(value: Value, operation: Operation) {
+    remove_text(value: Value, operation: Operation): Value {
         const { path, offset, text } = operation;
         const { length } = text;
         const rangeOffset = offset + length;
@@ -405,13 +356,8 @@ const APPLIERS = {
 
     /*
      * Set `properties` on mark on text at `offset` and `length` in node by `path`.
-     *
-     * @param {Value} value
-     * @param {Operation} operation
-     * @return {Value}
      */
-
-    set_mark(value: Value, operation: Operation) {
+    set_mark(value: Value, operation: Operation): Value {
         const { path, offset, length, mark, properties } = operation;
         let { document } = value;
         let node = document.assertPath(path);
@@ -423,13 +369,8 @@ const APPLIERS = {
 
     /*
      * Set `properties` on a node by `path`.
-     *
-     * @param {Value} value
-     * @param {Operation} operation
-     * @return {Value}
      */
-
-    set_node(value: Value, operation: Operation) {
+    set_node(value: Value, operation: Operation): Value {
         const { path, properties } = operation;
         let { document } = value;
         let node = document.assertPath(path);
@@ -441,13 +382,8 @@ const APPLIERS = {
 
     /*
      * Set `properties` on the selection.
-     *
-     * @param {Value} value
-     * @param {Operation} operation
-     * @return {Value}
      */
-
-    set_selection(value: Value, operation: Operation) {
+    set_selection(value: Value, operation: Operation): Value {
         const { properties } = operation;
         const { anchorPath, focusPath, ...props } = properties;
         let { selection } = value;
@@ -471,13 +407,8 @@ const APPLIERS = {
 
     /*
      * Set `properties` on `value`.
-     *
-     * @param {Value} value
-     * @param {Operation} operation
-     * @return {Value}
      */
-
-    set_value(value: Value, operation: Operation) {
+    set_value(value: Value, operation: Operation): Value {
         const { properties } = operation;
         value = value.merge(properties);
         return value;
@@ -485,13 +416,8 @@ const APPLIERS = {
 
     /*
      * Split a node by `path` at `offset`.
-     *
-     * @param {Value} value
-     * @param {Operation} operation
-     * @return {Value}
      */
-
-    split_node(value: Value, operation: Operation) {
+    split_node(value: Value, operation: Operation): Value {
         const { path, position, properties } = operation;
         let { document } = value;
 
@@ -552,7 +478,7 @@ const APPLIERS = {
 /*
  * Apply an `operation` to a `value`.
  */
-function applyOperation(value: Value, operation: Operation) {
+function applyOperation(value: Value, operation: Operation): Value {
     const { type } = operation;
     const apply = APPLIERS[type];
 
@@ -564,11 +490,5 @@ function applyOperation(value: Value, operation: Operation) {
     value = apply(value, operation);
     return value;
 }
-
-/*
- * Export.
- *
- * @type {Function}
- */
 
 export default applyOperation;

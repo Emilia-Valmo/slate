@@ -106,32 +106,34 @@ class Block extends NodeFactory<BlockProperties>({
             | Array<BlockCreateProps | InlineCreateProps | TextCreateProps>
             | List<BlockCreateProps | InlineCreateProps | TextCreateProps>
     ): List<Block | Inline | Text> | List<Block> {
-        const items = elements.map(element => {
-            if (element.object === 'block') {
-                return Block.create(element);
-            } else if (element.object === 'inline') {
-                return Inline.create(element);
-            } else {
-                return Text.create(element);
+        let containsBlock = false;
+        let containsInlines = false;
+
+        let items = elements.map(element => {
+            switch (element.object) {
+                case 'block':
+                    containsBlock = true;
+                    return Block.create(element);
+                case 'inline':
+                    containsInlines = true;
+                    return Inline.create(element);
+                default:
+                    containsInlines = true;
+                    return Text.create(element);
             }
         });
 
-        const shouldOnlyHaveBlocks = items.some(n => n.object === 'block');
-
-        if (shouldOnlyHaveBlocks) {
+        if (containsBlock) {
             deprecate(
                 '3.1.0',
                 'Blocks should no longer contain blocks, use containers instead'
             );
+            if (containsInlines) {
+                items = items.filter(n => n.object === 'block');
+            }
         }
 
-        return List(
-            items.filter(n =>
-                shouldOnlyHaveBlocks
-                    ? n.object === 'block'
-                    : n.object === 'inline' || n.object === 'text'
-            )
-        );
+        return List(items);
     }
 
     /*

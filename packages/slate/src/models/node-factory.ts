@@ -14,9 +14,9 @@ import Container from './container';
 import Document from './document';
 import Inline from './inline';
 
-export type ChildNode = Block | Inline | Text;
-export type AnyNode = Block | Inline | Text | Document;
-export type AncestorNode = Block | Inline;
+export type ChildNode = Container | Block | Inline | Text;
+export type AnyNode = Document | Container | Block | Inline | Text
+export type AncestorNode = Container | Block | Inline;
 
 export interface NodeDefaultProps {
     key: string;

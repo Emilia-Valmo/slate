@@ -38,8 +38,8 @@ export type ContainerCreateProps =
 class Container extends NodeFactory<ContainerProperties>({
     type: ''
 }) {
-    get object(): 'block' {
-        return 'block';
+    get object(): 'container' {
+        return 'container';
     }
 
     /*

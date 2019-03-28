@@ -1,4 +1,4 @@
-import { Block, Change, Inline, Range } from '@gitbook/slate';
+import { Block, Change, Container, Inline, Range } from '@gitbook/slate';
 import { List } from 'immutable';
 import * as React from 'react';
 import { EditorContainer, MarkProps, NodeProps } from '../interfaces';
@@ -33,11 +33,15 @@ export interface Plugin {
     /** Callback when a change is made */
     onChange?: (change: Change, editor: EditorContainer) => void;
     /** Function called when rendering a node */
-    renderNode?: (props: NodeProps<Block | Inline>) => React.Node;
+    renderNode?: (
+        props: NodeProps<Block | Inline | Container>
+    ) => React.ReactNode;
     /** Function called when rendering a mark */
-    renderMark?: (props: MarkProps) => React.Node;
+    renderMark?: (props: MarkProps) => React.ReactNode;
     /** Decorate a node with range of marks */
-    decorateNode?: (node: Block | Inline) => Range[] | List<Range> | void;
+    decorateNode?: (
+        node: Block | Inline | Container
+    ) => Range[] | List<Range> | void;
     /** Function to force an update of a node component */
     shouldNodeComponentUpdate?: <T extends Block | Inline>(
         props: NodeProps<T>,

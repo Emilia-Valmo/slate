@@ -1,4 +1,4 @@
-import { Block, Change, Inline, Mark, Value } from '@gitbook/slate';
+import { Block, Change, Container, Inline, Mark, Value } from '@gitbook/slate';
 import * as debug from '@gitbook/slate-debug';
 import {
     IS_ANDROID,
@@ -40,15 +40,15 @@ interface EditorProps {
     role?: string;
     style?: React.CSS.Properties;
     plugins?: Plugin[];
-    renderNode: (node: Block | Inline) => React.Node;
-    renderMark: (mark: Mark) => React.Node;
+    renderNode: (node: Block | Container | Inline) => React.ReactNode;
+    renderMark: (mark: Mark) => React.ReactNode;
     onChange: (change: Change) => void;
 }
 
 /*
  * Main component to render a slate editor.
  */
-function Editor(props: EditorProps): React.Node {
+function Editor(props: EditorProps): React.ReactElement {
     const {
         value,
         readOnly,

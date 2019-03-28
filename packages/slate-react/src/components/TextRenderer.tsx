@@ -17,7 +17,7 @@ interface TextRendererProps {
  */
 const PureTextRenderer = React.memo(function TextRenderer(
     props: TextRendererProps
-): React.Node {
+): React.ReactElement {
     const { block, decorations, editor, node, parent } = props;
     const { value } = editor;
     const { document } = value;

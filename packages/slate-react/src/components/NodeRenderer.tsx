@@ -1,4 +1,10 @@
-import { Block, EditorContainer, Inline, Range } from '@gitbook/slate';
+import {
+    Block,
+    Container,
+    EditorContainer,
+    Inline,
+    Range
+} from '@gitbook/slate';
 import * as debug from '@gitbook/slate-debug';
 import { List } from 'immutable';
 import * as React from 'react';
@@ -16,8 +22,8 @@ interface NodeRendererProps {
     isFocused: boolean;
     isSelected: boolean;
     readOnly: boolean;
-    node: Block | Inline;
-    parent: Block | Inline;
+    node: Block | Container | Inline;
+    parent: Block | Container | Inline;
 }
 
 /*
@@ -91,7 +97,7 @@ function areEqual(
  */
 const PureNodeRenderer = React.memo(function NodeRenderer(
     props: NodeRendererProps
-): React.Node {
+): React.ReactElement {
     const {
         editor,
         isSelected,
@@ -150,7 +156,7 @@ const PureNodeRenderer = React.memo(function NodeRenderer(
         }
     }
 
-    const nodeProps: NodeProps<Block | Inline> = {
+    const nodeProps: NodeProps<Block | Container | Inline> = {
         node,
         editor,
         parent,

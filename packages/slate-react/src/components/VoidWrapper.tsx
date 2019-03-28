@@ -14,8 +14,8 @@ function VoidWrapper(props: {
     readOnly: boolean;
     node: Block | Inline;
     parent: Block | Inline;
-    children: React.Node;
-}): React.Node {
+    children: React.ReactNode;
+}): React.ReactElement {
     const { children, block, node, decorations, editor, readOnly } = props;
     const child = node.getFirstText();
 

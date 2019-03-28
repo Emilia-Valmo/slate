@@ -1,6 +1,7 @@
 import {
     Block,
     Change,
+    Container,
     EditorContainer,
     Inline,
     Mark,
@@ -35,13 +36,13 @@ export interface EditorContainer {
 /*
  * Props passed to a component to render a node.
  */
-export interface NodeProps<NodeType extends Block | Inline> {
+export interface NodeProps<NodeType extends Block | Inline | Container> {
     node: NodeType;
-    parent: Block | Inline;
+    parent: Block | Inline | Container;
     editor: EditorContainer;
     isFocused: boolean;
     isSelected: boolean;
-    children: React.Node;
+    children: React.ReactNode;
     attributes: NodeDOMAttributes;
 }
 
@@ -55,6 +56,6 @@ export interface MarkProps {
     offset: number;
     text: Text;
     marks: Set<Mark>;
-    children: React.Node;
+    children: React.ReactNode;
     attributes: MarkDOMAttributes;
 }

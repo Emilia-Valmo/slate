@@ -29,7 +29,7 @@ interface LeafRendererProps {
  */
 const PureLeafRenderer = React.memo(function LeafRenderer(
     props: LeafRendererProps
-): React.Node {
+): React.ReactElement {
     const { marks, node, index, offset, text, editor } = props;
     const { stack } = editor;
     const leaf = renderLeafText(props);
@@ -44,7 +44,7 @@ const PureLeafRenderer = React.memo(function LeafRenderer(
 
     return (
         <span data-offset-key={offsetKey}>
-            {marks.reduce((children: React.Node, mark: Mark) => {
+            {marks.reduce((children: React.ReactNode, mark: Mark) => {
                 const markProps: MarkProps = {
                     editor,
                     mark,
@@ -63,7 +63,7 @@ const PureLeafRenderer = React.memo(function LeafRenderer(
 },
 areEqual);
 
-function renderLeafText(props: LeafRendererProps): React.Node {
+function renderLeafText(props: LeafRendererProps): React.ReactElement {
     const { block, node, text, index, parent, leaves } = props;
 
     // COMPAT: Render text inside void nodes with a zero-width space.

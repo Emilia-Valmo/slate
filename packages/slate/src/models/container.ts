@@ -12,7 +12,6 @@ import NodeFactory, {
 } from './node-factory';
 
 interface ContainerProperties {
-    isVoid: boolean;
     type: string;
 }
 

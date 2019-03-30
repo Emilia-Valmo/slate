@@ -204,7 +204,7 @@ class Document extends NodeFactory<{}>({}) {
      * Block can contain everything except documents.
      */
     public validateChild(child: ChildNode): boolean {
-        return child.object === 'block';
+        return child.object === 'block' || child.object === 'container';
     }
 }
 

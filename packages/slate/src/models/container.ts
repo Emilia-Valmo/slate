@@ -4,7 +4,7 @@ import isPlainObject from 'is-plain-object';
 import MODEL_TYPES, { isType } from '../constants/model-types';
 import generateKey from '../utils/generate-key';
 import { DataJSON } from './data';
-import Block, { BlockCreateProps, BlockJSON } from './inline';
+import Block, { BlockCreateProps, BlockJSON } from './block';
 import NodeFactory, {
     ChildNode,
     memoizeMethods,
@@ -12,7 +12,6 @@ import NodeFactory, {
 } from './node-factory';
 
 interface ContainerProperties {
-    isVoid: boolean;
     type: string;
 }
 
@@ -38,8 +37,8 @@ export type ContainerCreateProps =
 class Container extends NodeFactory<ContainerProperties>({
     type: ''
 }) {
-    get object(): 'block' {
-        return 'block';
+    get object(): 'container' {
+        return 'container';
     }
 
     /*
@@ -59,14 +58,14 @@ class Container extends NodeFactory<ContainerProperties>({
     }
 
     /*
-     * Check if `input` is a `Block`.
+     * Check if `input` is a `Container`.
      */
     public static isContainer(input: any): input is Container {
         return isType('CONTAINER', input);
     }
 
     /*
-     * Create a new `Block` from `attrs`.
+     * Create a new `Container` from `attrs`.
      */
     public static create(attrs: ContainerCreateProps = {}): Container {
         if (Container.isContainer(attrs)) {
@@ -87,12 +86,12 @@ class Container extends NodeFactory<ContainerProperties>({
     }
 
     /*
-     * Create a list of `Blocks` from `attrs`.
+     * Create a list of `Containers` from `attrs`.
      */
     public static createList(
         attrs: ContainerCreateProps[] | List<ContainerCreateProps> = []
     ): List<Container> {
-        return List(attrs.map(Block.create));
+        return List(attrs.map(Container.create));
     }
 
     /*

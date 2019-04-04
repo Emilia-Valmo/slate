@@ -162,14 +162,6 @@ function BeforePlugin(): Plugin {
                 return;
             }
             isComposing = false;
-
-            // HACK: we need to re-render the editor here so that it will update its
-            // placeholder in case one is currently rendered. This should be handled
-            // differently ideally, in a less invasive way?
-            // (apply force re-render if isComposing changes)
-            if (editor.state.isComposing) {
-                editor.setState({ isComposing: false });
-            }
         });
 
         logger('onCompositionEnd', { event });
@@ -186,14 +178,6 @@ function BeforePlugin(): Plugin {
     ) {
         isComposing = true;
         compositionCount++;
-
-        // HACK: we need to re-render the editor here so that it will update its
-        // placeholder in case one is currently rendered. This should be handled
-        // differently ideally, in a less invasive way?
-        // (apply force re-render if isComposing changes)
-        if (!editor.state.isComposing) {
-            editor.setState({ isComposing: true });
-        }
 
         logger('onCompositionStart', { event });
     }

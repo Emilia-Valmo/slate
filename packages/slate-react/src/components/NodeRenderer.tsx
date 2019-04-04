@@ -91,7 +91,7 @@ function areEqual(
  */
 const PureNodeRenderer = React.memo(function NodeRenderer(
     props: NodeRendererProps
-): React.Node {
+): React.ReactNode {
     const {
         editor,
         isSelected,

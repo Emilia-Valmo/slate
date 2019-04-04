@@ -15,6 +15,9 @@ const h = createHyperscript({
 export default (
     <value>
         <document>
+            <paragraph>
+                {'Try surrounding text with **...** or `...`'}
+            </paragraph>
             <paragraph>{"Try typing '(c)' in this block."}</paragraph>
             <paragraph>
                 {"Try typing '> ' at the start of this block."}

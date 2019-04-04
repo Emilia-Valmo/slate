@@ -1,6 +1,6 @@
 import { Change, Value } from '@gitbook/slate';
 import { EditorContainer, Plugin } from '@gitbook/slate-react';
-import isHotkey from 'is-hotkey';
+import { isKeyHotkey } from 'is-hotkey';
 import typeOf from 'type-of';
 
 type MatcherFn = (type: string) => boolean;
@@ -9,65 +9,86 @@ type TriggerFn = (event: Event) => boolean;
 type MatcherInput = MatcherFn | string[] | string;
 type TriggerInput = TriggerFn | RegExp | string;
 
+interface Matches {
+    after: string | null;
+    before: string | null;
+}
+
 /*
  * A Slate plugin to automatically replace a block when a string of matching
  * text is typed.
  */
-function AutoReplace(
-    opts: {
-        trigger: MatcherInput;
-        transform?: () => void;
-        ignoreIn?: MatcherInput;
-        onlyIn?: MatcherInput;
-    } = {}
-): Plugin {
+function AutoReplace(opts: {
+    // Trigger on the given input text
+    onInput?: TriggerInput;
+    // Trigger on the given hotkey, given in the format of `is-hotkey`
+    onHotkey?: string;
+    // Only trigger inside the given node types
+    onlyIn?: MatcherInput;
+    // Never trigger in the given node types
+    ignoreIn?: MatcherInput;
+    // Trigger if the text before the cursor matches the regexp
+    // Any captured group in the regexp will be removed on transform.
+    before?: RegExp;
+    // Trigger if the text after the cursor matches the regexp
+    // Any captured group in the regexp will be removed on transform.
+    after?: RegExp;
+
+    // What to change when triggered
+    transform: (Change, Event, Matches, EditorContainer) => void;
+}): Plugin {
     const { transform } = opts;
-    const trigger = normalizeTrigger(opts.trigger);
+    const onHotkey = opts.onHotkey ? isKeyHotkey(opts.onHotkey) : () => false;
+    const onInput = opts.onInput ? normalizeOnInput(opts.onInput) : () => false;
     const ignoreIn = opts.ignoreIn ? normalizeMatcher(opts.ignoreIn) : null;
     const onlyIn = opts.onlyIn ? normalizeMatcher(opts.onlyIn) : null;
 
-    /*
-     * On key down.
-     */
-    function onKeyDown(event: Event, change: Change, editor: EditorContainer) {
-        if (trigger(event)) {
-            return replace(event, change, editor);
-        }
-    }
-
-    /*
-     * Replace a block's properties.
-     */
-    function replace(
+    function onKeyDown(
         event: Event,
         change: Change,
         editor: EditorContainer
-    ): Change | void {
-        const { value } = change;
-        if (value.isExpanded) {
+    ): boolean | void {
+        if (!onHotkey(event)) {
             return;
         }
 
-        const { startBlock } = value;
-        if (!startBlock) {
-            return;
-        }
-
-        const type = startBlock.type;
-        if (onlyIn && !onlyIn(type)) {
-            return;
-        }
-        if (ignoreIn && ignoreIn(type)) {
-            return;
-        }
-
-        const matches = getMatches(value);
+        const matches = getMatches(change.value);
         if (!matches) {
             return;
         }
 
-        event.preventDefault();
+        replace(matches, event, change, editor);
+        return true;
+    }
 
+    function onBeforeInput(
+        event: Event,
+        change: Change,
+        editor: EditorContainer
+    ): boolean | void {
+        if (!onInput(event)) {
+            return;
+        }
+
+        const matches = getMatches(change.value);
+        if (!matches) {
+            return;
+        }
+
+        replace(matches, event, change, editor);
+        return true;
+    }
+
+    /*
+     * Apply the transform it.
+     */
+    function replace(
+        matches: Matches,
+        event: Event,
+        change: Change,
+        editor: EditorContainer
+    ): boolean | void {
+        const { value } = change;
         let startOffset = value.startOffset;
         let totalRemoved = 0;
         const offsets = getOffsets(matches, startOffset);
@@ -81,16 +102,34 @@ function AutoReplace(
         startOffset -= totalRemoved;
         change.moveOffsetsTo(startOffset, startOffset);
 
-        return change.call(transform, event, matches, editor);
+        change.call(transform, event, matches, editor);
+
+        event.preventDefault();
+        return true;
     }
 
     /*
      * Try to match the current text of a `value` with the `before` and
-     * `after` regexes.
+     * `after` regexes, and other given conditions.
      */
-    function getMatches(
-        value: Value
-    ): { after: string | null; before: string | null } | null {
+    function getMatches(value: Value): Matches | null {
+        if (value.isExpanded) {
+            return null;
+        }
+
+        const { startBlock } = value;
+        if (!startBlock) {
+            return null;
+        }
+
+        const type = startBlock.type;
+        if (onlyIn && !onlyIn(type)) {
+            return null;
+        }
+        if (ignoreIn && ignoreIn(type)) {
+            return null;
+        }
+
         const { startText, startOffset } = value;
         const { text } = startText;
         let after = null;
@@ -194,20 +233,27 @@ function AutoReplace(
 
         return offsets;
     }
-    return { onKeyDown };
+
+    return {
+        onKeyDown,
+        onBeforeInput
+    };
 }
 
 /*
- * Normalize a `trigger` option to a matching function.
+ * Normalize a 'onInput' option to a matching function.
  */
-function normalizeTrigger(trigger: TriggerInput): TriggerFn {
-    switch (typeOf(trigger)) {
+function normalizeOnInput(onInput: TriggerInput): TriggerFn {
+    switch (typeOf(onInput)) {
         case 'function':
-            return trigger as TriggerInput;
+            return onInput as TriggerInput;
         case 'regexp':
-            return (event: Event) => !!(event.key && event.key.match(trigger));
+            return (event: Event) =>
+                !!(event.data && event.data.match(onInput));
         case 'string':
-            return isHotkey(trigger);
+            return (event: Event) => !!(event.data && event.data === onInput);
+        default:
+            throw new Error('Invalid onInput option');
     }
 }
 

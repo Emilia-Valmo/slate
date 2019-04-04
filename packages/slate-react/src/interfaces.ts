@@ -41,7 +41,7 @@ export interface NodeProps<NodeType extends Block | Inline> {
     editor: EditorContainer;
     isFocused: boolean;
     isSelected: boolean;
-    children: React.Node;
+    children: React.ReactNode;
     attributes: NodeDOMAttributes;
 }
 
@@ -55,6 +55,6 @@ export interface MarkProps {
     offset: number;
     text: Text;
     marks: Set<Mark>;
-    children: React.Node;
+    children: React.ReactNode;
     attributes: MarkDOMAttributes;
 }

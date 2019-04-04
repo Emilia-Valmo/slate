@@ -26,6 +26,7 @@ export interface Plugin {
     onDrop?: EvenHandlerFn<Event>;
     onInput?: EvenHandlerFn<Event>;
     onKeyDown?: EvenHandlerFn<Event>;
+    onKeyUp?: EvenHandlerFn<Event>;
     onPaste?: EvenHandlerFn<Event>;
     onSelect?: EvenHandlerFn<Event>;
     onCompositionEnd?: EvenHandlerFn<Event>;
@@ -33,9 +34,9 @@ export interface Plugin {
     /** Callback when a change is made */
     onChange?: (change: Change, editor: EditorContainer) => void;
     /** Function called when rendering a node */
-    renderNode?: (props: NodeProps<Block | Inline>) => React.Node;
+    renderNode?: (props: NodeProps<Block | Inline>) => React.ReactNode;
     /** Function called when rendering a mark */
-    renderMark?: (props: MarkProps) => React.Node;
+    renderMark?: (props: MarkProps) => React.ReactNode;
     /** Decorate a node with range of marks */
     decorateNode?: (node: Block | Inline) => Range[] | List<Range> | void;
     /** Function to force an update of a node component */

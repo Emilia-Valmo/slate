@@ -4,6 +4,7 @@ import { Editor } from '@gitbook/slate-react';
 import { isKeyHotkey } from 'is-hotkey';
 import React from 'react';
 import { Button, Icon, Toolbar } from '../components';
+import { renderMark, renderNode } from '../rendering';
 import initialValue from './value.json';
 
 /*
@@ -82,7 +83,7 @@ class RichTextExample extends React.Component {
                     {this.renderMarkButton('code', 'code')}
                     {this.renderBlockButton('heading-one', 'looks_one')}
                     {this.renderBlockButton('heading-two', 'looks_two')}
-                    {this.renderBlockButton('block-quote', 'format_quote')}
+                    {this.renderBlockButton('blockquote', 'format_quote')}
                     {this.renderBlockButton(
                         'numbered-list',
                         'format_list_numbered'
@@ -99,8 +100,8 @@ class RichTextExample extends React.Component {
                     value={this.state.value}
                     onChange={this.onChange}
                     onKeyDown={this.onKeyDown}
-                    renderNode={this.renderNode}
-                    renderMark={this.renderMark}
+                    renderNode={renderNode}
+                    renderMark={renderMark}
                 />
             </div>
         );
@@ -153,54 +154,6 @@ class RichTextExample extends React.Component {
                 <Icon>{icon}</Icon>
             </Button>
         );
-    };
-
-    /*
-     * Render a Slate node.
-     *
-     * @param {Object} props
-     * @return {Element}
-     */
-
-    public renderNode = props => {
-        const { attributes, children, node } = props;
-
-        switch (node.type) {
-            case 'block-quote':
-                return <blockquote {...attributes}>{children}</blockquote>;
-            case 'bulleted-list':
-                return <ul {...attributes}>{children}</ul>;
-            case 'heading-one':
-                return <h1 {...attributes}>{children}</h1>;
-            case 'heading-two':
-                return <h2 {...attributes}>{children}</h2>;
-            case 'list-item':
-                return <li {...attributes}>{children}</li>;
-            case 'numbered-list':
-                return <ol {...attributes}>{children}</ol>;
-        }
-    };
-
-    /*
-     * Render a Slate mark.
-     *
-     * @param {Object} props
-     * @return {Element}
-     */
-
-    public renderMark = props => {
-        const { children, mark, attributes } = props;
-
-        switch (mark.type) {
-            case 'bold':
-                return <strong {...attributes}>{children}</strong>;
-            case 'code':
-                return <code {...attributes}>{children}</code>;
-            case 'italic':
-                return <em {...attributes}>{children}</em>;
-            case 'underlined':
-                return <u {...attributes}>{children}</u>;
-        }
     };
 
     /*

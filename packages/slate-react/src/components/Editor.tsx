@@ -15,6 +15,7 @@ import {
     unstable_scheduleCallback as scheduleCallback,
     unstable_UserBlockingPriority as UserBlockingPriority
 } from 'scheduler';
+import { MarkProps, NodeProps } from '../interfaces';
 
 import EVENT_HANDLERS from '../constants/event-handlers';
 import { Plugin, PluginsStack } from '../plugins';
@@ -40,15 +41,17 @@ interface EditorProps {
     role?: string;
     style?: React.CSS.Properties;
     plugins?: Plugin[];
-    renderNode: (node: Block | Inline) => React.Node;
-    renderMark: (mark: Mark) => React.Node;
+    renderNode: <N extends Block | Inline>(
+        props: NodeProps<N>
+    ) => React.ReactNode;
+    renderMark: (props: MarkProps) => React.ReactNode;
     onChange: (change: Change) => void;
 }
 
 /*
  * Main component to render a slate editor.
  */
-function Editor(props: EditorProps): React.Node {
+function Editor(props: EditorProps): React.ReactNode {
     const {
         value,
         readOnly,

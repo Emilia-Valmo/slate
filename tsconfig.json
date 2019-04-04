@@ -1,7 +1,11 @@
 {
     "compilerOptions": {
+        "strict": true,
         "module": "es6",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
         "target": "esnext",
+        "jsx": "react",
         "declaration": true,
         "allowJs": false,
         "noImplicitAny": false,
@@ -9,9 +13,7 @@
         "noLib": false,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "jsx": "react",
         "sourceMap": true,
-        "esModuleInterop": true,
         "lib": [
             "es6",
             "dom"

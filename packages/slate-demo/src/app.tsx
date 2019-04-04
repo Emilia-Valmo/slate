@@ -19,7 +19,6 @@ import HugeDocument from './huge-document';
 import Images from './images';
 import Links from './links';
 import MarkdownPreview from './markdown-preview';
-import MarkdownShortcuts from './markdown-shortcuts';
 import PlainText from './plain-text';
 import ReadOnly from './read-only';
 import RichText from './rich-text';
@@ -48,7 +47,6 @@ const EXAMPLES = [
     ['Embeds', Embeds, '/embeds'],
     ['Emojis', Emojis, '/emojis'],
     ['Markdown Preview', MarkdownPreview, '/markdown-preview'],
-    ['Markdown Shortcuts', MarkdownShortcuts, '/markdown-shortcuts'],
     ['Check Lists', CheckLists, '/check-lists'],
     ['Search Highlighting', SearchHighlighting, '/search-highlighting'],
     ['Syncing Operations', SyncingOperations, '/syncing-operations'],

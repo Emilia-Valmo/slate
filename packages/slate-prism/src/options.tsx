@@ -10,7 +10,10 @@ export interface OptionsFormat {
     // Returns the syntax for a node that should be highlighted
     getSyntax?: (node: Node) => string;
     // Render a highlighting mark in a highlighted node
-    renderMark?: (mark: { mark: Mark; children: React.Node }) => React.Node;
+    renderMark?: (mark: {
+        mark: Mark;
+        children: React.ReactNode;
+    }) => React.ReactNode;
 }
 
 /*
@@ -34,9 +37,9 @@ function defaultGetSyntax(node: Node): string {
  */
 
 function defaultRenderMark(props: {
-    children: React.Node;
+    children: React.ReactNode;
     mark: Mark;
-}): void | React.Node {
+}): void | React.ReactNode {
     const { mark } = props;
 
     if (mark.type !== TOKEN_MARK) {
@@ -60,8 +63,8 @@ class Options extends Record({
     public getSyntax: (node: Node) => string;
     public renderMark: (props: {
         mark: Mark;
-        children: React.Node;
-    }) => React.Node;
+        children: React.ReactNode;
+    }) => React.ReactNode;
 }
 
 export default Options;

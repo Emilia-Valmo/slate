@@ -77,7 +77,7 @@
       },
       {
         "object": "block",
-        "type": "block-quote",
+        "type": "blockquote",
         "nodes": [
           {
             "object": "text",

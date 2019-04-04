@@ -1,4 +1,5 @@
 import { Value } from '@gitbook/slate';
+import RawPastePlugin from '@gitbook/slate-raw-paste';
 import { Editor } from '@gitbook/slate-react';
 
 import { isKeyHotkey } from 'is-hotkey';
@@ -25,6 +26,8 @@ const isBoldHotkey = isKeyHotkey('mod+b');
 const isItalicHotkey = isKeyHotkey('mod+i');
 const isUnderlinedHotkey = isKeyHotkey('mod+u');
 const isCodeHotkey = isKeyHotkey('mod+`');
+
+const rawPastePlugin = RawPastePlugin();
 
 /*
  * The rich text example.
@@ -98,6 +101,7 @@ class RichTextExample extends React.Component {
                     autoFocus
                     placeholder="Enter some rich text..."
                     value={this.state.value}
+                    plugins={[rawPastePlugin]}
                     onChange={this.onChange}
                     onKeyDown={this.onKeyDown}
                     renderNode={renderNode}

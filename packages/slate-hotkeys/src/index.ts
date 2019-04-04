@@ -69,6 +69,8 @@ const isRedoMac = isKeyHotkey('mod+shift+z');
 const isRedoPC = isKeyHotkey('mod+y');
 const isRedo = e => (IS_APPLE ? isRedoMac(e) : isRedoPC(e));
 
+const isRawPaste = isKeyHotkey('mod+shift+v');
+
 const isTransposeCharacterMac = isKeyHotkey('ctrl+t');
 const isTransposeCharacter = e => IS_APPLE && isTransposeCharacterMac(e);
 
@@ -115,7 +117,8 @@ const HotKeys = {
     isItalic,
     isRedo,
     isSplitBlock,
-    isUndo
+    isUndo,
+    isRawPaste
 };
 
 export default HotKeys;

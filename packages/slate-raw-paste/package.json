@@ -1,0 +1,23 @@
+{
+  "name": "@gitbook/slate-raw-paste",
+  "description": "A Slate plugin to handle paste without formatting (as pure text) Mod+Shift+V.",
+  "version": "3.0.0-alpha.8",
+  "license": "MIT",
+  "repository": "https://github.com/GitbookIO/slate.git",
+  "source": "src/index.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
+  "types": "dist/es/index.d.ts",
+  "files": [
+    "*.md",
+    "dist/"
+  ],
+  "dependencies": {
+    "@gitbook/slate-react": "^3.0.0-alpha.8",
+    "@gitbook/slate-plain-serializer": "^3.0.0-alpha.8",
+    "@gitbook/slate-hotkeys": "^3.0.0-alpha.8"
+  },
+  "peerDependencies": {
+    "@gitbook/slate": "*"
+  }
+}

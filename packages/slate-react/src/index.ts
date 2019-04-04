@@ -1,6 +1,4 @@
 import Editor from './components/Editor';
-import AfterPlugin from './plugins/after';
-import BeforePlugin from './plugins/before';
 import cloneFragment from './utils/clone-fragment';
 import findDOMNode from './utils/find-dom-node';
 import findDOMRange from './utils/find-dom-range';
@@ -22,7 +20,5 @@ export {
     findRange,
     getEventRange,
     getEventTransfer,
-    setEventTransfer,
-    AfterPlugin,
-    BeforePlugin
+    setEventTransfer
 };

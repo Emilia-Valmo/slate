@@ -16,6 +16,7 @@
         "@gitbook/slate-edit-code": "^3.0.0-alpha.8",
         "@gitbook/slate-edit-list": "^3.0.0-alpha.8",
         "@gitbook/slate-edit-table": "^3.0.0-alpha.8",
+        "@gitbook/slate-raw-paste": "^3.0.0-alpha.8",
         "@gitbook/slate-react": "^3.0.0-alpha.8",
         "@helpscout/stats": "^0.0.5",
         "emojis": "^1.0.10",

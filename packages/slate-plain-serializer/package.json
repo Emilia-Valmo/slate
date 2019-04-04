@@ -1,7 +1,7 @@
 {
   "name": "@gitbook/slate-plain-serializer",
   "description": "A plain text serializer for Slate editors.",
-  "version": "3.0.0-alpha.8",
+  "version": "3.0.0",
   "license": "MIT",
   "repository": "https://github.com/GitbookIO/slate.git",
   "source": "src/index.ts",
@@ -17,7 +17,7 @@
     "immutable": ">=4.0.0-rc.12"
   },
   "devDependencies": {
-    "@gitbook/slate": "^3.0.0-alpha.8",
-    "@gitbook/slate-hyperscript": "^3.0.0-alpha.8"
+    "@gitbook/slate": "^3.0.0",
+    "@gitbook/slate-hyperscript": "^3.0.0"
   }
 }

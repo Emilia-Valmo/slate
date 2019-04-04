@@ -14,8 +14,10 @@ All packages follow the same versions. Before 1.0.0, each package was progressin
 * [BREAKING] Remove deprecated `Character` model
 * [BREAKING] Switch to Typescript, not all modules are typed yet. Dynamic type checks are no longer done.
 * [BREAKING] Schema has been split from plugins, and should be created using `Schema.create({ ... })`
+* [BREAKING] `@gitbook/slate-auto-replace` was fixed tu support input resulting from a key combination (e.g. detect `space` whether shift was pressed or not at the same time). In fixing it, the API changed from a `trigger` option to two different options `onInput` and `onHotkey`.
 * Debug logs are no longer emitted during rendering (you can use the React dev tools instead)
 * Compatibility with react strict/concurrent modes 
+* Added `@gitbook/slate-raw-paste` to allow pasting without formatting on Shift+Mod+V
 
 
 # 2.0.1
